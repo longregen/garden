@@ -17,8 +17,8 @@ curly-quotes = true
 mathjax-support = false
 copy-fonts = true
 no-section-label = false
-git-repository-url = "https://github.com/yourusername/garden3"
-edit-url-template = "https://github.com/yourusername/garden3/edit/main/{path}"
+git-repository-url = "https://github.com/longregen/garden3"
+edit-url-template = "https://github.com/longregen/garden3/edit/main/{path}"
 site-url = "/garden3/"
 
 [output.html.print]
