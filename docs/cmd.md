@@ -194,7 +194,7 @@ AI_SERVICE_KEY=""
 
 ### Prerequisites
 
-- Go 1.25.5 or later
+- Go 1.24 or later
 - PostgreSQL database
 - (Optional) Ollama for AI features (main server)
 

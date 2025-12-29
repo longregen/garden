@@ -256,7 +256,7 @@ Entity-based knowledge management:
 
 ### Prerequisites
 
-1. **Go 1.25.5 or higher**
+1. **Go 1.24 or higher**
    ```bash
    go version
    ```
