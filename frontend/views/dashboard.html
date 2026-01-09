@@ -1,0 +1,679 @@
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-description">Overview of your personal knowledge management system</p>
+</div>
+
+<div id="dashboard-content">
+    <!-- Stats Cards Row - Skeleton Loading State -->
+    <div class="stats-grid" id="stats-cards">
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <span class="stat-card-title">Contacts</span>
+                <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+            </div>
+            <div class="skeleton" style="height: 48px; width: 80px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="height: 16px; width: 140px;"></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <span class="stat-card-title">Bookmarks</span>
+                <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+            </div>
+            <div class="skeleton" style="height: 48px; width: 80px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="height: 16px; width: 140px;"></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <span class="stat-card-title">Notes</span>
+                <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                </svg>
+            </div>
+            <div class="skeleton" style="height: 48px; width: 80px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="height: 16px; width: 140px;"></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <span class="stat-card-title">Messages</span>
+                <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+            </div>
+            <div class="skeleton" style="height: 48px; width: 80px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="height: 16px; width: 140px;"></div>
+        </div>
+    </div>
+
+    <!-- Charts Section - Skeleton Loading State -->
+    <div class="dashboard-charts grid grid-cols-3 mb-6" id="charts-section">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Activity Timeline</h3>
+                <span class="text-sm text-muted">Last 30 days</span>
+            </div>
+            <div class="card-body">
+                <div class="skeleton" style="height: 160px; width: 100%;"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Knowledge Distribution</h3>
+            </div>
+            <div class="card-body">
+                <div class="skeleton" style="height: 160px; width: 100%;"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Growth Trends</h3>
+                <span class="text-sm text-muted">This month</span>
+            </div>
+            <div class="card-body">
+                <div class="skeleton" style="height: 160px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Grid - Skeleton Loading State -->
+    <div class="card mb-6" id="quick-actions-section">
+        <div class="card-header">
+            <h3 class="card-title">Quick Actions</h3>
+        </div>
+        <div class="card-body">
+            <div class="quick-actions-grid">
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+                <div class="skeleton" style="height: 80px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Feed - Skeleton Loading State -->
+    <div class="card mb-6" id="activity-feed-section">
+        <div class="card-header">
+            <h3 class="card-title">Recent Activity</h3>
+            <a href="#/history" class="btn btn-ghost btn-sm">View All</a>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            <div class="list-item">
+                <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;"></div>
+                <div class="list-item-content">
+                    <div class="skeleton" style="height: 16px; width: 200px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 150px;"></div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;"></div>
+                <div class="list-item-content">
+                    <div class="skeleton" style="height: 16px; width: 180px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 140px;"></div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;"></div>
+                <div class="list-item-content">
+                    <div class="skeleton" style="height: 16px; width: 220px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 160px;"></div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;"></div>
+                <div class="list-item-content">
+                    <div class="skeleton" style="height: 16px; width: 190px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 130px;"></div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="skeleton" style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;"></div>
+                <div class="list-item-content">
+                    <div class="skeleton" style="height: 16px; width: 210px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 145px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Items Lists (3 columns) - Skeleton Loading State -->
+    <div class="grid grid-cols-3 mb-6" id="top-items-section">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Bookmarks</h3>
+                <a href="#/bookmarks" class="btn btn-ghost btn-sm">View All</a>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 180px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 100px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 160px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 90px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 200px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 110px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 170px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 95px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 190px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 105px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Recent Notes</h3>
+                <a href="#/notes" class="btn btn-ghost btn-sm">View All</a>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 180px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 100px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 160px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 90px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 200px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 110px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 170px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 95px;"></div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="height: 14px; width: 190px; margin-bottom: 6px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 105px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Top Contacts</h3>
+                <a href="#/contacts" class="btn btn-ghost btn-sm">View All</a>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="list-item">
+                    <div class="skeleton" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <div class="list-item-content">
+                        <div class="skeleton" style="height: 14px; width: 120px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 80px;"></div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <div class="list-item-content">
+                        <div class="skeleton" style="height: 14px; width: 100px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 70px;"></div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <div class="list-item-content">
+                        <div class="skeleton" style="height: 14px; width: 130px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 90px;"></div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <div class="list-item-content">
+                        <div class="skeleton" style="height: 14px; width: 110px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 75px;"></div>
+                    </div>
+                </div>
+                <div class="list-item">
+                    <div class="skeleton" style="width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <div class="list-item-content">
+                        <div class="skeleton" style="height: 14px; width: 125px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 85px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Status Panel - Skeleton Loading State -->
+    <div class="card" id="system-status-section">
+        <div class="card-header">
+            <h3 class="card-title">System Status</h3>
+            <span class="badge badge-success" id="system-overall-status">
+                <span class="skeleton" style="height: 12px; width: 60px;"></span>
+            </span>
+        </div>
+        <div class="card-body">
+            <div class="system-status-grid">
+                <div class="status-item">
+                    <div class="skeleton" style="height: 14px; width: 120px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 80px;"></div>
+                </div>
+                <div class="status-item">
+                    <div class="skeleton" style="height: 14px; width: 100px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 140px;"></div>
+                </div>
+                <div class="status-item">
+                    <div class="skeleton" style="height: 14px; width: 110px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 100px;"></div>
+                </div>
+                <div class="status-item">
+                    <div class="skeleton" style="height: 14px; width: 90px; margin-bottom: 8px;"></div>
+                    <div class="skeleton" style="height: 12px; width: 70px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Dashboard-specific styles */
+.dashboard-charts {
+    margin-bottom: var(--space-6);
+}
+
+/* Quick Actions Grid */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-3);
+}
+
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.quick-action-btn:hover {
+    background-color: var(--color-background-hover);
+    border-color: var(--color-border-focus);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+}
+
+.quick-action-btn:active {
+    transform: translateY(0);
+}
+
+.quick-action-btn svg {
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+}
+
+.quick-action-btn:hover svg {
+    opacity: 1;
+}
+
+/* System Status Grid */
+.system-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.status-item-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.status-item-value {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-indicator.online {
+    background-color: var(--color-success);
+    box-shadow: 0 0 8px var(--color-success);
+}
+
+.status-indicator.offline {
+    background-color: var(--color-error);
+}
+
+.status-indicator.warning {
+    background-color: var(--color-warning);
+}
+
+/* Activity Feed Item Types */
+.activity-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.activity-icon.bookmark {
+    background-color: var(--color-info-bg);
+    color: var(--color-info);
+}
+
+.activity-icon.note {
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.activity-icon.contact {
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+}
+
+.activity-icon.message {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.activity-icon.entity {
+    background-color: rgba(236, 72, 153, 0.1);
+    color: #ec4899;
+}
+
+/* Chart Containers */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 160px;
+}
+
+/* Bar Chart */
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%;
+    gap: 4px;
+    padding-bottom: 24px;
+}
+
+.bar {
+    flex: 1;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    min-width: 8px;
+    max-width: 20px;
+    transition: background-color var(--transition-fast), height var(--transition-slow);
+    position: relative;
+}
+
+.bar:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.bar-label {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: var(--color-text-tertiary);
+}
+
+/* Pie Chart */
+.pie-chart-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    height: 100%;
+}
+
+.pie-chart {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.pie-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.pie-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+}
+
+.pie-legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+}
+
+.pie-legend-label {
+    flex: 1;
+    color: var(--color-text-secondary);
+}
+
+.pie-legend-value {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+/* Line Chart */
+.line-chart {
+    position: relative;
+    height: 100%;
+    padding-bottom: 24px;
+}
+
+.line-chart svg {
+    width: 100%;
+    height: 100%;
+}
+
+.line-chart-path {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.line-chart-area {
+    fill: url(#lineGradient);
+}
+
+.line-chart-dot {
+    fill: var(--color-accent);
+    stroke: var(--color-background-elevated);
+    stroke-width: 2;
+}
+
+.line-chart-labels {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.line-chart-label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+}
+
+/* Top Items List Compact Styling */
+.top-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.top-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.top-item:last-child {
+    border-bottom: none;
+}
+
+.top-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-background-active);
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+}
+
+.top-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.top-item-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.top-item-meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Contact Score Badge */
+.score-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 20px;
+    padding: 0 var(--space-2);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.score-badge.high {
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.score-badge.medium {
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+}
+
+.score-badge.low {
+    background-color: var(--color-pending-bg);
+    color: var(--color-pending);
+}
+
+/* Storage Progress Bar */
+.storage-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.storage-bar {
+    height: 6px;
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.storage-bar-fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}
+
+.storage-bar-fill.warning {
+    background-color: var(--color-warning);
+}
+
+.storage-bar-fill.danger {
+    background-color: var(--color-error);
+}
+
+.storage-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .dashboard-charts.grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .pie-chart-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .system-status-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

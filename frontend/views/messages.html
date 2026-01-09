@@ -1,0 +1,2250 @@
+<!-- Messages/Rooms/Sessions View - Comprehensive Chat Interface -->
+<div class="messages-container">
+    <!-- Three Panel Layout -->
+    <div class="messages-layout">
+        <!-- Left Panel: Rooms List -->
+        <div class="rooms-panel" id="rooms-panel">
+            <div class="rooms-header">
+                <h2 class="rooms-title">Messages</h2>
+                <button class="btn btn-ghost btn-sm" id="new-room-btn" title="New conversation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Rooms Search -->
+            <div class="rooms-search">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" class="rooms-search-input" placeholder="Search rooms..." id="rooms-search-input">
+            </div>
+
+            <!-- View Toggle: Messages vs Sessions -->
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" data-view="messages" id="messages-view-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Messages
+                </button>
+                <button class="view-toggle-btn" data-view="sessions" id="sessions-view-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Sessions
+                </button>
+            </div>
+
+            <!-- Rooms List -->
+            <div class="rooms-list" id="rooms-list">
+                <!-- Loading skeleton -->
+                <div class="room-item-skeleton">
+                    <div class="skeleton room-avatar-skeleton"></div>
+                    <div class="room-item-skeleton-content">
+                        <div class="skeleton" style="height: 14px; width: 120px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 180px;"></div>
+                    </div>
+                </div>
+                <div class="room-item-skeleton">
+                    <div class="skeleton room-avatar-skeleton"></div>
+                    <div class="room-item-skeleton-content">
+                        <div class="skeleton" style="height: 14px; width: 140px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 160px;"></div>
+                    </div>
+                </div>
+                <div class="room-item-skeleton">
+                    <div class="skeleton room-avatar-skeleton"></div>
+                    <div class="room-item-skeleton-content">
+                        <div class="skeleton" style="height: 14px; width: 100px; margin-bottom: 6px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 140px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Panel: Messages Feed -->
+        <div class="messages-panel" id="messages-panel">
+            <!-- Messages Header -->
+            <div class="messages-header" id="messages-header">
+                <button class="btn btn-ghost btn-sm mobile-back-btn" id="mobile-back-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                <div class="messages-header-info" id="messages-header-info">
+                    <h3 class="messages-room-name">Select a room</h3>
+                    <span class="messages-room-status">Choose a conversation to start messaging</span>
+                </div>
+                <div class="messages-header-actions">
+                    <button class="btn btn-ghost btn-sm" id="search-messages-btn" title="Search in conversation">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-ghost btn-sm" id="toggle-details-btn" title="Room details">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"/>
+                            <circle cx="19" cy="12" r="1"/>
+                            <circle cx="5" cy="12" r="1"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Messages Bar (hidden by default) -->
+            <div class="messages-search-bar" id="messages-search-bar">
+                <div class="messages-search-container">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" class="messages-search-input" placeholder="Search messages..." id="messages-search-input">
+                    <button class="btn btn-ghost btn-sm" id="close-search-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="search-filters">
+                    <select class="form-select form-select-sm" id="search-filter-sender">
+                        <option value="">All senders</option>
+                    </select>
+                    <input type="date" class="form-input form-input-sm" id="search-filter-date-from" placeholder="From">
+                    <input type="date" class="form-input form-input-sm" id="search-filter-date-to" placeholder="To">
+                </div>
+            </div>
+
+            <!-- Messages Feed -->
+            <div class="messages-feed" id="messages-feed">
+                <div class="messages-empty-state">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <h3>No conversation selected</h3>
+                    <p>Choose a room from the sidebar to view messages</p>
+                </div>
+            </div>
+
+            <!-- Jump to Bottom Button -->
+            <button class="jump-to-bottom" id="jump-to-bottom" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+                Jump to latest
+            </button>
+
+            <!-- Message Compose -->
+            <div class="message-compose" id="message-compose">
+                <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                    <span class="typing-dots">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span class="typing-text">Someone is typing...</span>
+                </div>
+                <div class="compose-container">
+                    <button class="btn btn-ghost btn-sm compose-attach-btn" title="Attach file">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                    </button>
+                    <div class="compose-input-wrapper">
+                        <textarea class="compose-input" id="compose-input" placeholder="Type a message..." rows="1"></textarea>
+                        <div class="compose-markdown-hint">Markdown supported</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm compose-send-btn" id="compose-send-btn" title="Send message">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Room Details -->
+        <div class="details-panel" id="details-panel">
+            <div class="details-header">
+                <h3 class="details-title">Room Details</h3>
+                <button class="btn btn-ghost btn-sm" id="close-details-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="details-content" id="details-content">
+                <div class="details-empty">
+                    <p class="text-muted">Select a room to view details</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Global Search Modal -->
+<div class="global-search-overlay" id="global-search-overlay">
+    <div class="global-search-modal">
+        <div class="global-search-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" class="global-search-input" id="global-search-input" placeholder="Search all messages...">
+            <button class="btn btn-ghost btn-sm" id="close-global-search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="global-search-filters">
+            <select class="form-select form-select-sm" id="global-filter-room">
+                <option value="">All rooms</option>
+            </select>
+            <select class="form-select form-select-sm" id="global-filter-sender">
+                <option value="">All senders</option>
+            </select>
+        </div>
+        <div class="global-search-results" id="global-search-results">
+            <p class="text-muted text-center" style="padding: var(--space-8);">Enter a search term to find messages</p>
+        </div>
+    </div>
+</div>
+
+<!-- Message Actions Context Menu -->
+<div class="message-context-menu" id="message-context-menu">
+    <button class="context-menu-item" data-action="copy">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        Copy text
+    </button>
+    <button class="context-menu-item" data-action="react">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+        Add reaction
+    </button>
+    <button class="context-menu-item" data-action="reply">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 14 4 9 9 4"/>
+            <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+        </svg>
+        Reply
+    </button>
+    <button class="context-menu-item" data-action="search-similar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        Search similar
+    </button>
+    <button class="context-menu-item" data-action="view-context">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        View in context
+    </button>
+</div>
+
+<!-- Reaction Picker -->
+<div class="reaction-picker" id="reaction-picker">
+    <button class="reaction-emoji" data-emoji="thumbsup">+1</button>
+    <button class="reaction-emoji" data-emoji="heart">heart</button>
+    <button class="reaction-emoji" data-emoji="laugh">laugh</button>
+    <button class="reaction-emoji" data-emoji="surprised">!</button>
+    <button class="reaction-emoji" data-emoji="sad">:(</button>
+    <button class="reaction-emoji" data-emoji="think">?</button>
+</div>
+
+<style>
+/* Messages Container */
+.messages-container {
+    height: calc(100vh - var(--top-bar-height) - var(--space-12));
+    margin: calc(-1 * var(--space-6));
+    margin-top: calc(-1 * var(--space-6) - var(--space-8));
+}
+
+.messages-layout {
+    display: flex;
+    height: 100%;
+    background-color: var(--color-background);
+}
+
+/* Rooms Panel */
+.rooms-panel {
+    width: 320px;
+    min-width: 280px;
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background-secondary);
+}
+
+.rooms-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.rooms-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.rooms-search {
+    position: relative;
+    padding: var(--space-3) var(--space-4);
+}
+
+.rooms-search .search-icon {
+    position: absolute;
+    left: calc(var(--space-4) + var(--space-3));
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-tertiary);
+}
+
+.rooms-search-input {
+    width: 100%;
+    padding: var(--space-2) var(--space-3) var(--space-2) var(--space-10);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.rooms-search-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+/* View Toggle */
+.view-toggle {
+    display: flex;
+    padding: 0 var(--space-4) var(--space-3);
+    gap: var(--space-2);
+}
+
+.view-toggle-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-fast);
+}
+
+.view-toggle-btn:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.view-toggle-btn.active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+}
+
+/* Rooms List */
+.rooms-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.room-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    border-left: 3px solid transparent;
+}
+
+.room-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.room-item.active {
+    background-color: var(--color-background-active);
+    border-left-color: var(--color-accent);
+}
+
+.room-item-avatar {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.room-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    color: white;
+}
+
+.room-unread-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 var(--space-1);
+    background-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: var(--font-weight-semibold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.room-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.room-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-1);
+}
+
+.room-name {
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.room-item.unread .room-name {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.room-timestamp {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+}
+
+.room-preview {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.room-last-message {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+.room-participants-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    background-color: var(--color-background-active);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+/* Room Item Skeleton */
+.room-item-skeleton {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+}
+
+.room-avatar-skeleton {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
+}
+
+.room-item-skeleton-content {
+    flex: 1;
+}
+
+/* Messages Panel */
+.messages-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background-color: var(--color-background);
+}
+
+.messages-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+}
+
+.mobile-back-btn {
+    display: none;
+}
+
+.messages-header-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.messages-room-name {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.messages-room-status {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.messages-header-actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+/* Messages Search Bar */
+.messages-search-bar {
+    display: none;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+}
+
+.messages-search-bar.active {
+    display: block;
+}
+
+.messages-search-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0 var(--space-3);
+}
+
+.messages-search-container .search-icon {
+    color: var(--color-text-tertiary);
+}
+
+.messages-search-input {
+    flex: 1;
+    padding: var(--space-2) 0;
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    outline: none;
+}
+
+.search-filters {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.search-filters .form-select-sm,
+.search-filters .form-input-sm {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-xs);
+    flex: 1;
+}
+
+/* Messages Feed */
+.messages-feed {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.messages-empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-tertiary);
+    text-align: center;
+    padding: var(--space-8);
+}
+
+.messages-empty-state svg {
+    margin-bottom: var(--space-4);
+}
+
+.messages-empty-state h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-secondary);
+}
+
+.messages-empty-state p {
+    font-size: var(--font-size-sm);
+}
+
+/* Date Separator */
+.date-separator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+}
+
+.date-separator-line {
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+.date-separator-text {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Message Bubble */
+.message-group {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.message-group.own-message {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    flex-shrink: 0;
+    align-self: flex-end;
+}
+
+.message-avatar .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+}
+
+.message-avatar.hidden {
+    visibility: hidden;
+}
+
+.message-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    max-width: 70%;
+}
+
+.message-sender-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+}
+
+.message-group.own-message .message-sender-info {
+    flex-direction: row-reverse;
+}
+
+.message-sender-name {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.message-bubble {
+    position: relative;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: background-color var(--transition-fast);
+}
+
+.message-bubble:hover {
+    background-color: var(--color-background-hover);
+}
+
+.message-group.own-message .message-bubble {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.message-group.own-message .message-bubble:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.message-text {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+    word-wrap: break-word;
+}
+
+.message-group.own-message .message-text {
+    color: white;
+}
+
+.message-timestamp {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-1);
+}
+
+.message-group.own-message .message-timestamp {
+    color: rgba(255, 255, 255, 0.7);
+    text-align: right;
+}
+
+/* Message Actions */
+.message-actions {
+    position: absolute;
+    top: -12px;
+    right: var(--space-2);
+    display: none;
+    gap: var(--space-1);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-1);
+    box-shadow: var(--shadow-md);
+}
+
+.message-bubble:hover .message-actions {
+    display: flex;
+}
+
+.message-action-btn {
+    padding: var(--space-1);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.message-action-btn:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+/* Message Reactions */
+.message-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+}
+
+.message-reaction {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 2px var(--space-2);
+    background-color: var(--color-background-active);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.message-reaction:hover {
+    background-color: var(--color-background-hover);
+    border-color: var(--color-border-focus);
+}
+
+.message-reaction.active {
+    background-color: var(--color-accent-light);
+    border-color: var(--color-accent);
+}
+
+/* Jump to Bottom Button */
+.jump-to-bottom {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.jump-to-bottom:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+/* Message Compose */
+.message-compose {
+    padding: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.typing-dots {
+    display: flex;
+    gap: 3px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    background-color: var(--color-text-tertiary);
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+}
+
+.compose-container {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+}
+
+.compose-attach-btn {
+    flex-shrink: 0;
+}
+
+.compose-input-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+.compose-input {
+    width: 100%;
+    padding: var(--space-3);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    resize: none;
+    max-height: 150px;
+    transition: border-color var(--transition-fast);
+}
+
+.compose-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.compose-markdown-hint {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-2);
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+}
+
+.compose-send-btn {
+    flex-shrink: 0;
+}
+
+/* Details Panel */
+.details-panel {
+    width: 320px;
+    border-left: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background-secondary);
+    transition: width var(--transition-base), margin var(--transition-base);
+}
+
+.details-panel.collapsed {
+    width: 0;
+    overflow: hidden;
+    border-left: none;
+}
+
+.details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.details-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+}
+
+.details-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+}
+
+.details-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Room Details Sections */
+.details-section {
+    margin-bottom: var(--space-6);
+}
+
+.details-section-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-3);
+}
+
+.details-room-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+}
+
+.details-room-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: white;
+    margin-bottom: var(--space-3);
+}
+
+.details-room-name {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-1);
+}
+
+.details-room-name-input {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    text-align: center;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-text-primary);
+    width: 100%;
+}
+
+.details-room-name-input:hover {
+    border-color: var(--color-border);
+}
+
+.details-room-name-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.details-room-meta {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* Participants List */
+.participant-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+}
+
+.participant-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: white;
+}
+
+.participant-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.participant-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.participant-status {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Shared Media */
+.shared-media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+}
+
+.shared-media-item {
+    aspect-ratio: 1;
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.shared-media-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.shared-media-item svg {
+    color: var(--color-text-tertiary);
+}
+
+/* Room Stats */
+.room-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+}
+
+.room-stat {
+    padding: var(--space-3);
+    background-color: var(--color-background-elevated);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.room-stat-value {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.room-stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-1);
+}
+
+/* Sessions View */
+.sessions-container {
+    padding: var(--space-4);
+}
+
+.session-card {
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+    transition: border-color var(--transition-fast);
+}
+
+.session-card:hover {
+    border-color: var(--color-border-focus);
+}
+
+.session-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.session-header:hover {
+    background-color: var(--color-background-hover);
+}
+
+.session-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.session-time-range {
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+}
+
+.session-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.session-participants {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.session-expand-icon {
+    color: var(--color-text-tertiary);
+    transition: transform var(--transition-fast);
+}
+
+.session-card.expanded .session-expand-icon {
+    transform: rotate(180deg);
+}
+
+.session-summary {
+    padding: 0 var(--space-4) var(--space-4);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.session-messages {
+    display: none;
+    border-top: 1px solid var(--color-border);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.session-card.expanded .session-messages {
+    display: block;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: var(--space-6);
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-border);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: var(--space-4);
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -22px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-background-secondary);
+}
+
+/* Global Search */
+.global-search-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10vh;
+    z-index: var(--z-modal);
+}
+
+.global-search-overlay.active {
+    display: flex;
+}
+
+.global-search-modal {
+    width: 100%;
+    max-width: 640px;
+    max-height: 70vh;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 0 var(--space-4);
+}
+
+.global-search-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.global-search-header svg {
+    color: var(--color-text-tertiary);
+    flex-shrink: 0;
+}
+
+.global-search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    outline: none;
+}
+
+.global-search-filters {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.global-search-filters .form-select-sm {
+    flex: 1;
+}
+
+.global-search-results {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.search-result-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.search-result-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: white;
+    flex-shrink: 0;
+}
+
+.search-result-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-1);
+}
+
+.search-result-sender {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.search-result-room {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.search-result-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-result-text mark {
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+/* Context Menu */
+.message-context-menu {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-2);
+    z-index: var(--z-dropdown);
+    min-width: 160px;
+}
+
+.message-context-menu.active {
+    display: flex;
+}
+
+.context-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    text-align: left;
+    transition: all var(--transition-fast);
+}
+
+.context-menu-item:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+/* Reaction Picker */
+.reaction-picker {
+    position: fixed;
+    display: none;
+    gap: var(--space-1);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: var(--space-2);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+}
+
+.reaction-picker.active {
+    display: flex;
+}
+
+.reaction-emoji {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+}
+
+.reaction-emoji:hover {
+    background-color: var(--color-background-hover);
+    transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .details-panel {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 20;
+    }
+
+    .details-panel.collapsed {
+        transform: translateX(100%);
+    }
+}
+
+@media (max-width: 768px) {
+    .rooms-panel {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 10;
+        transform: translateX(0);
+        transition: transform var(--transition-base);
+    }
+
+    .rooms-panel.hidden {
+        transform: translateX(-100%);
+    }
+
+    .messages-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    .mobile-back-btn {
+        display: flex;
+    }
+
+    .details-panel {
+        width: 100%;
+    }
+
+    .message-content-wrapper {
+        max-width: 85%;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // State
+    const state = {
+        rooms: [],
+        currentRoom: null,
+        messages: [],
+        contacts: {},
+        sessions: [],
+        view: 'messages',
+        detailsOpen: true,
+        searchOpen: false,
+        globalSearchOpen: false
+    };
+
+    // DOM Elements
+    const elements = {
+        roomsList: document.getElementById('rooms-list'),
+        roomsSearchInput: document.getElementById('rooms-search-input'),
+        messagesViewBtn: document.getElementById('messages-view-btn'),
+        sessionsViewBtn: document.getElementById('sessions-view-btn'),
+        messagesHeader: document.getElementById('messages-header'),
+        messagesHeaderInfo: document.getElementById('messages-header-info'),
+        messagesFeed: document.getElementById('messages-feed'),
+        messagesSearchBar: document.getElementById('messages-search-bar'),
+        searchMessagesBtn: document.getElementById('search-messages-btn'),
+        closeSearchBtn: document.getElementById('close-search-btn'),
+        messagesSearchInput: document.getElementById('messages-search-input'),
+        toggleDetailsBtn: document.getElementById('toggle-details-btn'),
+        closeDetailsBtn: document.getElementById('close-details-btn'),
+        detailsPanel: document.getElementById('details-panel'),
+        detailsContent: document.getElementById('details-content'),
+        composeInput: document.getElementById('compose-input'),
+        composeSendBtn: document.getElementById('compose-send-btn'),
+        jumpToBottom: document.getElementById('jump-to-bottom'),
+        mobileBackBtn: document.getElementById('mobile-back-btn'),
+        roomsPanel: document.getElementById('rooms-panel'),
+        globalSearchOverlay: document.getElementById('global-search-overlay'),
+        globalSearchInput: document.getElementById('global-search-input'),
+        globalSearchResults: document.getElementById('global-search-results'),
+        closeGlobalSearch: document.getElementById('close-global-search'),
+        contextMenu: document.getElementById('message-context-menu'),
+        reactionPicker: document.getElementById('reaction-picker')
+    };
+
+    // Initialize
+    async function init() {
+        await loadRooms();
+        setupEventListeners();
+        checkUrlParams();
+    }
+
+    // Load rooms
+    async function loadRooms() {
+        try {
+            const rooms = await window.GardenApp.api.getRooms();
+            state.rooms = rooms;
+            renderRooms(rooms);
+        } catch (error) {
+            console.error('Failed to load rooms:', error);
+            app.toast.error('Failed to load rooms');
+        }
+    }
+
+    // Render rooms list
+    function renderRooms(rooms) {
+        if (!rooms || rooms.length === 0) {
+            elements.roomsList.innerHTML = `
+                <div class="messages-empty-state" style="padding: var(--space-8);">
+                    <p class="text-muted">No rooms available</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Sort by last activity
+        const sortedRooms = [...rooms].sort((a, b) =>
+            new Date(b.last_activity) - new Date(a.last_activity)
+        );
+
+        elements.roomsList.innerHTML = sortedRooms.map(room => {
+            const name = room.user_defined_name || room.display_name || 'Unknown Room';
+            const isActive = state.currentRoom?.room_id === room.room_id;
+            const unread = Math.random() > 0.7 ? Math.floor(Math.random() * 10) + 1 : 0; // Simulated
+
+            return `
+                <div class="room-item ${isActive ? 'active' : ''} ${unread ? 'unread' : ''}"
+                     data-room-id="${room.room_id}">
+                    <div class="room-item-avatar">
+                        <div class="room-avatar" style="background-color: ${Utils.stringToColor(name)}">
+                            ${Utils.getInitials(name)}
+                        </div>
+                        ${unread ? `<span class="room-unread-badge">${unread}</span>` : ''}
+                    </div>
+                    <div class="room-item-content">
+                        <div class="room-item-header">
+                            <span class="room-name">${Utils.escapeHtml(name)}</span>
+                            <span class="room-timestamp">${Utils.formatRelativeTime(room.last_activity)}</span>
+                        </div>
+                        <div class="room-preview">
+                            <span class="room-last-message">Click to view messages</span>
+                            <span class="room-participants-badge">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                </svg>
+                                ${room.participant_count}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Add click handlers
+        elements.roomsList.querySelectorAll('.room-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const roomId = item.dataset.roomId;
+                selectRoom(roomId);
+            });
+        });
+    }
+
+    // Select room
+    async function selectRoom(roomId) {
+        try {
+            const room = await window.GardenApp.api.getRoom(roomId);
+            state.currentRoom = room;
+            state.messages = room.messages || [];
+            state.contacts = room.contacts || {};
+
+            // Update URL
+            window.location.hash = `#/messages?room=${roomId}`;
+
+            // Update UI
+            updateRoomsList();
+            updateMessagesHeader();
+            renderMessages();
+            renderRoomDetails();
+
+            // Mobile: hide rooms panel
+            if (window.innerWidth <= 768) {
+                elements.roomsPanel.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('Failed to load room:', error);
+            app.toast.error('Failed to load room messages');
+        }
+    }
+
+    // Update rooms list selection
+    function updateRoomsList() {
+        elements.roomsList.querySelectorAll('.room-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.roomId === state.currentRoom?.room_id);
+        });
+    }
+
+    // Update messages header
+    function updateMessagesHeader() {
+        const room = state.currentRoom;
+        if (!room) return;
+
+        const name = room.user_defined_name || room.display_name || 'Unknown Room';
+        elements.messagesHeaderInfo.innerHTML = `
+            <h3 class="messages-room-name">${Utils.escapeHtml(name)}</h3>
+            <span class="messages-room-status">${room.participant_count || 0} participants</span>
+        `;
+    }
+
+    // Render messages
+    function renderMessages() {
+        if (!state.messages || state.messages.length === 0) {
+            elements.messagesFeed.innerHTML = `
+                <div class="messages-empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <h3>No messages yet</h3>
+                    <p>Start the conversation by sending a message</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Sort messages by date ascending
+        const sortedMessages = [...state.messages].sort((a, b) =>
+            new Date(a.event_datetime) - new Date(b.event_datetime)
+        );
+
+        // Group messages by date and sender
+        let html = '';
+        let currentDate = null;
+        let currentSender = null;
+
+        sortedMessages.forEach((msg, index) => {
+            const msgDate = new Date(msg.event_datetime);
+            const dateStr = msgDate.toDateString();
+            const contact = state.contacts[msg.sender_contact_id] || { name: msg.sender_name || 'Unknown' };
+            const isOwn = false; // Would check against current user
+
+            // Date separator
+            if (dateStr !== currentDate) {
+                currentDate = dateStr;
+                currentSender = null;
+
+                const isToday = dateStr === new Date().toDateString();
+                const isYesterday = dateStr === new Date(Date.now() - 86400000).toDateString();
+                const dateLabel = isToday ? 'Today' : isYesterday ? 'Yesterday' : Utils.formatDate(msg.event_datetime);
+
+                html += `
+                    <div class="date-separator">
+                        <div class="date-separator-line"></div>
+                        <span class="date-separator-text">${dateLabel}</span>
+                        <div class="date-separator-line"></div>
+                    </div>
+                `;
+            }
+
+            // Check if same sender as previous
+            const sameSender = msg.sender_contact_id === currentSender;
+            currentSender = msg.sender_contact_id;
+
+            html += `
+                <div class="message-group ${isOwn ? 'own-message' : ''}" data-message-id="${msg.message_id}">
+                    <div class="message-avatar ${sameSender ? 'hidden' : ''}">
+                        <div class="avatar" style="background-color: ${Utils.stringToColor(contact.name)}">
+                            ${Utils.getInitials(contact.name)}
+                        </div>
+                    </div>
+                    <div class="message-content-wrapper">
+                        ${!sameSender ? `
+                            <div class="message-sender-info">
+                                <span class="message-sender-name">${Utils.escapeHtml(contact.name)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="message-bubble" data-message-id="${msg.message_id}">
+                            <div class="message-actions">
+                                <button class="message-action-btn" data-action="react" title="Add reaction">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                    </svg>
+                                </button>
+                                <button class="message-action-btn" data-action="reply" title="Reply">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 14 4 9 9 4"/>
+                                        <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+                                    </svg>
+                                </button>
+                                <button class="message-action-btn" data-action="more" title="More options">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="1"/>
+                                        <circle cx="19" cy="12" r="1"/>
+                                        <circle cx="5" cy="12" r="1"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="message-text">${formatMessageText(msg.body)}</div>
+                            <div class="message-timestamp">${formatTime(msgDate)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        elements.messagesFeed.innerHTML = html;
+
+        // Scroll to bottom
+        elements.messagesFeed.scrollTop = elements.messagesFeed.scrollHeight;
+
+        // Setup message action handlers
+        setupMessageActions();
+    }
+
+    // Format message text (basic markdown support)
+    function formatMessageText(text) {
+        if (!text) return '';
+        let formatted = Utils.escapeHtml(text);
+        // Bold
+        formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        // Italic
+        formatted = formatted.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        // Code
+        formatted = formatted.replace(/`(.+?)`/g, '<code class="code">$1</code>');
+        // Links
+        formatted = formatted.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+        return formatted;
+    }
+
+    // Format time
+    function formatTime(date) {
+        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Render room details
+    function renderRoomDetails() {
+        const room = state.currentRoom;
+        if (!room) {
+            elements.detailsContent.innerHTML = `
+                <div class="details-empty">
+                    <p class="text-muted">Select a room to view details</p>
+                </div>
+            `;
+            return;
+        }
+
+        const name = room.user_defined_name || room.display_name || 'Unknown Room';
+        const participants = Object.values(state.contacts);
+        const messageCount = state.messages.length;
+
+        elements.detailsContent.innerHTML = `
+            <div class="details-room-info">
+                <div class="details-room-avatar" style="background-color: ${Utils.stringToColor(name)}">
+                    ${Utils.getInitials(name)}
+                </div>
+                <input type="text" class="details-room-name-input" value="${Utils.escapeHtml(name)}"
+                       id="room-name-input" title="Click to edit">
+                <div class="details-room-meta">${room.participant_count || 0} participants</div>
+            </div>
+
+            <div class="details-section">
+                <h4 class="details-section-title">Participants</h4>
+                ${participants.slice(0, 10).map(p => `
+                    <div class="participant-item">
+                        <div class="participant-avatar" style="background-color: ${Utils.stringToColor(p.name)}">
+                            ${Utils.getInitials(p.name)}
+                        </div>
+                        <div class="participant-info">
+                            <div class="participant-name">${Utils.escapeHtml(p.name)}</div>
+                            <div class="participant-status">${p.email || 'No email'}</div>
+                        </div>
+                    </div>
+                `).join('')}
+                ${participants.length > 10 ? `
+                    <div class="text-sm text-muted" style="padding: var(--space-2) 0;">
+                        +${participants.length - 10} more participants
+                    </div>
+                ` : ''}
+            </div>
+
+            <div class="details-section">
+                <h4 class="details-section-title">Shared Media</h4>
+                <div class="shared-media-grid">
+                    <div class="shared-media-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </div>
+                    <div class="shared-media-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                            <polyline points="13 2 13 9 20 9"/>
+                        </svg>
+                    </div>
+                    <div class="shared-media-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h4 class="details-section-title">Statistics</h4>
+                <div class="room-stats">
+                    <div class="room-stat">
+                        <div class="room-stat-value">${messageCount}</div>
+                        <div class="room-stat-label">Messages</div>
+                    </div>
+                    <div class="room-stat">
+                        <div class="room-stat-value">${participants.length}</div>
+                        <div class="room-stat-label">Members</div>
+                    </div>
+                    <div class="room-stat">
+                        <div class="room-stat-value">${Math.floor(messageCount / Math.max(participants.length, 1))}</div>
+                        <div class="room-stat-label">Avg/Member</div>
+                    </div>
+                    <div class="room-stat">
+                        <div class="room-stat-value">0</div>
+                        <div class="room-stat-label">Files</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <h4 class="details-section-title">Search in Room</h4>
+                <div class="search-box" style="width: 100%;">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search messages..." id="room-search-input">
+                </div>
+            </div>
+        `;
+    }
+
+    // Render sessions view
+    function renderSessionsView() {
+        // Group messages into sessions (conversation chunks)
+        const sessions = groupMessagesIntoSessions(state.messages);
+
+        elements.messagesFeed.innerHTML = `
+            <div class="sessions-container">
+                <div class="timeline">
+                    ${sessions.map((session, index) => `
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="session-card" data-session-index="${index}">
+                                <div class="session-header">
+                                    <div class="session-info">
+                                        <div class="session-time-range">
+                                            ${formatTime(new Date(session.startTime))} - ${formatTime(new Date(session.endTime))}
+                                        </div>
+                                        <div class="session-meta">
+                                            <span class="session-participants">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                                    <circle cx="9" cy="7" r="4"/>
+                                                </svg>
+                                                ${session.participants.length} participants
+                                            </span>
+                                            <span>${session.messages.length} messages</span>
+                                            <span>${Utils.formatDate(session.startTime)}</span>
+                                        </div>
+                                    </div>
+                                    <svg class="session-expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M6 9l6 6 6-6"/>
+                                    </svg>
+                                </div>
+                                <div class="session-summary">
+                                    ${Utils.escapeHtml(Utils.truncate(session.summary, 150))}
+                                </div>
+                                <div class="session-messages">
+                                    ${session.messages.map(msg => {
+                                        const contact = state.contacts[msg.sender_contact_id] || { name: 'Unknown' };
+                                        return `
+                                            <div class="list-item">
+                                                <div class="avatar avatar-sm" style="background-color: ${Utils.stringToColor(contact.name)}">
+                                                    ${Utils.getInitials(contact.name)}
+                                                </div>
+                                                <div class="list-item-content">
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <span class="font-medium text-sm">${Utils.escapeHtml(contact.name)}</span>
+                                                        <span class="text-xs text-muted">${formatTime(new Date(msg.event_datetime))}</span>
+                                                    </div>
+                                                    <div class="text-sm">${Utils.escapeHtml(msg.body || '')}</div>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        // Add click handlers for session cards
+        elements.messagesFeed.querySelectorAll('.session-card').forEach(card => {
+            card.querySelector('.session-header').addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+    }
+
+    // Group messages into sessions
+    function groupMessagesIntoSessions(messages) {
+        if (!messages || messages.length === 0) return [];
+
+        const sorted = [...messages].sort((a, b) =>
+            new Date(a.event_datetime) - new Date(b.event_datetime)
+        );
+
+        const sessions = [];
+        let currentSession = null;
+        const sessionGapMs = 30 * 60 * 1000; // 30 minutes gap
+
+        sorted.forEach(msg => {
+            const msgTime = new Date(msg.event_datetime).getTime();
+
+            if (!currentSession || msgTime - currentSession.endTime > sessionGapMs) {
+                // Start new session
+                if (currentSession) {
+                    sessions.push(currentSession);
+                }
+                currentSession = {
+                    startTime: msg.event_datetime,
+                    endTime: msgTime,
+                    messages: [msg],
+                    participants: new Set([msg.sender_contact_id]),
+                    summary: msg.body || ''
+                };
+            } else {
+                // Add to current session
+                currentSession.endTime = msgTime;
+                currentSession.messages.push(msg);
+                currentSession.participants.add(msg.sender_contact_id);
+            }
+        });
+
+        if (currentSession) {
+            sessions.push(currentSession);
+        }
+
+        // Convert participants Set to Array
+        return sessions.map(s => ({
+            ...s,
+            participants: Array.from(s.participants)
+        }));
+    }
+
+    // Setup message action handlers
+    function setupMessageActions() {
+        elements.messagesFeed.querySelectorAll('.message-action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const action = btn.dataset.action;
+                const bubble = btn.closest('.message-bubble');
+                const messageId = bubble.dataset.messageId;
+
+                if (action === 'react') {
+                    showReactionPicker(btn, messageId);
+                } else if (action === 'reply') {
+                    handleReply(messageId);
+                } else if (action === 'more') {
+                    showContextMenu(e, messageId);
+                }
+            });
+        });
+
+        // Right-click context menu
+        elements.messagesFeed.querySelectorAll('.message-bubble').forEach(bubble => {
+            bubble.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showContextMenu(e, bubble.dataset.messageId);
+            });
+        });
+    }
+
+    // Show reaction picker
+    function showReactionPicker(targetBtn, messageId) {
+        const rect = targetBtn.getBoundingClientRect();
+        elements.reactionPicker.style.top = `${rect.top - 40}px`;
+        elements.reactionPicker.style.left = `${rect.left}px`;
+        elements.reactionPicker.classList.add('active');
+        elements.reactionPicker.dataset.messageId = messageId;
+    }
+
+    // Show context menu
+    function showContextMenu(e, messageId) {
+        elements.contextMenu.style.top = `${e.clientY}px`;
+        elements.contextMenu.style.left = `${e.clientX}px`;
+        elements.contextMenu.classList.add('active');
+        elements.contextMenu.dataset.messageId = messageId;
+    }
+
+    // Handle reply
+    function handleReply(messageId) {
+        const msg = state.messages.find(m => m.message_id === messageId);
+        if (msg) {
+            elements.composeInput.value = `> ${msg.body?.substring(0, 50)}...\n\n`;
+            elements.composeInput.focus();
+        }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // View toggle
+        elements.messagesViewBtn?.addEventListener('click', () => {
+            state.view = 'messages';
+            elements.messagesViewBtn.classList.add('active');
+            elements.sessionsViewBtn.classList.remove('active');
+            renderMessages();
+        });
+
+        elements.sessionsViewBtn?.addEventListener('click', () => {
+            state.view = 'sessions';
+            elements.sessionsViewBtn.classList.add('active');
+            elements.messagesViewBtn.classList.remove('active');
+            renderSessionsView();
+        });
+
+        // Search toggle
+        elements.searchMessagesBtn?.addEventListener('click', () => {
+            elements.messagesSearchBar.classList.toggle('active');
+            if (elements.messagesSearchBar.classList.contains('active')) {
+                elements.messagesSearchInput.focus();
+            }
+        });
+
+        elements.closeSearchBtn?.addEventListener('click', () => {
+            elements.messagesSearchBar.classList.remove('active');
+        });
+
+        // Details panel toggle
+        elements.toggleDetailsBtn?.addEventListener('click', () => {
+            elements.detailsPanel.classList.toggle('collapsed');
+        });
+
+        elements.closeDetailsBtn?.addEventListener('click', () => {
+            elements.detailsPanel.classList.add('collapsed');
+        });
+
+        // Mobile back button
+        elements.mobileBackBtn?.addEventListener('click', () => {
+            elements.roomsPanel.classList.remove('hidden');
+        });
+
+        // Rooms search
+        elements.roomsSearchInput?.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = state.rooms.filter(room => {
+                const name = (room.user_defined_name || room.display_name || '').toLowerCase();
+                return name.includes(query);
+            });
+            renderRooms(filtered);
+        });
+
+        // Message compose
+        elements.composeInput?.addEventListener('input', () => {
+            // Auto-resize
+            elements.composeInput.style.height = 'auto';
+            elements.composeInput.style.height = Math.min(elements.composeInput.scrollHeight, 150) + 'px';
+        });
+
+        elements.composeInput?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        elements.composeSendBtn?.addEventListener('click', sendMessage);
+
+        // Scroll handler for jump to bottom
+        elements.messagesFeed?.addEventListener('scroll', () => {
+            const { scrollTop, scrollHeight, clientHeight } = elements.messagesFeed;
+            const isNearBottom = scrollHeight - scrollTop - clientHeight < 200;
+            elements.jumpToBottom.style.display = isNearBottom ? 'none' : 'flex';
+        });
+
+        elements.jumpToBottom?.addEventListener('click', () => {
+            elements.messagesFeed.scrollTop = elements.messagesFeed.scrollHeight;
+        });
+
+        // Context menu actions
+        elements.contextMenu?.querySelectorAll('.context-menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const action = item.dataset.action;
+                const messageId = elements.contextMenu.dataset.messageId;
+                const msg = state.messages.find(m => m.message_id === messageId);
+
+                switch (action) {
+                    case 'copy':
+                        navigator.clipboard.writeText(msg?.body || '');
+                        app.toast.success('Copied to clipboard');
+                        break;
+                    case 'react':
+                        showReactionPicker(item, messageId);
+                        break;
+                    case 'reply':
+                        handleReply(messageId);
+                        break;
+                    case 'search-similar':
+                        elements.messagesSearchInput.value = msg?.body?.substring(0, 30) || '';
+                        elements.messagesSearchBar.classList.add('active');
+                        break;
+                }
+
+                elements.contextMenu.classList.remove('active');
+            });
+        });
+
+        // Reaction picker
+        elements.reactionPicker?.querySelectorAll('.reaction-emoji').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const emoji = btn.dataset.emoji;
+                const messageId = elements.reactionPicker.dataset.messageId;
+                // Would send reaction to API
+                app.toast.success(`Added ${emoji} reaction`);
+                elements.reactionPicker.classList.remove('active');
+            });
+        });
+
+        // Close menus on click outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.message-context-menu') && !e.target.closest('.message-action-btn')) {
+                elements.contextMenu.classList.remove('active');
+            }
+            if (!e.target.closest('.reaction-picker') && !e.target.closest('.message-action-btn')) {
+                elements.reactionPicker.classList.remove('active');
+            }
+        });
+
+        // Global search
+        elements.closeGlobalSearch?.addEventListener('click', () => {
+            elements.globalSearchOverlay.classList.remove('active');
+        });
+
+        elements.globalSearchOverlay?.addEventListener('click', (e) => {
+            if (e.target === elements.globalSearchOverlay) {
+                elements.globalSearchOverlay.classList.remove('active');
+            }
+        });
+
+        // Keyboard shortcut for global search
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'f') {
+                e.preventDefault();
+                elements.globalSearchOverlay.classList.add('active');
+                elements.globalSearchInput.focus();
+            }
+        });
+    }
+
+    // Send message
+    function sendMessage() {
+        const text = elements.composeInput.value.trim();
+        if (!text || !state.currentRoom) return;
+
+        // Add message to UI (optimistic update)
+        const newMsg = {
+            message_id: `msg_temp_${Date.now()}`,
+            body: text,
+            event_datetime: new Date().toISOString(),
+            sender_contact_id: 'self',
+            sender_name: 'You'
+        };
+
+        state.messages.push(newMsg);
+        state.contacts['self'] = { name: 'You' };
+        renderMessages();
+
+        // Clear input
+        elements.composeInput.value = '';
+        elements.composeInput.style.height = 'auto';
+
+        app.toast.success('Message sent');
+    }
+
+    // Check URL params
+    function checkUrlParams() {
+        const hash = window.location.hash;
+        const match = hash.match(/room=([^&]+)/);
+        if (match) {
+            const roomId = match[1];
+            selectRoom(roomId);
+        }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
