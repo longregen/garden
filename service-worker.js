@@ -7,8 +7,8 @@ const CACHE_NAME = 'garden-pkm-v1';
 const DB_NAME = 'garden-pkm-db';
 const DB_VERSION = 1;
 
-// Import mock data
-importScripts('mock-data.js');
+// Import mock data (path updated for root location)
+importScripts('js/mock-data.js');
 
 // IndexedDB setup
 let db = null;
@@ -1074,7 +1074,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // Only intercept /api/* requests
+    // Only intercept /api/* requests - let all other requests pass through
     if (!url.pathname.startsWith('/api/')) {
         return;
     }

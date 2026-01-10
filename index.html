@@ -229,7 +229,7 @@
     <script>
         // Register service worker for mock API
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('js/service-worker.js')
+            navigator.serviceWorker.register('service-worker.js')
                 .then(registration => {
                     console.log('Service Worker registered:', registration.scope);
                     // Wait for service worker to be ready before initializing app
