@@ -1520,6 +1520,10 @@ ul, ol {
     overflow: hidden;
 }
 
+.page-layout-full .page-content {
+    padding: 0;
+}
+
 /* Sidebar layout - for pages with a side panel */
 .page-layout-sidebar {
     display: flex;
