@@ -578,20 +578,86 @@
 }
 
 @media (max-width: 768px) {
+    /* Page layout sidebar on mobile */
+    .page-layout-sidebar {
+        flex-direction: column;
+    }
+
+    .page-layout-sidebar > .page-main {
+        width: 100%;
+    }
+
+    /* Filter bar mobile fixes */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .filter-bar .flex {
         flex-direction: column;
     }
 
     .filter-bar .search-box {
         max-width: none;
+        width: 100%;
     }
 
+    .filter-bar-search {
+        width: 100%;
+        max-width: none;
+    }
+
+    .filter-bar-filters {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .filter-bar-filters select,
+    .filter-bar-filters .form-select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .filter-bar-actions {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /* Bookmarks grid */
     .bookmarks-grid {
         grid-template-columns: 1fr;
     }
 
+    .bookmark-card {
+        max-width: 100%;
+    }
+
     .bookmark-list-date {
         display: none;
+    }
+
+    .bookmark-list-content {
+        flex-wrap: wrap;
+    }
+
+    .bookmark-list-main {
+        width: 100%;
+    }
+
+    .bookmark-list-category {
+        margin-top: var(--space-2);
+    }
+
+    /* Bulk actions bar */
+    .bulk-bar {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .bulk-bar-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        margin-left: 0;
     }
 }
 </style>

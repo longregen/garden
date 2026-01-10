@@ -1444,39 +1444,71 @@
 }
 
 @media (max-width: 768px) {
+    /* Mobile layout - stack vertically with full-screen panels */
+    .messages-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .messages-layout {
+        position: relative;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .messages-layout > .column-left.rooms-panel,
     .rooms-panel {
         position: absolute;
         left: 0;
         top: 0;
         bottom: 0;
-        width: 100%;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
         z-index: 10;
         transform: translateX(0);
         transition: transform var(--transition-base);
+        background-color: var(--color-background-secondary);
     }
 
     .rooms-panel.hidden {
         transform: translateX(-100%);
     }
 
+    .messages-layout > .column-center.messages-panel,
     .messages-panel {
         position: absolute;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
     }
 
     .mobile-back-btn {
         display: flex;
     }
 
+    .messages-layout > .column-right.details-panel,
     .details-panel {
-        width: 100%;
+        width: 100% !important;
+        min-width: 0 !important;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 20;
     }
 
     .message-content-wrapper {
         max-width: 85%;
+    }
+
+    /* Hide scroll bar from parent when using absolute positioned children */
+    .messages-layout {
+        overflow: hidden;
     }
 }
 </style>
