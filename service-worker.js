@@ -7,8 +7,13 @@ const CACHE_NAME = 'garden-pkm-v1';
 const DB_NAME = 'garden-pkm-db';
 const DB_VERSION = 1;
 
-// Import mock data (path updated for root location)
-importScripts('js/mock-data.js');
+// Import mock data (using absolute path from root)
+try {
+    importScripts('/js/mock-data.js');
+    console.log('Mock data loaded successfully');
+} catch (e) {
+    console.error('Failed to load mock data:', e);
+}
 
 // IndexedDB setup
 let db = null;
@@ -1079,6 +1084,18 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    console.log('Service Worker intercepting:', event.request.method, url.pathname);
+
+    // Check if MockData is available
+    if (typeof MockData === 'undefined') {
+        console.error('MockData is not defined - mock-data.js may have failed to load');
+        event.respondWith(jsonResponse({
+            error: 'Service worker not properly initialized',
+            detail: 'MockData not available'
+        }, 500));
+        return;
+    }
+
     const method = event.request.method;
     const pathname = url.pathname;
 
@@ -1102,11 +1119,12 @@ self.addEventListener('fetch', (event) => {
             handler(event.request.url, event.request)
                 .catch(error => {
                     console.error('Handler error:', error);
-                    return jsonResponse({ error: 'Internal server error' }, 500);
+                    return jsonResponse({ error: 'Internal server error', detail: error.message }, 500);
                 })
         );
     } else {
         // Return 404 for unmatched API routes
+        console.log('No handler found for:', method, pathname);
         event.respondWith(
             delay().then(() => jsonResponse({ error: 'Not found', path: pathname }, 404))
         );
