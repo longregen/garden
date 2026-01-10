@@ -1471,8 +1471,377 @@ ul, ol {
 }
 
 /* ============================================
+   Standardized Layout System
+   ============================================ */
+
+/*
+ * Layout Tokens - Standardized spacing for consistent layouts
+ * Use these variables for all page and section spacing
+ */
+:root {
+    /* Page content spacing */
+    --layout-page-padding: var(--space-6);
+    --layout-page-padding-mobile: var(--space-4);
+
+    /* Section spacing */
+    --layout-section-gap: var(--space-6);
+    --layout-section-gap-mobile: var(--space-4);
+
+    /* Card/component gaps */
+    --layout-card-gap: var(--space-4);
+    --layout-card-gap-mobile: var(--space-3);
+
+    /* Header bottom margin */
+    --layout-header-margin: var(--space-6);
+    --layout-header-margin-mobile: var(--space-4);
+}
+
+/*
+ * Page Layout Types
+ * Use one of these on the outermost container in each view
+ */
+
+/* Standard page layout - for most pages */
+.page-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--layout-section-gap);
+}
+
+/* Full-height layout - for immersive views like notes, messages */
+.page-layout-full {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--top-bar-height) - (var(--layout-page-padding) * 2));
+    margin: calc(-1 * var(--layout-page-padding));
+    margin-top: 0;
+    overflow: hidden;
+}
+
+/* Sidebar layout - for pages with a side panel */
+.page-layout-sidebar {
+    display: flex;
+    gap: var(--layout-section-gap);
+    min-height: 0;
+}
+
+.page-layout-sidebar > .page-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--top-bar-height) + var(--layout-page-padding));
+    height: fit-content;
+    max-height: calc(100vh - var(--top-bar-height) - (var(--layout-page-padding) * 2));
+    overflow-y: auto;
+}
+
+.page-layout-sidebar > .page-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--layout-section-gap);
+}
+
+/*
+ * Page Header - Standardized header component
+ * Use at top of every page for consistent styling
+ */
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.page-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.page-header-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.page-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+}
+
+/*
+ * Section - Standardized content sections
+ * Use for grouping related content with consistent spacing
+ */
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--layout-card-gap);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.section-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.section-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.section-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/*
+ * Content Grid - Standardized grid for cards and items
+ */
+.content-grid {
+    display: grid;
+    gap: var(--layout-card-gap);
+}
+
+.content-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.content-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.content-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.content-grid-auto {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/*
+ * Filter Bar - Standardized filter/search bar component
+ */
+.filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--layout-card-gap);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.filter-bar-search {
+    flex: 1;
+    min-width: 200px;
+    max-width: 320px;
+}
+
+.filter-bar-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.filter-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+}
+
+/*
+ * Bulk Actions Bar - Standardized selection actions
+ */
+.bulk-bar {
+    display: none;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--layout-card-gap);
+    background-color: var(--color-accent-light);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    animation: slideDown var(--transition-fast);
+}
+
+.bulk-bar.visible {
+    display: flex;
+}
+
+.bulk-bar-count {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-accent);
+}
+
+.bulk-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+}
+
+/*
+ * Panel Sidebar - Standardized sidebar component for layouts
+ */
+.panel-sidebar {
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--layout-card-gap);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.panel-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.panel-sidebar-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+}
+
+.panel-sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.panel-sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.panel-sidebar-item:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.panel-sidebar-item.active {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+}
+
+.panel-sidebar-item-count {
+    font-size: var(--font-size-xs);
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-full);
+    min-width: 24px;
+    text-align: center;
+}
+
+.panel-sidebar-item.active .panel-sidebar-item-count {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+/*
+ * Three-column Layout - For app-like views (notes, messages)
+ */
+.three-column-layout {
+    display: flex;
+    height: 100%;
+    background-color: var(--color-background);
+}
+
+.three-column-layout > .column-left {
+    width: 200px;
+    min-width: 180px;
+    background-color: var(--color-background-secondary);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.three-column-layout > .column-center {
+    width: 320px;
+    min-width: 280px;
+    background-color: var(--color-background-elevated);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.three-column-layout > .column-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--color-background);
+}
+
+.column-header {
+    padding: var(--layout-card-gap);
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+.column-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.column-footer {
+    padding: var(--space-3) var(--layout-card-gap);
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+}
+
+/* ============================================
    Responsive Styles
    ============================================ */
+
+/* Responsive Layout Adjustments */
+@media (max-width: 1200px) {
+    .page-layout-sidebar > .page-sidebar {
+        width: 200px;
+    }
+
+    .three-column-layout > .column-left {
+        width: 180px;
+        min-width: 160px;
+    }
+
+    .three-column-layout > .column-center {
+        width: 280px;
+        min-width: 240px;
+    }
+}
+
 @media (max-width: 1024px) {
     .grid-cols-4 {
         grid-template-columns: repeat(2, 1fr);
@@ -1480,6 +1849,26 @@ ul, ol {
 
     .grid-cols-3 {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Layout adjustments for tablet */
+    .page-layout-sidebar {
+        flex-direction: column;
+    }
+
+    .page-layout-sidebar > .page-sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+    }
+
+    .content-grid-3,
+    .content-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .three-column-layout > .column-left {
+        display: none;
     }
 }
 
@@ -1510,7 +1899,7 @@ ul, ol {
     }
 
     .page-content {
-        padding: var(--space-4);
+        padding: var(--layout-page-padding-mobile);
     }
 
     .stats-grid {
@@ -1557,6 +1946,71 @@ ul, ol {
     .toast {
         min-width: auto;
         max-width: none;
+    }
+
+    /* Mobile layout adjustments */
+    .page-layout {
+        gap: var(--layout-section-gap-mobile);
+    }
+
+    .page-layout-full {
+        height: calc(100vh - var(--top-bar-height) - (var(--layout-page-padding-mobile) * 2));
+        margin: calc(-1 * var(--layout-page-padding-mobile));
+        margin-top: 0;
+    }
+
+    .section {
+        gap: var(--layout-card-gap-mobile);
+    }
+
+    .content-grid {
+        gap: var(--layout-card-gap-mobile);
+    }
+
+    .content-grid-2,
+    .content-grid-3,
+    .content-grid-4,
+    .content-grid-auto {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-bar {
+        padding: var(--layout-card-gap-mobile);
+    }
+
+    .filter-bar-search {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+
+    .page-header-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-header-actions {
+        justify-content: flex-start;
+    }
+
+    .three-column-layout {
+        flex-direction: column;
+    }
+
+    .three-column-layout > .column-left,
+    .three-column-layout > .column-center {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .three-column-layout > .column-right {
+        min-height: 400px;
+    }
+
+    .panel-sidebar {
+        padding: var(--layout-card-gap-mobile);
     }
 }
 

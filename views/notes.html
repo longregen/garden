@@ -1,24 +1,24 @@
 <!-- Notes Management - Three Column Layout (Notion/Bear Style) -->
 <style>
-/* Notes App Container - Full Height Three Column Layout */
+/* Notes App Container - Using standardized page-layout-full */
 .notes-app {
-    display: flex;
-    height: calc(100vh - var(--top-bar-height) - var(--space-12));
-    margin: calc(-1 * var(--space-6));
-    margin-top: 0;
-    background-color: var(--color-background);
-    overflow: hidden;
+    /* Uses page-layout-full from main.css */
 }
 
-/* Tags Sidebar (Left Column) */
-.notes-tags-sidebar {
+/* Override three-column-layout for notes-specific widths */
+.notes-app.three-column-layout > .column-left {
     width: 200px;
-    min-width: 200px;
-    background-color: var(--color-background-secondary);
-    border-right: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    min-width: 180px;
+}
+
+.notes-app.three-column-layout > .column-center {
+    width: 320px;
+    min-width: 280px;
+}
+
+/* Tags Sidebar specific styles */
+.notes-tags-sidebar {
+    /* Inherits from column-left */
 }
 
 .notes-tags-header {
@@ -841,53 +841,54 @@
 }
 </style>
 
-<div class="notes-app" id="notes-app">
-    <!-- Tags Sidebar (Left Column) -->
-    <div class="notes-tags-sidebar" id="notes-tags-sidebar">
-        <div class="notes-tags-header">
-            <div class="notes-tags-title">Tags</div>
+<div class="page-layout-full">
+    <div class="notes-app three-column-layout" id="notes-app">
+        <!-- Tags Sidebar (Left Column) -->
+        <div class="column-left notes-tags-sidebar" id="notes-tags-sidebar">
+            <div class="column-header notes-tags-header">
+                <div class="notes-tags-title">Tags</div>
+            </div>
+            <div class="column-content notes-tags-list" id="notes-tags-list">
+                <!-- Tags will be populated dynamically -->
+            </div>
         </div>
-        <div class="notes-tags-list" id="notes-tags-list">
-            <!-- Tags will be populated dynamically -->
-        </div>
-    </div>
 
-    <!-- Notes List (Center Column) -->
-    <div class="notes-list-panel" id="notes-list-panel">
-        <div class="notes-list-header">
-            <div class="notes-list-actions">
-                <span class="notes-list-title">Notes</span>
-                <button class="btn btn-primary btn-sm" id="create-note-btn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
+        <!-- Notes List (Center Column) -->
+        <div class="column-center notes-list-panel" id="notes-list-panel">
+            <div class="column-header notes-list-header">
+                <div class="notes-list-actions">
+                    <span class="notes-list-title">Notes</span>
+                    <button class="btn btn-primary btn-sm" id="create-note-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        New
+                    </button>
+                </div>
+                <div class="notes-search-box">
+                    <svg class="notes-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    New
-                </button>
+                    <input type="text" class="notes-search-input" placeholder="Search notes..." id="notes-search-input">
+                </div>
+                <select class="notes-sort-select" id="notes-sort-select">
+                    <option value="modified-desc">Last modified</option>
+                    <option value="modified-asc">Oldest modified</option>
+                    <option value="created-desc">Recently created</option>
+                    <option value="created-asc">Oldest created</option>
+                    <option value="title-asc">Title A-Z</option>
+                    <option value="title-desc">Title Z-A</option>
+                </select>
             </div>
-            <div class="notes-search-box">
-                <svg class="notes-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-                <input type="text" class="notes-search-input" placeholder="Search notes..." id="notes-search-input">
+            <div class="column-content notes-list-container" id="notes-list-container">
+                <!-- Notes list will be populated dynamically -->
             </div>
-            <select class="notes-sort-select" id="notes-sort-select">
-                <option value="modified-desc">Last modified</option>
-                <option value="modified-asc">Oldest modified</option>
-                <option value="created-desc">Recently created</option>
-                <option value="created-asc">Oldest created</option>
-                <option value="title-asc">Title A-Z</option>
-                <option value="title-desc">Title Z-A</option>
-            </select>
         </div>
-        <div class="notes-list-container" id="notes-list-container">
-            <!-- Notes list will be populated dynamically -->
-        </div>
-    </div>
 
-    <!-- Note Editor (Right Column) -->
-    <div class="notes-editor-panel" id="notes-editor-panel">
+        <!-- Note Editor (Right Column) -->
+        <div class="column-right notes-editor-panel" id="notes-editor-panel">
         <!-- Empty state shown when no note is selected -->
         <div class="notes-empty-state" id="notes-empty-state">
             <svg class="notes-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">

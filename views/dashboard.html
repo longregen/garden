@@ -1,11 +1,13 @@
-<div class="page-header">
-    <h1 class="page-title">Dashboard</h1>
-    <p class="page-description">Overview of your personal knowledge management system</p>
-</div>
+<div class="page-layout" id="dashboard-content">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-description">Overview of your personal knowledge management system</p>
+    </div>
 
-<div id="dashboard-content">
     <!-- Stats Cards Row - Skeleton Loading State -->
-    <div class="stats-grid" id="stats-cards">
+    <div class="section">
+        <div class="stats-grid" id="stats-cards">
         <div class="stat-card">
             <div class="stat-card-header">
                 <span class="stat-card-title">Contacts</span>
@@ -49,10 +51,12 @@
             <div class="skeleton" style="height: 48px; width: 80px; margin-bottom: 8px;"></div>
             <div class="skeleton" style="height: 16px; width: 140px;"></div>
         </div>
+        </div>
     </div>
 
     <!-- Charts Section - Skeleton Loading State -->
-    <div class="dashboard-charts grid grid-cols-3 mb-6" id="charts-section">
+    <div class="section">
+        <div class="content-grid content-grid-3" id="charts-section">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Activity Timeline</h3>
@@ -79,10 +83,12 @@
                 <div class="skeleton" style="height: 160px; width: 100%;"></div>
             </div>
         </div>
+        </div>
     </div>
 
     <!-- Quick Actions Grid - Skeleton Loading State -->
-    <div class="card mb-6" id="quick-actions-section">
+    <div class="section">
+        <div class="card" id="quick-actions-section">
         <div class="card-header">
             <h3 class="card-title">Quick Actions</h3>
         </div>
@@ -97,10 +103,12 @@
                 <div class="skeleton" style="height: 80px; width: 100%;"></div>
             </div>
         </div>
+        </div>
     </div>
 
     <!-- Recent Activity Feed - Skeleton Loading State -->
-    <div class="card mb-6" id="activity-feed-section">
+    <div class="section">
+        <div class="card" id="activity-feed-section">
         <div class="card-header">
             <h3 class="card-title">Recent Activity</h3>
             <a href="#/history" class="btn btn-ghost btn-sm">View All</a>
@@ -142,10 +150,12 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 
     <!-- Top Items Lists (3 columns) - Skeleton Loading State -->
-    <div class="grid grid-cols-3 mb-6" id="top-items-section">
+    <div class="section">
+        <div class="content-grid content-grid-3" id="top-items-section">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Recent Bookmarks</h3>
@@ -245,10 +255,12 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 
     <!-- System Status Panel - Skeleton Loading State -->
-    <div class="card" id="system-status-section">
+    <div class="section">
+        <div class="card" id="system-status-section">
         <div class="card-header">
             <h3 class="card-title">System Status</h3>
             <span class="badge badge-success" id="system-overall-status">
@@ -275,14 +287,12 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </div>
 
 <style>
 /* Dashboard-specific styles */
-.dashboard-charts {
-    margin-bottom: var(--space-6);
-}
 
 /* Quick Actions Grid */
 .quick-actions-grid {
@@ -658,10 +668,6 @@
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-    .dashboard-charts.grid-cols-3 {
-        grid-template-columns: 1fr;
-    }
-
     .pie-chart-container {
         flex-direction: column;
     }
