@@ -3,7 +3,7 @@
 .contacts-page {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--layout-section-gap);
 }
 
 /* Statistics Panel */
@@ -1191,23 +1191,28 @@
 }
 </style>
 
-<div class="page-header">
-    <div class="flex justify-between items-center">
-        <div>
-            <h1 class="page-title">Contacts</h1>
-            <p class="page-description">Manage your personal and professional network</p>
+<div class="page-layout">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-row">
+            <div class="page-header-content">
+                <h1 class="page-title">Contacts</h1>
+                <p class="page-description">Manage your personal and professional network</p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn btn-primary" id="add-contact-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add Contact
+                </button>
+            </div>
         </div>
-        <button class="btn btn-primary" id="add-contact-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-            Add Contact
-        </button>
     </div>
-</div>
 
-<div class="contacts-page">
+    <!-- Main Content -->
+    <div class="contacts-page">
     <!-- Statistics Panel -->
     <div class="stats-panel" id="stats-panel">
         <div class="stats-panel-header" id="stats-toggle">
@@ -1378,6 +1383,7 @@
 
     <!-- Pagination -->
     <div id="contacts-pagination"></div>
+    </div>
 </div>
 
 <!-- Detail Panel -->

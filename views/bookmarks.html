@@ -1,186 +1,183 @@
-<div class="page-header">
-    <div class="flex justify-between items-center">
-        <div>
-            <h1 class="page-title">Bookmarks</h1>
-            <p class="page-description">Your saved links and articles</p>
-        </div>
-        <div class="flex gap-4">
-            <button class="btn btn-secondary" onclick="BookmarksView.getRandomBookmark()" title="Get a random bookmark">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                    <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
-                    <polyline points="7.5 19.79 7.5 14.6 3 12"/>
-                    <polyline points="21 12 16.5 14.6 16.5 19.79"/>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12"/>
-                </svg>
-                Random
-            </button>
-            <button class="btn btn-primary" onclick="BookmarksView.openAddModal()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="5" x2="12" y2="19"/>
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                Add Bookmark
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Bulk Actions Bar (hidden by default) -->
-<div id="bulk-actions-bar" class="bulk-actions-bar" style="display: none;">
-    <div class="flex items-center gap-4">
-        <span class="selection-count">
-            <strong id="selection-count">0</strong> selected
-        </span>
-        <button class="btn btn-secondary btn-sm" onclick="BookmarksView.bulkCategorize()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-            </svg>
-            Categorize
-        </button>
-        <button class="btn btn-secondary btn-sm" onclick="BookmarksView.bulkExport()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            Export
-        </button>
-        <button class="btn btn-danger btn-sm" onclick="BookmarksView.bulkDelete()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            </svg>
-            Delete
-        </button>
-        <button class="btn btn-ghost btn-sm" onclick="BookmarksView.clearSelection()">
-            Cancel
-        </button>
-    </div>
-</div>
-
-<div class="bookmarks-layout">
-    <!-- Categories Sidebar -->
-    <aside class="categories-sidebar" id="categories-sidebar">
-        <div class="sidebar-section">
-            <div class="sidebar-section-header">
-                <h3>Categories</h3>
-                <button class="btn btn-ghost btn-sm" onclick="BookmarksView.toggleSidebar()" title="Collapse">
+<div class="page-layout">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-row">
+            <div class="page-header-content">
+                <h1 class="page-title">Bookmarks</h1>
+                <p class="page-description">Your saved links and articles</p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn btn-secondary" onclick="BookmarksView.getRandomBookmark()" title="Get a random bookmark">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 19l-7-7 7-7"/>
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                        <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                        <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                        <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                        <line x1="12" y1="22.08" x2="12" y2="12"/>
                     </svg>
+                    Random
+                </button>
+                <button class="btn btn-primary" onclick="BookmarksView.openAddModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add Bookmark
                 </button>
             </div>
-            <div id="categories-list" class="categories-list">
-                <!-- Categories loaded dynamically -->
-            </div>
-            <div class="add-category-form" id="add-category-form" style="display: none;">
-                <input type="text" class="form-input" id="new-category-input" placeholder="Category name">
-                <div class="flex gap-2 mt-2">
-                    <button class="btn btn-primary btn-sm" onclick="BookmarksView.addCategory()">Add</button>
-                    <button class="btn btn-ghost btn-sm" onclick="BookmarksView.hideAddCategoryForm()">Cancel</button>
-                </div>
-            </div>
-            <button class="btn btn-ghost btn-sm add-category-btn" onclick="BookmarksView.showAddCategoryForm()">
+        </div>
+    </div>
+
+    <!-- Bulk Actions Bar (hidden by default) -->
+    <div id="bulk-actions-bar" class="bulk-bar">
+        <span class="bulk-bar-count">
+            <strong id="selection-count">0</strong> selected
+        </span>
+        <div class="bulk-bar-actions">
+            <button class="btn btn-secondary btn-sm" onclick="BookmarksView.bulkCategorize()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="12" y1="5" x2="12" y2="19"/>
-                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                 </svg>
-                Add Category
+                Categorize
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="BookmarksView.bulkExport()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="BookmarksView.bulkDelete()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                Delete
+            </button>
+            <button class="btn btn-ghost btn-sm" onclick="BookmarksView.clearSelection()">
+                Cancel
             </button>
         </div>
-    </aside>
+    </div>
 
-    <!-- Collapsed Sidebar Toggle -->
-    <button class="sidebar-expand-btn" id="sidebar-expand-btn" style="display: none;" onclick="BookmarksView.toggleSidebar()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M13 5l7 7-7 7"/>
-        </svg>
-    </button>
-
-    <!-- Main Content -->
-    <div class="bookmarks-main">
-        <!-- Filter Bar -->
-        <div class="filter-bar mb-6">
-            <div class="flex gap-4 flex-wrap">
-                <div class="search-box" style="flex: 1; min-width: 200px; max-width: 300px;">
-                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <!-- Main Layout with Sidebar -->
+    <div class="page-layout-sidebar">
+        <!-- Categories Sidebar -->
+        <aside class="page-sidebar categories-sidebar" id="categories-sidebar">
+            <div class="panel-sidebar">
+                <div class="panel-sidebar-header">
+                    <span class="panel-sidebar-title">Categories</span>
+                    <button class="btn btn-ghost btn-sm" onclick="BookmarksView.toggleSidebar()" title="Collapse">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="categories-list" class="panel-sidebar-list">
+                    <!-- Categories loaded dynamically -->
+                </div>
+                <div class="add-category-form" id="add-category-form" style="display: none;">
+                    <input type="text" class="form-input" id="new-category-input" placeholder="Category name">
+                    <div class="flex gap-2 mt-2">
+                        <button class="btn btn-primary btn-sm" onclick="BookmarksView.addCategory()">Add</button>
+                        <button class="btn btn-ghost btn-sm" onclick="BookmarksView.hideAddCategoryForm()">Cancel</button>
+                    </div>
+                </div>
+                <button class="btn btn-ghost btn-sm add-category-btn" onclick="BookmarksView.showAddCategoryForm()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
                     </svg>
-                    <input type="text" class="search-input" placeholder="Search bookmarks..." id="bookmark-search" oninput="BookmarksView.debounceSearch()">
+                    Add Category
+                </button>
+            </div>
+        </aside>
+
+        <!-- Collapsed Sidebar Toggle -->
+        <button class="sidebar-expand-btn" id="sidebar-expand-btn" style="display: none;" onclick="BookmarksView.toggleSidebar()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 5l7 7-7 7"/>
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <div class="page-main">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-bar-search">
+                    <div class="search-box">
+                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search bookmarks..." id="bookmark-search" oninput="BookmarksView.debounceSearch()">
+                    </div>
                 </div>
-                <select class="form-select" id="category-filter" style="width: auto;" onchange="BookmarksView.applyFilters()">
-                    <option value="">All Categories</option>
-                </select>
-                <select class="form-select" id="status-filter" style="width: auto;" onchange="BookmarksView.applyFilters()">
-                    <option value="">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="fetched">Fetched</option>
-                    <option value="processed">Processed</option>
-                </select>
-                <select class="form-select" id="sort-filter" style="width: auto;" onchange="BookmarksView.applyFilters()">
-                    <option value="date_desc">Newest First</option>
-                    <option value="date_asc">Oldest First</option>
-                    <option value="title_asc">Title A-Z</option>
-                    <option value="title_desc">Title Z-A</option>
-                </select>
-                <div class="view-toggle">
-                    <button class="view-toggle-btn active" id="grid-view-btn" onclick="BookmarksView.setViewMode('grid')" title="Grid View">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                        </svg>
-                    </button>
-                    <button class="view-toggle-btn" id="list-view-btn" onclick="BookmarksView.setViewMode('list')" title="List View">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="8" y1="6" x2="21" y2="6"/>
-                            <line x1="8" y1="12" x2="21" y2="12"/>
-                            <line x1="8" y1="18" x2="21" y2="18"/>
-                            <line x1="3" y1="6" x2="3.01" y2="6"/>
-                            <line x1="3" y1="12" x2="3.01" y2="12"/>
-                            <line x1="3" y1="18" x2="3.01" y2="18"/>
-                        </svg>
-                    </button>
+                <div class="filter-bar-filters">
+                    <select class="form-select" id="category-filter" onchange="BookmarksView.applyFilters()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select class="form-select" id="status-filter" onchange="BookmarksView.applyFilters()">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="fetched">Fetched</option>
+                        <option value="processed">Processed</option>
+                    </select>
+                    <select class="form-select" id="sort-filter" onchange="BookmarksView.applyFilters()">
+                        <option value="date_desc">Newest First</option>
+                        <option value="date_asc">Oldest First</option>
+                        <option value="title_asc">Title A-Z</option>
+                        <option value="title_desc">Title Z-A</option>
+                    </select>
+                </div>
+                <div class="filter-bar-actions">
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" id="grid-view-btn" onclick="BookmarksView.setViewMode('grid')" title="Grid View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                        <button class="view-toggle-btn" id="list-view-btn" onclick="BookmarksView.setViewMode('list')" title="List View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"/>
+                                <line x1="8" y1="12" x2="21" y2="12"/>
+                                <line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                <line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Bookmarks Content -->
-        <div id="bookmarks-content">
-            <div class="loading-state">
-                <div class="loading-spinner"></div>
-                <p>Loading bookmarks...</p>
+            <!-- Bookmarks Content -->
+            <div class="section">
+                <div id="bookmarks-content">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Loading bookmarks...</p>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div id="bookmarks-pagination"></div>
             </div>
         </div>
-
-        <!-- Pagination -->
-        <div id="bookmarks-pagination"></div>
     </div>
 </div>
 
 <style>
 /* Bookmarks-specific styles */
-.bookmarks-layout {
-    display: flex;
-    gap: var(--space-6);
-    position: relative;
-}
 
-.categories-sidebar {
+/* Override page-sidebar width for bookmarks */
+.categories-sidebar.page-sidebar {
     width: 220px;
-    flex-shrink: 0;
-    background-color: var(--color-background-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
-    height: fit-content;
-    position: sticky;
-    top: calc(var(--top-bar-height) + var(--space-6));
-    transition: width var(--transition-base), opacity var(--transition-base);
 }
 
 .categories-sidebar.collapsed {
@@ -189,6 +186,10 @@
     border: none;
     opacity: 0;
     overflow: hidden;
+}
+
+.categories-sidebar.collapsed .panel-sidebar {
+    display: none;
 }
 
 .sidebar-expand-btn {
@@ -210,28 +211,7 @@
     background-color: var(--color-background-hover);
 }
 
-.sidebar-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-3);
-}
-
-.sidebar-section-header h3 {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.categories-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    margin-bottom: var(--space-3);
-}
-
+/* Category item styles - using standardized panel-sidebar-item */
 .category-item {
     display: flex;
     align-items: center;
@@ -241,6 +221,7 @@
     cursor: pointer;
     transition: all var(--transition-fast);
     color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
 }
 
 .category-item:hover {
@@ -253,10 +234,6 @@
     color: var(--color-accent);
 }
 
-.category-item .category-name {
-    font-size: var(--font-size-sm);
-}
-
 .category-item .category-count {
     font-size: var(--font-size-xs);
     background-color: var(--color-background-active);
@@ -264,22 +241,15 @@
     border-radius: var(--radius-full);
 }
 
+.category-item.active .category-count {
+    background-color: var(--color-accent);
+    color: white;
+}
+
 .add-category-btn {
     width: 100%;
     justify-content: flex-start;
     color: var(--color-text-tertiary);
-}
-
-.bookmarks-main {
-    flex: 1;
-    min-width: 0;
-}
-
-.filter-bar {
-    background-color: var(--color-background-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
 }
 
 .view-toggle {

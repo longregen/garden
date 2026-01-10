@@ -1,9 +1,9 @@
 <!-- Messages/Rooms/Sessions View - Comprehensive Chat Interface -->
-<div class="messages-container">
+<div class="page-layout-full messages-container">
     <!-- Three Panel Layout -->
-    <div class="messages-layout">
+    <div class="three-column-layout messages-layout">
         <!-- Left Panel: Rooms List -->
-        <div class="rooms-panel" id="rooms-panel">
+        <div class="column-left rooms-panel" id="rooms-panel">
             <div class="rooms-header">
                 <h2 class="rooms-title">Messages</h2>
                 <button class="btn btn-ghost btn-sm" id="new-room-btn" title="New conversation">
@@ -69,7 +69,7 @@
         </div>
 
         <!-- Center Panel: Messages Feed -->
-        <div class="messages-panel" id="messages-panel">
+        <div class="column-center messages-panel" id="messages-panel">
             <!-- Messages Header -->
             <div class="messages-header" id="messages-header">
                 <button class="btn btn-ghost btn-sm mobile-back-btn" id="mobile-back-btn">
@@ -170,7 +170,7 @@
         </div>
 
         <!-- Right Panel: Room Details -->
-        <div class="details-panel" id="details-panel">
+        <div class="column-right details-panel" id="details-panel">
             <div class="details-header">
                 <h3 class="details-title">Room Details</h3>
                 <button class="btn btn-ghost btn-sm" id="close-details-btn">
@@ -272,27 +272,25 @@
 </div>
 
 <style>
-/* Messages Container */
+/* Messages Container - uses page-layout-full from main.css */
 .messages-container {
-    height: calc(100vh - var(--top-bar-height) - var(--space-12));
-    margin: calc(-1 * var(--space-6));
-    margin-top: calc(-1 * var(--space-6) - var(--space-8));
+    /* page-layout-full handles the height and margins */
 }
 
 .messages-layout {
-    display: flex;
-    height: 100%;
-    background-color: var(--color-background);
+    /* three-column-layout handles the flex display */
 }
 
-/* Rooms Panel */
-.rooms-panel {
+/* Rooms Panel - override column-left for messages */
+.messages-layout > .column-left.rooms-panel {
     width: 320px;
     min-width: 280px;
-    border-right: 1px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    background-color: var(--color-background-secondary);
+}
+
+/* Messages Panel - override column-center for messages */
+.messages-layout > .column-center.messages-panel {
+    flex: 1;
+    min-width: 400px;
 }
 
 .rooms-header {
