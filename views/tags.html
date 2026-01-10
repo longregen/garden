@@ -1,0 +1,2110 @@
+<div class="page-header">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="page-title">Tags & Categories</h1>
+            <p class="page-description">Organize and manage your content taxonomy</p>
+        </div>
+        <div class="flex gap-4">
+            <button class="btn btn-secondary" onclick="TagsManager.exportData()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7,10 12,15 17,10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Tabs -->
+<div class="mobile-panel-tabs" id="mobile-panel-tabs">
+    <button class="mobile-tab active" data-panel="tags">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+        </svg>
+        Tags
+    </button>
+    <button class="mobile-tab" data-panel="categories">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        </svg>
+        Categories
+    </button>
+</div>
+
+<!-- Usage Statistics Section -->
+<div class="stats-grid mb-6" id="usage-stats">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Total Tags</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+        </div>
+        <div class="stat-card-value" id="total-tags-count">--</div>
+        <div class="stat-card-change" id="unused-tags-hint">Loading...</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Total Categories</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+        </div>
+        <div class="stat-card-value" id="total-categories-count">--</div>
+        <div class="stat-card-change" id="empty-categories-hint">Loading...</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Most Used Tag</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+                <polyline points="17,6 23,6 23,12"/>
+            </svg>
+        </div>
+        <div class="stat-card-value text-sm" id="most-used-tag">--</div>
+        <div class="stat-card-change" id="most-used-tag-count">Loading...</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Largest Category</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 20V10"/>
+                <path d="M12 20V4"/>
+                <path d="M6 20v-6"/>
+            </svg>
+        </div>
+        <div class="stat-card-value text-sm" id="largest-category">--</div>
+        <div class="stat-card-change" id="largest-category-count">Loading...</div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-2 mb-6" id="charts-section">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Tag Usage Distribution</h3>
+        </div>
+        <div class="card-body">
+            <div id="tag-chart" class="chart-container"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Category Distribution</h3>
+        </div>
+        <div class="card-body">
+            <div id="category-chart" class="chart-container"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dual-Panel Layout -->
+<div class="dual-panel-layout" id="dual-panel-layout">
+    <!-- Tags Panel (Left) -->
+    <div class="panel tags-panel" id="tags-panel">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Tags</h3>
+                <div class="flex gap-2">
+                    <button class="btn btn-sm btn-secondary" onclick="TagsManager.openMergeTagsModal()" id="merge-tags-btn" disabled>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 6l4-4 4 4"/>
+                            <path d="M12 2v10.3"/>
+                            <path d="M4 12H2"/>
+                            <path d="M10 12H2"/>
+                            <path d="M22 12h-8"/>
+                            <path d="M8 18l4 4 4-4"/>
+                            <path d="M12 22V11.7"/>
+                        </svg>
+                        Merge
+                    </button>
+                    <button class="btn btn-sm btn-primary" onclick="TagsManager.openAddTagModal()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Add Tag
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tag Search & Filters -->
+            <div class="panel-toolbar">
+                <div class="search-box" style="flex: 1;">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search tags..." id="tag-search">
+                </div>
+                <select class="form-select" style="width: auto;" id="tag-sort">
+                    <option value="name">Sort by Name</option>
+                    <option value="count-desc">Sort by Usage (High)</option>
+                    <option value="count-asc">Sort by Usage (Low)</option>
+                    <option value="recent">Sort by Recent</option>
+                </select>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="show-unused-tags">
+                    <span>Unused only</span>
+                </label>
+            </div>
+
+            <!-- Tag Cloud -->
+            <div class="card-section">
+                <div class="section-header" onclick="TagsManager.toggleSection('tag-cloud')">
+                    <h4>Tag Cloud</h4>
+                    <svg class="collapse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </div>
+                <div class="section-content" id="tag-cloud-section">
+                    <div class="tag-cloud" id="tag-cloud">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags List -->
+            <div class="card-section">
+                <div class="section-header" onclick="TagsManager.toggleSection('tags-list')">
+                    <h4>Tags List</h4>
+                    <div class="flex gap-2 items-center">
+                        <span class="badge badge-info" id="selected-tags-count" style="display: none;">0 selected</span>
+                        <svg class="collapse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="section-content" id="tags-list-section">
+                    <!-- Bulk Actions -->
+                    <div class="bulk-actions" id="tags-bulk-actions" style="display: none;">
+                        <button class="btn btn-sm btn-secondary" onclick="TagsManager.bulkChangeColor()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                            </svg>
+                            Change Color
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="TagsManager.bulkDeleteTags()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3,6 5,6 21,6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            Delete Selected
+                        </button>
+                    </div>
+
+                    <div class="table-container tags-table-container">
+                        <table class="table" id="tags-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">
+                                        <input type="checkbox" id="select-all-tags" onchange="TagsManager.toggleSelectAllTags()">
+                                    </th>
+                                    <th>Name</th>
+                                    <th style="width: 80px;">Count</th>
+                                    <th style="width: 80px;">Color</th>
+                                    <th style="width: 100px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tags-table-body">
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="loading-state">
+                                            <div class="loading-spinner"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Panel (Right) -->
+    <div class="panel categories-panel" id="categories-panel">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Categories</h3>
+                <div class="flex gap-2">
+                    <button class="btn btn-sm btn-secondary" onclick="TagsManager.openMergeCategoriesModal()" id="merge-categories-btn" disabled>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 6l4-4 4 4"/>
+                            <path d="M12 2v10.3"/>
+                            <path d="M4 12H2"/>
+                            <path d="M10 12H2"/>
+                            <path d="M22 12h-8"/>
+                            <path d="M8 18l4 4 4-4"/>
+                            <path d="M12 22V11.7"/>
+                        </svg>
+                        Merge
+                    </button>
+                    <button class="btn btn-sm btn-primary" onclick="TagsManager.openAddCategoryModal()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Add Category
+                    </button>
+                </div>
+            </div>
+
+            <!-- Category Search -->
+            <div class="panel-toolbar">
+                <div class="search-box" style="flex: 1;">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search categories..." id="category-search">
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="list" onclick="TagsManager.setCategoryView('list')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"/>
+                            <line x1="8" y1="12" x2="21" y2="12"/>
+                            <line x1="8" y1="18" x2="21" y2="18"/>
+                            <line x1="3" y1="6" x2="3.01" y2="6"/>
+                            <line x1="3" y1="12" x2="3.01" y2="12"/>
+                            <line x1="3" y1="18" x2="3.01" y2="18"/>
+                        </svg>
+                    </button>
+                    <button class="view-btn" data-view="card" onclick="TagsManager.setCategoryView('card')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bulk Actions for Categories -->
+            <div class="bulk-actions" id="categories-bulk-actions" style="display: none;">
+                <button class="btn btn-sm btn-danger" onclick="TagsManager.bulkDeleteCategories()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3,6 5,6 21,6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                    Delete Selected
+                </button>
+            </div>
+
+            <!-- Categories List/Card View -->
+            <div class="card-body categories-content" id="categories-content">
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Items Preview Panel (Slides in) -->
+<div class="preview-panel" id="preview-panel">
+    <div class="preview-panel-header">
+        <h3 id="preview-panel-title">Related Items</h3>
+        <button class="btn btn-ghost btn-sm" onclick="TagsManager.closePreviewPanel()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+    <div class="preview-panel-content" id="preview-panel-content">
+        <!-- Dynamic content -->
+    </div>
+</div>
+
+<style>
+/* Tags & Categories Page Specific Styles */
+
+.dual-panel-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+}
+
+.panel {
+    min-width: 0;
+}
+
+.panel-toolbar {
+    display: flex;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-accent);
+}
+
+.card-section {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.card-section:last-child {
+    border-bottom: none;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--transition-fast);
+}
+
+.section-header:hover {
+    background-color: var(--color-background-hover);
+}
+
+.section-header h4 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.collapse-icon {
+    color: var(--color-text-tertiary);
+    transition: transform var(--transition-fast);
+}
+
+.section-content.collapsed + .section-header .collapse-icon,
+.card-section.collapsed .collapse-icon {
+    transform: rotate(-90deg);
+}
+
+.section-content {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height var(--transition-slow);
+}
+
+.section-content.collapsed {
+    max-height: 0;
+}
+
+/* Tag Cloud */
+.tag-cloud {
+    padding: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.tag-cloud-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    position: relative;
+}
+
+.tag-cloud-item:hover {
+    transform: scale(1.1);
+    z-index: 1;
+}
+
+.tag-cloud-item .tag-count {
+    font-size: 0.7em;
+    opacity: 0.7;
+}
+
+/* Tags Table */
+.tags-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.tags-table-container .table th,
+.tags-table-container .table td {
+    padding: var(--space-2) var(--space-3);
+}
+
+.tag-name-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.tag-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.tag-name-input {
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: inherit;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    width: 100%;
+    transition: background-color var(--transition-fast);
+}
+
+.tag-name-input:hover {
+    background-color: var(--color-background-hover);
+}
+
+.tag-name-input:focus {
+    outline: none;
+    background-color: var(--color-background-active);
+}
+
+.color-picker-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+}
+
+.color-picker-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--color-border);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.color-picker-btn:hover {
+    border-color: var(--color-text-secondary);
+}
+
+.color-picker-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Bulk Actions */
+.bulk-actions {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-accent-light);
+    border-bottom: 1px solid var(--color-border);
+    animation: slideDown var(--transition-fast);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* View Toggle */
+.view-toggle {
+    display: flex;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.view-btn {
+    padding: var(--space-2);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.view-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+.view-btn.active {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-active);
+}
+
+/* Categories Content */
+.categories-content {
+    padding: 0;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.category-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.category-list-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.category-list-item:last-child {
+    border-bottom: none;
+}
+
+.category-checkbox {
+    flex-shrink: 0;
+}
+
+.category-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.category-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.category-name {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-1);
+}
+
+.category-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category-stats {
+    display: flex;
+    gap: var(--space-3);
+    flex-shrink: 0;
+}
+
+.category-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-md);
+    min-width: 60px;
+}
+
+.category-stat-value {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-lg);
+}
+
+.category-stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.category-actions {
+    display: flex;
+    gap: var(--space-1);
+}
+
+/* Category Card View */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+    padding: var(--space-4);
+}
+
+.category-card {
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.category-card:hover {
+    border-color: var(--color-border-focus);
+    box-shadow: var(--shadow-md);
+}
+
+.category-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+}
+
+.category-card-checkbox {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+}
+
+.category-card-stats {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Preview Panel */
+.preview-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 400px;
+    height: 100vh;
+    background-color: var(--color-background-elevated);
+    border-left: 1px solid var(--color-border);
+    z-index: var(--z-modal);
+    transform: translateX(100%);
+    transition: transform var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-panel.open {
+    transform: translateX(0);
+}
+
+.preview-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.preview-panel-header h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.preview-panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+}
+
+.preview-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.preview-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+/* Charts */
+.chart-container {
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+    padding: var(--space-2);
+}
+
+.chart-bar {
+    flex: 1;
+    min-width: 20px;
+    max-width: 60px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    position: relative;
+}
+
+.chart-bar:hover {
+    opacity: 0.8;
+}
+
+.chart-bar-label {
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50px;
+}
+
+.chart-bar-value {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.chart-bar:hover .chart-bar-value {
+    opacity: 1;
+}
+
+/* Pie Chart */
+.pie-chart-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+}
+
+.pie-chart {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.pie-chart-legend {
+    flex: 1;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    font-size: var(--font-size-sm);
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-sm);
+}
+
+/* Mobile Panel Tabs */
+.mobile-panel-tabs {
+    display: none;
+    margin-bottom: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.mobile-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-fast);
+}
+
+.mobile-tab.active {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-active);
+}
+
+/* Category Detail Modal */
+.category-detail-sources {
+    margin-top: var(--space-4);
+}
+
+.source-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-2);
+}
+
+.source-item-url {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.source-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.source-status.active {
+    background-color: var(--color-success);
+}
+
+.source-status.inactive {
+    background-color: var(--color-error);
+}
+
+.add-source-form {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dual-panel-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .mobile-panel-tabs {
+        display: flex;
+    }
+
+    .panel {
+        display: none;
+    }
+
+    .panel.active {
+        display: block;
+    }
+
+    .preview-panel {
+        width: 100%;
+    }
+
+    .chart-container {
+        height: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .category-stats {
+        display: none;
+    }
+
+    .panel-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .panel-toolbar .search-box {
+        width: 100%;
+    }
+
+    #charts-section {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // Tags Manager Module
+    window.TagsManager = {
+        tags: [],
+        categories: [],
+        bookmarks: [],
+        selectedTags: new Set(),
+        selectedCategories: new Set(),
+        categoryView: 'list',
+        currentFilter: {
+            tagSearch: '',
+            categorySearch: '',
+            tagSort: 'name',
+            showUnused: false
+        },
+
+        // Color palette for tags
+        colorPalette: [
+            '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16',
+            '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9',
+            '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef',
+            '#ec4899', '#f43f5e', '#78716c', '#64748b', '#6b7280'
+        ],
+
+        async init() {
+            await this.loadData();
+            this.setupEventListeners();
+            this.render();
+        },
+
+        async loadData() {
+            try {
+                const [tags, categories, bookmarks] = await Promise.all([
+                    window.app.api.getTags(),
+                    window.app.api.getCategories(),
+                    window.app.api.getBookmarks({ limit: 1000 })
+                ]);
+
+                // Enhance tags with colors if not present
+                this.tags = tags.map((tag, index) => ({
+                    ...tag,
+                    color: tag.color || this.colorPalette[index % this.colorPalette.length]
+                }));
+
+                // Enhance categories with bookmark counts and mock sources
+                const bookmarksByCategory = {};
+                (bookmarks.data || []).forEach(b => {
+                    const cat = b.category_name || 'Uncategorized';
+                    bookmarksByCategory[cat] = (bookmarksByCategory[cat] || 0) + 1;
+                });
+
+                this.categories = categories.map((cat, index) => ({
+                    ...cat,
+                    description: cat.description || this.generateDescription(cat.name),
+                    bookmarkCount: bookmarksByCategory[cat.name] || 0,
+                    sources: this.generateMockSources(cat.name),
+                    color: this.colorPalette[index % this.colorPalette.length]
+                }));
+
+                this.bookmarks = bookmarks.data || [];
+            } catch (error) {
+                console.error('Failed to load data:', error);
+                window.app.toast.error('Failed to load tags and categories');
+            }
+        },
+
+        generateDescription(name) {
+            const descriptions = {
+                'Development': 'Resources and documentation for software development',
+                'Design': 'UI/UX design resources, tools, and inspiration',
+                'Database': 'Database management, optimization, and tutorials',
+                'DevOps': 'Deployment, CI/CD, and infrastructure resources',
+                'API': 'API documentation and integration guides',
+                'Architecture': 'Software architecture patterns and best practices',
+                'Testing': 'Testing frameworks, strategies, and tools',
+                'AI': 'Artificial intelligence and machine learning resources',
+                'UX': 'User experience research and design principles',
+                'Infrastructure': 'Cloud infrastructure and hosting solutions'
+            };
+            return descriptions[name] || 'Category for ' + name.toLowerCase() + ' related content';
+        },
+
+        generateMockSources(name) {
+            const mockSources = {
+                'Development': [
+                    { url: 'https://dev.to/feed', status: 'active' },
+                    { url: 'https://hackernews.com/rss', status: 'active' }
+                ],
+                'Design': [
+                    { url: 'https://dribbble.com/shots/popular.rss', status: 'active' }
+                ],
+                'AI': [
+                    { url: 'https://openai.com/blog/rss', status: 'active' },
+                    { url: 'https://huggingface.co/blog/feed.xml', status: 'inactive' }
+                ]
+            };
+            return mockSources[name] || [];
+        },
+
+        setupEventListeners() {
+            // Tag search
+            document.getElementById('tag-search').addEventListener('input',
+                Utils.debounce((e) => {
+                    this.currentFilter.tagSearch = e.target.value.toLowerCase();
+                    this.renderTagCloud();
+                    this.renderTagsList();
+                }, 200)
+            );
+
+            // Category search
+            document.getElementById('category-search').addEventListener('input',
+                Utils.debounce((e) => {
+                    this.currentFilter.categorySearch = e.target.value.toLowerCase();
+                    this.renderCategories();
+                }, 200)
+            );
+
+            // Tag sort
+            document.getElementById('tag-sort').addEventListener('change', (e) => {
+                this.currentFilter.tagSort = e.target.value;
+                this.renderTagCloud();
+                this.renderTagsList();
+            });
+
+            // Show unused toggle
+            document.getElementById('show-unused-tags').addEventListener('change', (e) => {
+                this.currentFilter.showUnused = e.target.checked;
+                this.renderTagCloud();
+                this.renderTagsList();
+            });
+
+            // Mobile tabs
+            document.querySelectorAll('.mobile-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    this.switchMobilePanel(tab.dataset.panel);
+                });
+            });
+        },
+
+        render() {
+            this.renderStats();
+            this.renderCharts();
+            this.renderTagCloud();
+            this.renderTagsList();
+            this.renderCategories();
+        },
+
+        renderStats() {
+            const totalTags = this.tags.length;
+            const unusedTags = this.tags.filter(t => (t.usage_count || 0) === 0).length;
+            const totalCategories = this.categories.length;
+            const emptyCategories = this.categories.filter(c => c.bookmarkCount === 0).length;
+
+            const sortedTags = [...this.tags].sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0));
+            const mostUsedTag = sortedTags[0];
+
+            const sortedCategories = [...this.categories].sort((a, b) => b.bookmarkCount - a.bookmarkCount);
+            const largestCategory = sortedCategories[0];
+
+            document.getElementById('total-tags-count').textContent = totalTags;
+            document.getElementById('unused-tags-hint').innerHTML = unusedTags > 0
+                ? `<span class="text-warning">${unusedTags} unused tags</span>`
+                : '<span class="text-success">All tags in use</span>';
+
+            document.getElementById('total-categories-count').textContent = totalCategories;
+            document.getElementById('empty-categories-hint').innerHTML = emptyCategories > 0
+                ? `<span class="text-warning">${emptyCategories} empty categories</span>`
+                : '<span class="text-success">All categories have items</span>';
+
+            document.getElementById('most-used-tag').textContent = mostUsedTag ? mostUsedTag.name : '--';
+            document.getElementById('most-used-tag-count').textContent = mostUsedTag
+                ? `${mostUsedTag.usage_count || 0} items` : '--';
+
+            document.getElementById('largest-category').textContent = largestCategory ? largestCategory.name : '--';
+            document.getElementById('largest-category-count').textContent = largestCategory
+                ? `${largestCategory.bookmarkCount} bookmarks` : '--';
+        },
+
+        renderCharts() {
+            // Tag usage bar chart
+            const tagChartContainer = document.getElementById('tag-chart');
+            const topTags = [...this.tags]
+                .sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0))
+                .slice(0, 10);
+
+            const maxTagCount = Math.max(...topTags.map(t => t.usage_count || 0), 1);
+
+            tagChartContainer.innerHTML = topTags.map(tag => {
+                const height = ((tag.usage_count || 0) / maxTagCount) * 160;
+                return `
+                    <div class="chart-bar" style="height: ${Math.max(height, 4)}px; background-color: ${tag.color};"
+                         onclick="TagsManager.showTagPreview('${tag.id}')">
+                        <span class="chart-bar-value">${tag.usage_count || 0}</span>
+                        <span class="chart-bar-label" title="${tag.name}">${tag.name}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Category distribution pie chart
+            const categoryChartContainer = document.getElementById('category-chart');
+            const totalBookmarks = this.categories.reduce((sum, c) => sum + c.bookmarkCount, 0) || 1;
+
+            let cumulativePercent = 0;
+            const gradientStops = this.categories.map((cat, index) => {
+                const percent = (cat.bookmarkCount / totalBookmarks) * 100;
+                const start = cumulativePercent;
+                cumulativePercent += percent;
+                return `${cat.color} ${start}% ${cumulativePercent}%`;
+            }).join(', ');
+
+            categoryChartContainer.innerHTML = `
+                <div class="pie-chart-container">
+                    <div class="pie-chart" style="background: conic-gradient(${gradientStops || '#333 0% 100%'})"></div>
+                    <div class="pie-chart-legend">
+                        ${this.categories.slice(0, 6).map(cat => `
+                            <div class="legend-item" onclick="TagsManager.showCategoryPreview('${cat.category_id}')">
+                                <span class="legend-color" style="background-color: ${cat.color}"></span>
+                                <span class="truncate">${cat.name}</span>
+                                <span class="text-muted">(${cat.bookmarkCount})</span>
+                            </div>
+                        `).join('')}
+                        ${this.categories.length > 6 ? `<div class="legend-item text-muted">+${this.categories.length - 6} more</div>` : ''}
+                    </div>
+                </div>
+            `;
+        },
+
+        getFilteredTags() {
+            let filtered = [...this.tags];
+
+            // Filter by search
+            if (this.currentFilter.tagSearch) {
+                filtered = filtered.filter(t =>
+                    t.name.toLowerCase().includes(this.currentFilter.tagSearch)
+                );
+            }
+
+            // Filter by unused
+            if (this.currentFilter.showUnused) {
+                filtered = filtered.filter(t => (t.usage_count || 0) === 0);
+            }
+
+            // Sort
+            switch (this.currentFilter.tagSort) {
+                case 'count-desc':
+                    filtered.sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0));
+                    break;
+                case 'count-asc':
+                    filtered.sort((a, b) => (a.usage_count || 0) - (b.usage_count || 0));
+                    break;
+                case 'recent':
+                    filtered.sort((a, b) => (b.modified || 0) - (a.modified || 0));
+                    break;
+                default:
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            return filtered;
+        },
+
+        renderTagCloud() {
+            const container = document.getElementById('tag-cloud');
+            const filteredTags = this.getFilteredTags();
+
+            if (filteredTags.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p class="text-muted">No tags found</p></div>';
+                return;
+            }
+
+            const maxCount = Math.max(...filteredTags.map(t => t.usage_count || 0), 1);
+            const minSize = 12;
+            const maxSize = 28;
+
+            container.innerHTML = filteredTags.map(tag => {
+                const count = tag.usage_count || 0;
+                const size = minSize + ((count / maxCount) * (maxSize - minSize));
+                const opacity = 0.6 + ((count / maxCount) * 0.4);
+
+                return `
+                    <span class="tag-cloud-item"
+                          style="font-size: ${size}px; background-color: ${tag.color}20; color: ${tag.color}; border: 1px solid ${tag.color}40;"
+                          onclick="TagsManager.showTagPreview('${tag.id}')"
+                          title="${tag.name}: ${count} items">
+                        ${Utils.escapeHtml(tag.name)}
+                        <span class="tag-count">(${count})</span>
+                    </span>
+                `;
+            }).join('');
+        },
+
+        renderTagsList() {
+            const tbody = document.getElementById('tags-table-body');
+            const filteredTags = this.getFilteredTags();
+
+            if (filteredTags.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <p class="text-muted">No tags found</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filteredTags.map(tag => `
+                <tr data-tag-id="${tag.id}">
+                    <td>
+                        <input type="checkbox"
+                               ${this.selectedTags.has(tag.id) ? 'checked' : ''}
+                               onchange="TagsManager.toggleTagSelection('${tag.id}')">
+                    </td>
+                    <td>
+                        <div class="tag-name-cell">
+                            <span class="tag-color-dot" style="background-color: ${tag.color}"></span>
+                            <input type="text" class="tag-name-input"
+                                   value="${Utils.escapeHtml(tag.name)}"
+                                   data-original="${Utils.escapeHtml(tag.name)}"
+                                   onblur="TagsManager.saveTagName('${tag.id}', this)"
+                                   onkeydown="if(event.key==='Enter') this.blur()">
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge ${(tag.usage_count || 0) > 0 ? 'badge-info' : 'badge-pending'}">
+                            ${tag.usage_count || 0}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="color-picker-wrapper">
+                            <button class="color-picker-btn" style="background-color: ${tag.color}"></button>
+                            <input type="color" class="color-picker-input"
+                                   value="${tag.color}"
+                                   onchange="TagsManager.updateTagColor('${tag.id}', this.value)">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex gap-1">
+                            <button class="btn btn-ghost btn-sm" onclick="TagsManager.showTagPreview('${tag.id}')" title="View items">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-ghost btn-sm" onclick="TagsManager.deleteTag('${tag.id}')" title="Delete">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3,6 5,6 21,6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            this.updateBulkActionsUI();
+        },
+
+        getFilteredCategories() {
+            let filtered = [...this.categories];
+
+            if (this.currentFilter.categorySearch) {
+                filtered = filtered.filter(c =>
+                    c.name.toLowerCase().includes(this.currentFilter.categorySearch) ||
+                    (c.description || '').toLowerCase().includes(this.currentFilter.categorySearch)
+                );
+            }
+
+            return filtered;
+        },
+
+        renderCategories() {
+            const container = document.getElementById('categories-content');
+            const filteredCategories = this.getFilteredCategories();
+
+            if (filteredCategories.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p class="text-muted">No categories found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (this.categoryView === 'list') {
+                container.innerHTML = filteredCategories.map(cat => `
+                    <div class="category-list-item" data-category-id="${cat.category_id}">
+                        <input type="checkbox" class="category-checkbox"
+                               ${this.selectedCategories.has(cat.category_id) ? 'checked' : ''}
+                               onclick="event.stopPropagation(); TagsManager.toggleCategorySelection('${cat.category_id}')">
+                        <div class="category-icon" style="background-color: ${cat.color}20; color: ${cat.color}">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="category-info" onclick="TagsManager.openCategoryDetail('${cat.category_id}')">
+                            <div class="category-name">${Utils.escapeHtml(cat.name)}</div>
+                            <div class="category-description">${Utils.escapeHtml(cat.description || '')}</div>
+                        </div>
+                        <div class="category-stats">
+                            <div class="category-stat">
+                                <span class="category-stat-value">${cat.bookmarkCount}</span>
+                                <span class="category-stat-label">Bookmarks</span>
+                            </div>
+                            <div class="category-stat">
+                                <span class="category-stat-value">${cat.sources.length}</span>
+                                <span class="category-stat-label">Sources</span>
+                            </div>
+                        </div>
+                        <div class="category-actions">
+                            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); TagsManager.showCategoryPreview('${cat.category_id}')" title="Preview">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); TagsManager.openCategoryDetail('${cat.category_id}')" title="Edit">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                            </button>
+                            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); TagsManager.deleteCategory('${cat.category_id}')" title="Delete">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3,6 5,6 21,6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `
+                    <div class="categories-grid">
+                        ${filteredCategories.map(cat => `
+                            <div class="category-card" data-category-id="${cat.category_id}" onclick="TagsManager.openCategoryDetail('${cat.category_id}')">
+                                <input type="checkbox" class="category-card-checkbox"
+                                       ${this.selectedCategories.has(cat.category_id) ? 'checked' : ''}
+                                       onclick="event.stopPropagation(); TagsManager.toggleCategorySelection('${cat.category_id}')">
+                                <div class="category-card-header">
+                                    <div class="category-icon" style="background-color: ${cat.color}20; color: ${cat.color}">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <h4 class="category-name">${Utils.escapeHtml(cat.name)}</h4>
+                                <p class="category-description text-sm text-muted">${Utils.escapeHtml(Utils.truncate(cat.description || '', 80))}</p>
+                                <div class="category-card-stats">
+                                    <div class="flex gap-2 items-center">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                                        </svg>
+                                        <span class="text-sm">${cat.bookmarkCount} bookmarks</span>
+                                    </div>
+                                    <div class="flex gap-2 items-center">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 11a9 9 0 0 1 9 9"/>
+                                            <path d="M4 4a16 16 0 0 1 16 16"/>
+                                            <circle cx="5" cy="19" r="1"/>
+                                        </svg>
+                                        <span class="text-sm">${cat.sources.length} sources</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            this.updateBulkActionsUI();
+        },
+
+        // Selection management
+        toggleTagSelection(tagId) {
+            if (this.selectedTags.has(tagId)) {
+                this.selectedTags.delete(tagId);
+            } else {
+                this.selectedTags.add(tagId);
+            }
+            this.updateBulkActionsUI();
+        },
+
+        toggleSelectAllTags() {
+            const checkbox = document.getElementById('select-all-tags');
+            const filteredTags = this.getFilteredTags();
+
+            if (checkbox.checked) {
+                filteredTags.forEach(t => this.selectedTags.add(t.id));
+            } else {
+                this.selectedTags.clear();
+            }
+            this.renderTagsList();
+        },
+
+        toggleCategorySelection(categoryId) {
+            if (this.selectedCategories.has(categoryId)) {
+                this.selectedCategories.delete(categoryId);
+            } else {
+                this.selectedCategories.add(categoryId);
+            }
+            this.updateBulkActionsUI();
+        },
+
+        updateBulkActionsUI() {
+            const tagsBulkActions = document.getElementById('tags-bulk-actions');
+            const categoriesBulkActions = document.getElementById('categories-bulk-actions');
+            const selectedTagsCount = document.getElementById('selected-tags-count');
+            const mergeTagsBtn = document.getElementById('merge-tags-btn');
+            const mergeCategoriesBtn = document.getElementById('merge-categories-btn');
+
+            if (this.selectedTags.size > 0) {
+                tagsBulkActions.style.display = 'flex';
+                selectedTagsCount.style.display = 'inline-flex';
+                selectedTagsCount.textContent = `${this.selectedTags.size} selected`;
+                mergeTagsBtn.disabled = this.selectedTags.size < 2;
+            } else {
+                tagsBulkActions.style.display = 'none';
+                selectedTagsCount.style.display = 'none';
+                mergeTagsBtn.disabled = true;
+            }
+
+            if (this.selectedCategories.size > 0) {
+                categoriesBulkActions.style.display = 'flex';
+                mergeCategoriesBtn.disabled = this.selectedCategories.size !== 2;
+            } else {
+                categoriesBulkActions.style.display = 'none';
+                mergeCategoriesBtn.disabled = true;
+            }
+        },
+
+        // Tag operations
+        saveTagName(tagId, input) {
+            const newName = input.value.trim();
+            const originalName = input.dataset.original;
+
+            if (newName && newName !== originalName) {
+                const tag = this.tags.find(t => t.id === tagId);
+                if (tag) {
+                    tag.name = newName;
+                    input.dataset.original = newName;
+                    window.app.toast.success(`Tag renamed to "${newName}"`);
+                    this.renderTagCloud();
+                }
+            } else if (!newName) {
+                input.value = originalName;
+            }
+        },
+
+        updateTagColor(tagId, color) {
+            const tag = this.tags.find(t => t.id === tagId);
+            if (tag) {
+                tag.color = color;
+                this.renderTagCloud();
+                this.renderTagsList();
+                window.app.toast.success('Tag color updated');
+            }
+        },
+
+        async deleteTag(tagId) {
+            const tag = this.tags.find(t => t.id === tagId);
+            if (!tag) return;
+
+            const confirmed = await window.app.modal.confirm(
+                `Are you sure you want to delete the tag "${tag.name}"? This will affect ${tag.usage_count || 0} items.`,
+                { title: 'Delete Tag', type: 'danger', confirmText: 'Delete' }
+            );
+
+            if (confirmed) {
+                this.tags = this.tags.filter(t => t.id !== tagId);
+                this.selectedTags.delete(tagId);
+                this.render();
+                window.app.toast.success('Tag deleted');
+            }
+        },
+
+        openAddTagModal() {
+            window.app.modal.open({
+                title: 'Add New Tag',
+                content: `
+                    <div class="form-group">
+                        <label class="form-label">Tag Name</label>
+                        <input type="text" class="form-input" id="new-tag-name" placeholder="Enter tag name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Color</label>
+                        <div class="color-palette">
+                            ${this.colorPalette.map((color, i) => `
+                                <button type="button" class="color-option ${i === 0 ? 'selected' : ''}"
+                                        style="background-color: ${color}"
+                                        data-color="${color}"
+                                        onclick="document.querySelectorAll('.color-option').forEach(c=>c.classList.remove('selected')); this.classList.add('selected');">
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <style>
+                        .color-palette { display: flex; flex-wrap: wrap; gap: 8px; }
+                        .color-option { width: 32px; height: 32px; border-radius: 6px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
+                        .color-option:hover { transform: scale(1.1); }
+                        .color-option.selected { border-color: white; box-shadow: 0 0 0 2px var(--color-accent); }
+                    </style>
+                `,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-primary" onclick="TagsManager.createTag()">Create Tag</button>
+                `
+            });
+
+            setTimeout(() => document.getElementById('new-tag-name').focus(), 100);
+        },
+
+        createTag() {
+            const name = document.getElementById('new-tag-name').value.trim();
+            const selectedColor = document.querySelector('.color-option.selected');
+            const color = selectedColor ? selectedColor.dataset.color : this.colorPalette[0];
+
+            if (!name) {
+                window.app.toast.warning('Please enter a tag name');
+                return;
+            }
+
+            if (this.tags.some(t => t.name.toLowerCase() === name.toLowerCase())) {
+                window.app.toast.warning('A tag with this name already exists');
+                return;
+            }
+
+            const newTag = {
+                id: 'tag' + Date.now(),
+                name: name,
+                color: color,
+                usage_count: 0,
+                created: Date.now(),
+                modified: Date.now()
+            };
+
+            this.tags.push(newTag);
+            window.app.modal.close();
+            this.render();
+            window.app.toast.success(`Tag "${name}" created`);
+        },
+
+        openMergeTagsModal() {
+            const selectedTagsList = Array.from(this.selectedTags).map(id => this.tags.find(t => t.id === id)).filter(Boolean);
+
+            if (selectedTagsList.length < 2) {
+                window.app.toast.warning('Select at least 2 tags to merge');
+                return;
+            }
+
+            window.app.modal.open({
+                title: 'Merge Tags',
+                content: `
+                    <p class="mb-4">Merge ${selectedTagsList.length} tags into one. Choose which tag name to keep:</p>
+                    <div class="form-group">
+                        ${selectedTagsList.map((tag, i) => `
+                            <label class="flex items-center gap-2 mb-2" style="cursor: pointer;">
+                                <input type="radio" name="merge-target" value="${tag.id}" ${i === 0 ? 'checked' : ''}>
+                                <span class="tag" style="background-color: ${tag.color}20; color: ${tag.color}; border-color: ${tag.color};">
+                                    ${Utils.escapeHtml(tag.name)} (${tag.usage_count || 0})
+                                </span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <p class="text-sm text-muted">All items will be re-tagged with the selected tag, and other tags will be deleted.</p>
+                `,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-primary" onclick="TagsManager.executeMergeTags()">Merge Tags</button>
+                `
+            });
+        },
+
+        executeMergeTags() {
+            const targetId = document.querySelector('input[name="merge-target"]:checked').value;
+            const targetTag = this.tags.find(t => t.id === targetId);
+
+            // Calculate merged count
+            const mergedCount = Array.from(this.selectedTags)
+                .map(id => this.tags.find(t => t.id === id))
+                .filter(Boolean)
+                .reduce((sum, t) => sum + (t.usage_count || 0), 0);
+
+            // Remove other tags
+            this.tags = this.tags.filter(t => !this.selectedTags.has(t.id) || t.id === targetId);
+
+            // Update target tag count
+            if (targetTag) {
+                targetTag.usage_count = mergedCount;
+            }
+
+            this.selectedTags.clear();
+            window.app.modal.close();
+            this.render();
+            window.app.toast.success('Tags merged successfully');
+        },
+
+        bulkChangeColor() {
+            window.app.modal.open({
+                title: 'Change Color for Selected Tags',
+                content: `
+                    <div class="form-group">
+                        <label class="form-label">Choose a color for ${this.selectedTags.size} tags</label>
+                        <div class="color-palette">
+                            ${this.colorPalette.map((color, i) => `
+                                <button type="button" class="color-option ${i === 0 ? 'selected' : ''}"
+                                        style="background-color: ${color}"
+                                        data-color="${color}"
+                                        onclick="document.querySelectorAll('.color-option').forEach(c=>c.classList.remove('selected')); this.classList.add('selected');">
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <style>
+                        .color-palette { display: flex; flex-wrap: wrap; gap: 8px; }
+                        .color-option { width: 32px; height: 32px; border-radius: 6px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
+                        .color-option:hover { transform: scale(1.1); }
+                        .color-option.selected { border-color: white; box-shadow: 0 0 0 2px var(--color-accent); }
+                    </style>
+                `,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-primary" onclick="TagsManager.executeBulkColorChange()">Apply Color</button>
+                `
+            });
+        },
+
+        executeBulkColorChange() {
+            const selectedColor = document.querySelector('.color-option.selected');
+            const color = selectedColor ? selectedColor.dataset.color : this.colorPalette[0];
+
+            this.selectedTags.forEach(id => {
+                const tag = this.tags.find(t => t.id === id);
+                if (tag) tag.color = color;
+            });
+
+            window.app.modal.close();
+            this.render();
+            window.app.toast.success('Tag colors updated');
+        },
+
+        async bulkDeleteTags() {
+            const count = this.selectedTags.size;
+            const confirmed = await window.app.modal.confirm(
+                `Are you sure you want to delete ${count} tags?`,
+                { title: 'Delete Tags', type: 'danger', confirmText: 'Delete All' }
+            );
+
+            if (confirmed) {
+                this.tags = this.tags.filter(t => !this.selectedTags.has(t.id));
+                this.selectedTags.clear();
+                this.render();
+                window.app.toast.success(`${count} tags deleted`);
+            }
+        },
+
+        // Category operations
+        setCategoryView(view) {
+            this.categoryView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === view);
+            });
+            this.renderCategories();
+        },
+
+        openAddCategoryModal() {
+            window.app.modal.open({
+                title: 'Add New Category',
+                content: `
+                    <div class="form-group">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-input" id="new-category-name" placeholder="Enter category name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="new-category-description" placeholder="Enter category description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Initial RSS Sources (optional)</label>
+                        <textarea class="form-textarea" id="new-category-sources" placeholder="Enter one URL per line" rows="2"></textarea>
+                        <p class="form-helper">Add RSS feed URLs to auto-import content</p>
+                    </div>
+                `,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-primary" onclick="TagsManager.createCategory()">Create Category</button>
+                `
+            });
+
+            setTimeout(() => document.getElementById('new-category-name').focus(), 100);
+        },
+
+        createCategory() {
+            const name = document.getElementById('new-category-name').value.trim();
+            const description = document.getElementById('new-category-description').value.trim();
+            const sourcesText = document.getElementById('new-category-sources').value.trim();
+
+            if (!name) {
+                window.app.toast.warning('Please enter a category name');
+                return;
+            }
+
+            if (this.categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+                window.app.toast.warning('A category with this name already exists');
+                return;
+            }
+
+            const sources = sourcesText
+                .split('\n')
+                .map(s => s.trim())
+                .filter(s => s)
+                .map(url => ({ url, status: 'active' }));
+
+            const newCategory = {
+                category_id: 'cat' + Date.now(),
+                name: name,
+                description: description,
+                bookmarkCount: 0,
+                sources: sources,
+                color: this.colorPalette[this.categories.length % this.colorPalette.length],
+                created_at: new Date().toISOString()
+            };
+
+            this.categories.push(newCategory);
+            window.app.modal.close();
+            this.render();
+            window.app.toast.success(`Category "${name}" created`);
+        },
+
+        openCategoryDetail(categoryId) {
+            const category = this.categories.find(c => c.category_id === categoryId);
+            if (!category) return;
+
+            window.app.modal.open({
+                title: 'Edit Category',
+                content: `
+                    <div class="form-group">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-input" id="edit-category-name" value="${Utils.escapeHtml(category.name)}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-textarea" id="edit-category-description" rows="3">${Utils.escapeHtml(category.description || '')}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Bookmarks Preview</label>
+                        <div class="category-bookmarks-preview" style="max-height: 150px; overflow-y: auto; background: var(--color-background-active); border-radius: var(--radius-md); padding: var(--space-2);">
+                            ${this.bookmarks.filter(b => b.category_name === category.name).slice(0, 5).map(b => `
+                                <div class="preview-item" onclick="window.location.hash='#/bookmarks/${b.bookmark_id}'">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                    <span class="truncate text-sm">${Utils.escapeHtml(b.title || b.url)}</span>
+                                </div>
+                            `).join('') || '<p class="text-muted text-sm">No bookmarks in this category</p>'}
+                        </div>
+                    </div>
+                    <div class="category-detail-sources">
+                        <label class="form-label">RSS Sources</label>
+                        <div id="category-sources-list">
+                            ${category.sources.map((source, i) => `
+                                <div class="source-item">
+                                    <span class="source-status ${source.status}"></span>
+                                    <span class="source-item-url">${Utils.escapeHtml(source.url)}</span>
+                                    <button class="btn btn-ghost btn-sm" onclick="TagsManager.removeSource('${categoryId}', ${i})">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"/>
+                                            <line x1="6" y1="6" x2="18" y2="18"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            `).join('') || '<p class="text-muted text-sm">No sources configured</p>'}
+                        </div>
+                        <div class="add-source-form">
+                            <input type="text" class="form-input" id="new-source-url" placeholder="Enter RSS feed URL">
+                            <button class="btn btn-secondary" onclick="TagsManager.addSource('${categoryId}')">Add</button>
+                        </div>
+                    </div>
+                `,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-primary" onclick="TagsManager.saveCategory('${categoryId}')">Save Changes</button>
+                `
+            });
+        },
+
+        saveCategory(categoryId) {
+            const category = this.categories.find(c => c.category_id === categoryId);
+            if (!category) return;
+
+            const newName = document.getElementById('edit-category-name').value.trim();
+            const newDescription = document.getElementById('edit-category-description').value.trim();
+
+            if (!newName) {
+                window.app.toast.warning('Category name is required');
+                return;
+            }
+
+            category.name = newName;
+            category.description = newDescription;
+
+            window.app.modal.close();
+            this.render();
+            window.app.toast.success('Category updated');
+        },
+
+        addSource(categoryId) {
+            const category = this.categories.find(c => c.category_id === categoryId);
+            if (!category) return;
+
+            const urlInput = document.getElementById('new-source-url');
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                window.app.toast.warning('Please enter a URL');
+                return;
+            }
+
+            category.sources.push({ url, status: 'active' });
+            urlInput.value = '';
+
+            // Re-render sources list
+            this.openCategoryDetail(categoryId);
+            window.app.toast.success('Source added');
+        },
+
+        removeSource(categoryId, sourceIndex) {
+            const category = this.categories.find(c => c.category_id === categoryId);
+            if (!category) return;
+
+            category.sources.splice(sourceIndex, 1);
+            this.openCategoryDetail(categoryId);
+            window.app.toast.success('Source removed');
+        },
+
+        async deleteCategory(categoryId) {
+            const category = this.categories.find(c => c.category_id === categoryId);
+            if (!category) return;
+
+            const confirmed = await window.app.modal.confirm(
+                `Are you sure you want to delete the category "${category.name}"? This will affect ${category.bookmarkCount} bookmarks.`,
+                { title: 'Delete Category', type: 'danger', confirmText: 'Delete' }
+            );
+
+            if (confirmed) {
+                this.categories = this.categories.filter(c => c.category_id !== categoryId);
+                this.selectedCategories.delete(categoryId);
+                this.render();
+                window.app.toast.success('Category deleted');
+            }
+        },
+
+        openMergeCategoriesModal() {
+            if (this.selectedCategories.size !== 2) {
+                window.app.toast.warning('Select exactly 2 categories to merge');
+                return;
+            }
+
+            const selectedList = Array.from(this.selectedCategories)
+                .map(id => this.categories.find(c => c.category_id === id))
+                .filter(Boolean);
+
+            window.app.modal.open({
+                title: 'Merge Categories',
+                content: `
+                    <p class="mb-4">Merge these categories into one. Choose which to keep:</p>
+                    <div class="form-group">
+                        ${selectedList.map((cat, i) => `
+                            <label class="flex items-center gap-3 mb-3 p-3" style="background: var(--color-background-active); border-radius: var(--radius-md); cursor: pointer;">
+                                <input type="radio" name="merge-category-target" value="${cat.category_id}" ${i === 0 ? 'checked' : ''}>
+                                <div class="category-icon" style="background-color: ${cat.color}20; color: ${cat.color}; width: 32px; height: 32px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium">${Utils.escapeHtml(cat.name)}</div>
+                                    <div class="text-sm text-muted">${cat.bookmarkCount} bookmarks</div>
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <p class="text-sm text-muted">All bookmarks will be moved to the selected category, and the other will be deleted.</p>
+                `,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-primary" onclick="TagsManager.executeMergeCategories()">Merge Categories</button>
+                `
+            });
+        },
+
+        executeMergeCategories() {
+            const targetId = document.querySelector('input[name="merge-category-target"]:checked').value;
+            const targetCategory = this.categories.find(c => c.category_id === targetId);
+
+            // Sum up bookmark counts
+            const totalBookmarks = Array.from(this.selectedCategories)
+                .map(id => this.categories.find(c => c.category_id === id))
+                .filter(Boolean)
+                .reduce((sum, c) => sum + c.bookmarkCount, 0);
+
+            // Remove other category
+            this.categories = this.categories.filter(c =>
+                !this.selectedCategories.has(c.category_id) || c.category_id === targetId
+            );
+
+            // Update target category
+            if (targetCategory) {
+                targetCategory.bookmarkCount = totalBookmarks;
+            }
+
+            this.selectedCategories.clear();
+            window.app.modal.close();
+            this.render();
+            window.app.toast.success('Categories merged successfully');
+        },
+
+        async bulkDeleteCategories() {
+            const count = this.selectedCategories.size;
+            const confirmed = await window.app.modal.confirm(
+                `Are you sure you want to delete ${count} categories?`,
+                { title: 'Delete Categories', type: 'danger', confirmText: 'Delete All' }
+            );
+
+            if (confirmed) {
+                this.categories = this.categories.filter(c => !this.selectedCategories.has(c.category_id));
+                this.selectedCategories.clear();
+                this.render();
+                window.app.toast.success(`${count} categories deleted`);
+            }
+        },
+
+        // Preview Panel
+        showTagPreview(tagId) {
+            const tag = this.tags.find(t => t.id === tagId);
+            if (!tag) return;
+
+            const panel = document.getElementById('preview-panel');
+            const title = document.getElementById('preview-panel-title');
+            const content = document.getElementById('preview-panel-content');
+
+            title.innerHTML = `
+                <span class="tag" style="background-color: ${tag.color}20; color: ${tag.color}; border-color: ${tag.color};">
+                    ${Utils.escapeHtml(tag.name)}
+                </span>
+                <span class="text-muted text-sm">${tag.usage_count || 0} items</span>
+            `;
+
+            // Mock related items (in real app, would fetch from API)
+            const mockItems = [
+                { type: 'note', title: 'System Design Interview Preparation', id: 'n1' },
+                { type: 'note', title: 'React Performance Optimization', id: 'n2' },
+                { type: 'note', title: 'PostgreSQL Optimization Notes', id: 'n3' }
+            ].slice(0, tag.usage_count || 3);
+
+            content.innerHTML = mockItems.length > 0 ? mockItems.map(item => `
+                <div class="preview-item" onclick="window.location.hash='#/${item.type}s/${item.id}'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                    </svg>
+                    <span>${Utils.escapeHtml(item.title)}</span>
+                </div>
+            `).join('') : '<p class="text-muted text-center">No items with this tag</p>';
+
+            panel.classList.add('open');
+        },
+
+        showCategoryPreview(categoryId) {
+            const category = this.categories.find(c => c.category_id === categoryId);
+            if (!category) return;
+
+            const panel = document.getElementById('preview-panel');
+            const title = document.getElementById('preview-panel-title');
+            const content = document.getElementById('preview-panel-content');
+
+            title.innerHTML = `
+                <span class="flex items-center gap-2">
+                    <span class="category-icon" style="background-color: ${category.color}20; color: ${category.color}; width: 24px; height: 24px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </span>
+                    ${Utils.escapeHtml(category.name)}
+                </span>
+            `;
+
+            const categoryBookmarks = this.bookmarks.filter(b => b.category_name === category.name);
+
+            content.innerHTML = categoryBookmarks.length > 0 ? categoryBookmarks.slice(0, 10).map(b => `
+                <div class="preview-item" onclick="window.location.hash='#/bookmarks/${b.bookmark_id}'">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <div class="flex-1 min-w-0">
+                        <div class="truncate text-sm">${Utils.escapeHtml(b.title || 'Untitled')}</div>
+                        <div class="truncate text-xs text-muted">${Utils.escapeHtml(Utils.getDomain(b.url))}</div>
+                    </div>
+                </div>
+            `).join('') + (categoryBookmarks.length > 10 ? `<p class="text-muted text-center text-sm mt-4">+${categoryBookmarks.length - 10} more bookmarks</p>` : '')
+            : '<p class="text-muted text-center">No bookmarks in this category</p>';
+
+            panel.classList.add('open');
+        },
+
+        closePreviewPanel() {
+            document.getElementById('preview-panel').classList.remove('open');
+        },
+
+        // UI Helpers
+        toggleSection(sectionId) {
+            const section = document.getElementById(sectionId + '-section');
+            if (section) {
+                section.classList.toggle('collapsed');
+            }
+        },
+
+        switchMobilePanel(panel) {
+            document.querySelectorAll('.mobile-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.panel === panel);
+            });
+            document.querySelectorAll('.panel').forEach(p => {
+                p.classList.remove('active');
+            });
+            document.getElementById(panel + '-panel').classList.add('active');
+        },
+
+        // Export
+        exportData() {
+            const data = {
+                tags: this.tags,
+                categories: this.categories,
+                exportedAt: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'garden-tags-categories.json';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            window.app.toast.success('Data exported successfully');
+        }
+    };
+
+    // Initialize on page load
+    TagsManager.init();
+
+    // Set initial active panel for mobile
+    document.getElementById('tags-panel').classList.add('active');
+})();
+</script>

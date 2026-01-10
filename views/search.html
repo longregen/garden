@@ -1,0 +1,2554 @@
+<div class="search-page">
+    <!-- Search Header -->
+    <div class="search-header">
+        <div class="search-header-content">
+            <h1 class="search-title">Search</h1>
+            <p class="search-subtitle">Find anything across your knowledge base</p>
+        </div>
+
+        <!-- Saved Searches Button -->
+        <div class="search-header-actions">
+            <button class="btn btn-secondary" id="saved-searches-btn" title="Saved Searches">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>Saved</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Search Bar -->
+    <div class="search-bar-container">
+        <div class="search-bar-wrapper">
+            <div class="search-bar">
+                <svg class="search-bar-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input
+                    type="text"
+                    class="search-bar-input"
+                    id="search-input"
+                    placeholder="Search bookmarks, notes, contacts, messages, entities..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+                <div class="search-bar-actions">
+                    <button class="search-action-btn" id="voice-search-btn" title="Voice Search (Coming Soon)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </button>
+                    <button class="search-action-btn" id="clear-search-btn" title="Clear" style="display: none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Hints -->
+            <div class="search-hints">
+                <span class="search-hint">
+                    <kbd>type:</kbd> Filter by type
+                </span>
+                <span class="search-hint">
+                    <kbd>tag:</kbd> Filter by tag
+                </span>
+                <span class="search-hint">
+                    <kbd>date:</kbd> Filter by date
+                </span>
+                <span class="search-hint">
+                    <kbd>Ctrl+K</kbd> Quick search
+                </span>
+            </div>
+
+            <!-- Suggestions Dropdown -->
+            <div class="search-suggestions" id="search-suggestions" style="display: none;">
+                <div class="suggestions-section" id="recent-searches-section">
+                    <div class="suggestions-header">
+                        <span>Recent Searches</span>
+                        <button class="suggestions-clear" id="clear-recent-btn">Clear</button>
+                    </div>
+                    <div class="suggestions-list" id="recent-searches-list"></div>
+                </div>
+                <div class="suggestions-section" id="suggestions-section" style="display: none;">
+                    <div class="suggestions-header">
+                        <span>Suggestions</span>
+                    </div>
+                    <div class="suggestions-list" id="suggestions-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Search Toggle -->
+    <div class="ai-search-toggle-container">
+        <label class="ai-search-toggle">
+            <input type="checkbox" id="ai-search-toggle">
+            <span class="ai-search-toggle-slider"></span>
+            <span class="ai-search-toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                    <circle cx="7.5" cy="14.5" r="1.5"/>
+                    <circle cx="16.5" cy="14.5" r="1.5"/>
+                </svg>
+                AI-Powered Search
+            </span>
+        </label>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="search-layout">
+        <!-- Filters Sidebar -->
+        <aside class="search-filters" id="search-filters">
+            <div class="filters-header">
+                <h3 class="filters-title">Filters</h3>
+                <button class="filters-toggle" id="filters-toggle" title="Toggle Filters">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" y1="21" x2="4" y2="14"/>
+                        <line x1="4" y1="10" x2="4" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12" y2="3"/>
+                        <line x1="20" y1="21" x2="20" y2="16"/>
+                        <line x1="20" y1="12" x2="20" y2="3"/>
+                        <line x1="1" y1="14" x2="7" y2="14"/>
+                        <line x1="9" y1="8" x2="15" y2="8"/>
+                        <line x1="17" y1="16" x2="23" y2="16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="filters-content" id="filters-content">
+                <!-- Content Types -->
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Content Types</h4>
+                    <div class="filter-checkboxes">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" name="type" value="bookmarks" checked>
+                            <span class="filter-checkbox-box"></span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>Bookmarks</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" name="type" value="notes" checked>
+                            <span class="filter-checkbox-box"></span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                            </svg>
+                            <span>Notes</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" name="type" value="contacts" checked>
+                            <span class="filter-checkbox-box"></span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                            </svg>
+                            <span>Contacts</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" name="type" value="messages" checked>
+                            <span class="filter-checkbox-box"></span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>Messages</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" name="type" value="entities" checked>
+                            <span class="filter-checkbox-box"></span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="18" cy="5" r="3"/>
+                                <circle cx="6" cy="12" r="3"/>
+                                <circle cx="18" cy="19" r="3"/>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                            </svg>
+                            <span>Entities</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Date Range -->
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Date Range</h4>
+                    <div class="filter-date-range">
+                        <select class="form-select filter-select" id="date-range-select">
+                            <option value="all">All time</option>
+                            <option value="today">Today</option>
+                            <option value="week">Past week</option>
+                            <option value="month">Past month</option>
+                            <option value="quarter">Past 3 months</option>
+                            <option value="year">Past year</option>
+                            <option value="custom">Custom range</option>
+                        </select>
+                        <div class="custom-date-range" id="custom-date-range" style="display: none;">
+                            <input type="date" class="form-input" id="date-from" placeholder="From">
+                            <span class="date-range-separator">to</span>
+                            <input type="date" class="form-input" id="date-to" placeholder="To">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Tags</h4>
+                    <div class="filter-tags" id="filter-tags">
+                        <!-- Tags will be populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Source Filter (for bookmarks) -->
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Source / Category</h4>
+                    <select class="form-select filter-select" id="source-filter">
+                        <option value="">All sources</option>
+                        <option value="Development">Development</option>
+                        <option value="Design">Design</option>
+                        <option value="Database">Database</option>
+                        <option value="DevOps">DevOps</option>
+                        <option value="API">API</option>
+                        <option value="Architecture">Architecture</option>
+                        <option value="Testing">Testing</option>
+                        <option value="AI">AI</option>
+                    </select>
+                </div>
+
+                <!-- Advanced Toggle -->
+                <div class="filter-section">
+                    <button class="filter-advanced-toggle" id="advanced-toggle">
+                        <span>Advanced Options</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Search Weights (Advanced) -->
+                <div class="filter-section advanced-section" id="advanced-section" style="display: none;">
+                    <h4 class="filter-section-title">Search Weights</h4>
+                    <div class="weight-sliders">
+                        <div class="weight-slider">
+                            <div class="weight-slider-header">
+                                <label>Exact Match</label>
+                                <span class="weight-value" id="exact-match-value">5</span>
+                            </div>
+                            <input type="range" min="0" max="10" value="5" id="exact-match-weight" class="slider">
+                        </div>
+                        <div class="weight-slider">
+                            <div class="weight-slider-header">
+                                <label>Similarity</label>
+                                <span class="weight-value" id="similarity-value">2</span>
+                            </div>
+                            <input type="range" min="0" max="10" value="2" id="similarity-weight" class="slider">
+                        </div>
+                        <div class="weight-slider">
+                            <div class="weight-slider-header">
+                                <label>Recency</label>
+                                <span class="weight-value" id="recency-value">1</span>
+                            </div>
+                            <input type="range" min="0" max="10" value="1" id="recency-weight" class="slider">
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" id="reset-weights-btn">Reset to Defaults</button>
+                </div>
+
+                <!-- Filter Actions -->
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="reset-filters-btn">Reset All</button>
+                    <button class="btn btn-primary" id="apply-filters-btn">Apply</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Results Area -->
+        <main class="search-results-area">
+            <!-- Results Header -->
+            <div class="results-header" id="results-header" style="display: none;">
+                <div class="results-analytics">
+                    <span class="results-count" id="results-count">0 results</span>
+                    <span class="results-time" id="results-time">in 0ms</span>
+                    <div class="results-breakdown" id="results-breakdown"></div>
+                </div>
+                <div class="results-actions">
+                    <div class="layout-toggle">
+                        <button class="layout-btn active" data-layout="list" title="List View">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"/>
+                                <line x1="8" y1="12" x2="21" y2="12"/>
+                                <line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                                <line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                        </button>
+                        <button class="layout-btn" data-layout="compact" title="Compact View">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="3" y1="9" x2="21" y2="9"/>
+                                <line x1="3" y1="15" x2="21" y2="15"/>
+                            </svg>
+                        </button>
+                        <button class="layout-btn" data-layout="grid" title="Grid View">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" id="save-search-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Save Search
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Answer Panel -->
+            <div class="ai-answer-panel" id="ai-answer-panel" style="display: none;">
+                <div class="ai-answer-header">
+                    <div class="ai-answer-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="ai-answer-title">AI Summary</h3>
+                </div>
+                <div class="ai-answer-content" id="ai-answer-content">
+                    <!-- AI answer will be rendered here -->
+                </div>
+                <div class="ai-answer-sources" id="ai-answer-sources">
+                    <!-- Sources will be rendered here -->
+                </div>
+                <div class="ai-followup" id="ai-followup">
+                    <span class="ai-followup-label">Related questions:</span>
+                    <div class="ai-followup-questions" id="ai-followup-questions"></div>
+                </div>
+            </div>
+
+            <!-- Results Container -->
+            <div class="search-results" id="search-results">
+                <!-- Initial State -->
+                <div class="empty-state" id="initial-state">
+                    <svg class="empty-state-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <h3 class="empty-state-title">Search your knowledge base</h3>
+                    <p class="empty-state-description">Find bookmarks, notes, contacts, messages, and entities. Use filters to narrow down results or try AI-powered search for intelligent summaries.</p>
+                    <div class="search-tips">
+                        <h4>Quick tips:</h4>
+                        <ul>
+                            <li><code>type:notes</code> - Search only notes</li>
+                            <li><code>tag:react</code> - Filter by tag</li>
+                            <li><code>"exact phrase"</code> - Search exact phrase</li>
+                            <li><code>date:week</code> - Items from past week</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loading-state" style="display: none;">
+                    <div class="loading-spinner"></div>
+                    <p>Searching...</p>
+                </div>
+
+                <!-- AI Loading State -->
+                <div class="ai-loading-state" id="ai-loading-state" style="display: none;">
+                    <div class="ai-thinking">
+                        <div class="ai-thinking-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <p>AI is analyzing your results...</p>
+                    </div>
+                </div>
+
+                <!-- Results List -->
+                <div class="results-list" id="results-list" style="display: none;"></div>
+
+                <!-- No Results State -->
+                <div class="empty-state" id="no-results-state" style="display: none;">
+                    <svg class="empty-state-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                    </svg>
+                    <h3 class="empty-state-title">No results found</h3>
+                    <p class="empty-state-description" id="no-results-message">Try different keywords or adjust your filters.</p>
+                    <div class="no-results-suggestions" id="no-results-suggestions">
+                        <h4>Suggestions:</h4>
+                        <ul>
+                            <li>Check for spelling errors</li>
+                            <li>Try more general keywords</li>
+                            <li>Remove some filters</li>
+                            <li>Search across all content types</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div class="empty-state error-state" id="error-state" style="display: none;">
+                    <svg class="empty-state-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <h3 class="empty-state-title">Search failed</h3>
+                    <p class="empty-state-description">Something went wrong while searching. Please try again.</p>
+                    <button class="btn btn-primary" id="retry-search-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6"/>
+                            <path d="M1 20v-6h6"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                        Retry Search
+                    </button>
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-container" id="load-more-container" style="display: none;">
+                    <button class="btn btn-secondary" id="load-more-btn">Load More Results</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Saved Searches Modal -->
+    <div class="saved-searches-dropdown" id="saved-searches-dropdown" style="display: none;">
+        <div class="saved-searches-header">
+            <h4>Saved Searches</h4>
+            <button class="btn btn-ghost btn-sm" id="close-saved-searches">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="saved-searches-list" id="saved-searches-list">
+            <p class="text-muted text-sm">No saved searches yet</p>
+        </div>
+    </div>
+
+    <!-- Save Search Modal -->
+    <div class="save-search-modal" id="save-search-modal" style="display: none;">
+        <div class="save-search-content">
+            <h4>Save Search</h4>
+            <div class="form-group">
+                <label class="form-label">Search Name</label>
+                <input type="text" class="form-input" id="save-search-name" placeholder="My search...">
+            </div>
+            <div class="save-search-actions">
+                <button class="btn btn-secondary" id="cancel-save-search">Cancel</button>
+                <button class="btn btn-primary" id="confirm-save-search">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Search Page Specific Styles */
+.search-page {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--top-bar-height) - var(--space-12));
+}
+
+.search-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+}
+
+.search-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-1);
+}
+
+.search-subtitle {
+    color: var(--color-text-secondary);
+}
+
+/* Main Search Bar */
+.search-bar-container {
+    margin-bottom: var(--space-4);
+}
+
+.search-bar-wrapper {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-background-elevated);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-3) var(--space-4);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.search-bar:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-accent-light);
+}
+
+.search-bar-icon {
+    color: var(--color-text-tertiary);
+    margin-right: var(--space-3);
+    flex-shrink: 0;
+}
+
+.search-bar-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    outline: none;
+}
+
+.search-bar-input::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.search-bar-actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.search-action-btn {
+    color: var(--color-text-tertiary);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.search-action-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+/* Search Hints */
+.search-hints {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+}
+
+.search-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.search-hint kbd {
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    margin-right: var(--space-1);
+}
+
+/* Suggestions Dropdown */
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 0;
+    right: 0;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.suggestions-section {
+    padding: var(--space-3);
+}
+
+.suggestions-section + .suggestions-section {
+    border-top: 1px solid var(--color-border);
+}
+
+.suggestions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.suggestions-clear {
+    font-size: var(--font-size-xs);
+    color: var(--color-accent);
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.suggestions-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.suggestion-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.suggestion-icon {
+    color: var(--color-text-tertiary);
+}
+
+.suggestion-text {
+    flex: 1;
+}
+
+.suggestion-type {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* AI Search Toggle */
+.ai-search-toggle-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-6);
+}
+
+.ai-search-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+}
+
+.ai-search-toggle input {
+    display: none;
+}
+
+.ai-search-toggle-slider {
+    width: 44px;
+    height: 24px;
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-full);
+    position: relative;
+    transition: background-color var(--transition-fast);
+}
+
+.ai-search-toggle-slider::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--color-text-secondary);
+    top: 3px;
+    left: 3px;
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.ai-search-toggle input:checked + .ai-search-toggle-slider {
+    background-color: var(--color-accent-light);
+}
+
+.ai-search-toggle input:checked + .ai-search-toggle-slider::after {
+    transform: translateX(20px);
+    background-color: var(--color-accent);
+}
+
+.ai-search-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.ai-search-toggle input:checked ~ .ai-search-toggle-label {
+    color: var(--color-accent);
+}
+
+/* Search Layout */
+.search-layout {
+    display: flex;
+    gap: var(--space-6);
+    flex: 1;
+}
+
+/* Filters Sidebar */
+.search-filters {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+}
+
+.filters-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.filters-toggle {
+    color: var(--color-text-tertiary);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.filters-toggle:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+.filters-content {
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+}
+
+.filter-section {
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.filter-section-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
+}
+
+.filter-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    font-size: var(--font-size-sm);
+}
+
+.filter-checkbox:hover {
+    background-color: var(--color-background-hover);
+}
+
+.filter-checkbox input {
+    display: none;
+}
+
+.filter-checkbox-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.filter-checkbox input:checked + .filter-checkbox-box {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.filter-checkbox input:checked + .filter-checkbox-box::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.filter-checkbox svg {
+    color: var(--color-text-tertiary);
+}
+
+.filter-select {
+    width: 100%;
+}
+
+.filter-date-range {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.custom-date-range {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.date-range-separator {
+    color: var(--color-text-tertiary);
+}
+
+.custom-date-range .form-input {
+    flex: 1;
+    padding: var(--space-2);
+    font-size: var(--font-size-sm);
+}
+
+/* Tags Filter */
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.filter-tag {
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-tag:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.filter-tag.active {
+    background-color: var(--color-accent-light);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+/* Advanced Toggle */
+.filter-advanced-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--space-2) 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.filter-advanced-toggle:hover {
+    color: var(--color-text-primary);
+}
+
+.filter-advanced-toggle svg {
+    transition: transform var(--transition-fast);
+}
+
+.filter-advanced-toggle.active svg {
+    transform: rotate(180deg);
+}
+
+/* Weight Sliders */
+.weight-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+}
+
+.weight-slider {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.weight-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-sm);
+}
+
+.weight-slider-header label {
+    color: var(--color-text-secondary);
+}
+
+.weight-value {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-medium);
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: var(--radius-full);
+    background: var(--color-background-active);
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    border: none;
+}
+
+/* Filter Actions */
+.filter-actions {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+}
+
+.filter-actions .btn {
+    flex: 1;
+}
+
+/* Results Area */
+.search-results-area {
+    flex: 1;
+    min-width: 0;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.results-analytics {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.results-count {
+    font-weight: var(--font-weight-semibold);
+}
+
+.results-time {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+}
+
+.results-breakdown {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.results-breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-full);
+}
+
+.results-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+/* Layout Toggle */
+.layout-toggle {
+    display: flex;
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-md);
+    padding: var(--space-1);
+}
+
+.layout-btn {
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-tertiary);
+    transition: all var(--transition-fast);
+}
+
+.layout-btn:hover {
+    color: var(--color-text-primary);
+}
+
+.layout-btn.active {
+    background-color: var(--color-background-elevated);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* AI Answer Panel */
+.ai-answer-panel {
+    background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-background-elevated) 100%);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-4);
+}
+
+.ai-answer-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.ai-answer-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-md);
+    color: white;
+}
+
+.ai-answer-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.ai-answer-content {
+    color: var(--color-text-primary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-4);
+}
+
+.ai-answer-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.ai-source-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.ai-source-link:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.ai-followup {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+}
+
+.ai-followup-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-2);
+    display: block;
+}
+
+.ai-followup-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.ai-followup-btn {
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.ai-followup-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+/* AI Loading State */
+.ai-loading-state {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-8);
+}
+
+.ai-thinking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.ai-thinking-dots {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.ai-thinking-dots span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+.ai-thinking-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.ai-thinking-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.4;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.ai-thinking p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+}
+
+/* Results List Styles */
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.results-list.compact {
+    gap: var(--space-2);
+}
+
+.results-list.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+}
+
+/* Result Group */
+.result-group {
+    margin-bottom: var(--space-6);
+}
+
+.result-group-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.result-group-icon {
+    color: var(--color-text-tertiary);
+}
+
+.result-group-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+}
+
+.result-group-count {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Result Card */
+.result-card {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.result-card:hover {
+    border-color: var(--color-border-focus);
+    box-shadow: var(--shadow-md);
+}
+
+.result-card.compact {
+    padding: var(--space-3);
+    gap: var(--space-3);
+}
+
+.result-card.grid {
+    flex-direction: column;
+}
+
+.result-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+}
+
+.result-icon.bookmark { background-color: var(--color-info-bg); color: var(--color-info); }
+.result-icon.note { background-color: var(--color-success-bg); color: var(--color-success); }
+.result-icon.contact { background-color: var(--color-warning-bg); color: var(--color-warning); }
+.result-icon.message { background-color: var(--color-pending-bg); color: var(--color-pending); }
+.result-icon.entity { background-color: var(--color-error-bg); color: var(--color-error); }
+
+.result-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.result-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+.result-title {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+}
+
+.result-title mark {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.result-badge {
+    flex-shrink: 0;
+}
+
+.result-snippet {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-base);
+    margin-bottom: var(--space-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.result-snippet mark {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.result-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.result-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.result-score {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.result-score-bar {
+    width: 40px;
+    height: 4px;
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.result-score-fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-full);
+}
+
+.result-actions {
+    display: flex;
+    gap: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.result-card:hover .result-actions {
+    opacity: 1;
+}
+
+.result-action-btn {
+    padding: var(--space-2);
+    color: var(--color-text-tertiary);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.result-action-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+/* Search Tips */
+.search-tips {
+    text-align: left;
+    margin-top: var(--space-6);
+    padding: var(--space-4);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.search-tips h4 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-3);
+}
+
+.search-tips ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.search-tips li {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.search-tips code {
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    font-size: var(--font-size-xs);
+}
+
+/* No Results Suggestions */
+.no-results-suggestions {
+    text-align: left;
+    margin-top: var(--space-4);
+}
+
+.no-results-suggestions h4 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-2);
+}
+
+.no-results-suggestions ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.no-results-suggestions li {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* Load More */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-6);
+}
+
+/* Saved Searches Dropdown */
+.saved-searches-dropdown {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    right: 0;
+    width: 300px;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+}
+
+.saved-searches-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.saved-searches-header h4 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+}
+
+.saved-searches-list {
+    padding: var(--space-2);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.saved-search-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.saved-search-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.saved-search-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.saved-search-name {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.saved-search-query {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.saved-search-delete {
+    padding: var(--space-1);
+    color: var(--color-text-tertiary);
+    border-radius: var(--radius-sm);
+    opacity: 0;
+    transition: all var(--transition-fast);
+}
+
+.saved-search-item:hover .saved-search-delete {
+    opacity: 1;
+}
+
+.saved-search-delete:hover {
+    color: var(--color-error);
+    background-color: var(--color-error-bg);
+}
+
+/* Save Search Modal */
+.save-search-modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+}
+
+.save-search-content {
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    width: 100%;
+    max-width: 400px;
+    margin: var(--space-4);
+}
+
+.save-search-content h4 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-4);
+}
+
+.save-search-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .search-layout {
+        flex-direction: column;
+    }
+
+    .search-filters {
+        width: 100%;
+    }
+
+    .filters-content {
+        display: none;
+    }
+
+    .filters-content.open {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-header {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .search-hints {
+        display: none;
+    }
+
+    .results-header {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .results-analytics {
+        flex-wrap: wrap;
+    }
+
+    .results-breakdown {
+        display: none;
+    }
+
+    .result-card {
+        flex-direction: column;
+    }
+
+    .result-actions {
+        opacity: 1;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // State
+    let state = {
+        query: '',
+        filters: {
+            types: ['bookmarks', 'notes', 'contacts', 'messages', 'entities'],
+            dateRange: 'all',
+            dateFrom: null,
+            dateTo: null,
+            tags: [],
+            source: '',
+            weights: {
+                exactMatch: 5,
+                similarity: 2,
+                recency: 1
+            }
+        },
+        aiMode: false,
+        layout: 'list',
+        results: null,
+        loading: false,
+        currentPage: 1,
+        totalPages: 1,
+        recentSearches: JSON.parse(localStorage.getItem('garden_recent_searches') || '[]'),
+        savedSearches: JSON.parse(localStorage.getItem('garden_saved_searches') || '[]'),
+        searchStartTime: null
+    };
+
+    // DOM Elements
+    const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+    const voiceSearchBtn = document.getElementById('voice-search-btn');
+    const searchSuggestions = document.getElementById('search-suggestions');
+    const recentSearchesList = document.getElementById('recent-searches-list');
+    const suggestionsList = document.getElementById('suggestions-list');
+    const aiSearchToggle = document.getElementById('ai-search-toggle');
+    const filtersToggle = document.getElementById('filters-toggle');
+    const filtersContent = document.getElementById('filters-content');
+    const advancedToggle = document.getElementById('advanced-toggle');
+    const advancedSection = document.getElementById('advanced-section');
+    const dateRangeSelect = document.getElementById('date-range-select');
+    const customDateRange = document.getElementById('custom-date-range');
+    const filterTags = document.getElementById('filter-tags');
+    const resultsHeader = document.getElementById('results-header');
+    const resultsCount = document.getElementById('results-count');
+    const resultsTime = document.getElementById('results-time');
+    const resultsBreakdown = document.getElementById('results-breakdown');
+    const resultsList = document.getElementById('results-list');
+    const aiAnswerPanel = document.getElementById('ai-answer-panel');
+    const initialState = document.getElementById('initial-state');
+    const loadingState = document.getElementById('loading-state');
+    const aiLoadingState = document.getElementById('ai-loading-state');
+    const noResultsState = document.getElementById('no-results-state');
+    const errorState = document.getElementById('error-state');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    const savedSearchesBtn = document.getElementById('saved-searches-btn');
+    const savedSearchesDropdown = document.getElementById('saved-searches-dropdown');
+    const savedSearchesList = document.getElementById('saved-searches-list');
+    const saveSearchBtn = document.getElementById('save-search-btn');
+    const saveSearchModal = document.getElementById('save-search-modal');
+
+    // Initialize
+    function init() {
+        setupEventListeners();
+        loadTags();
+        renderRecentSearches();
+        renderSavedSearches();
+
+        // Check URL for initial query
+        const urlParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
+        const initialQuery = urlParams.get('q');
+        if (initialQuery) {
+            searchInput.value = initialQuery;
+            performSearch();
+        }
+    }
+
+    function setupEventListeners() {
+        // Search input
+        let debounceTimer;
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            clearSearchBtn.style.display = query ? 'flex' : 'none';
+
+            clearTimeout(debounceTimer);
+            if (query.length >= 2) {
+                debounceTimer = setTimeout(() => showSuggestions(query), 150);
+            } else if (query.length === 0) {
+                showRecentSearches();
+            } else {
+                hideSuggestions();
+            }
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+                hideSuggestions();
+            } else if (e.key === 'Escape') {
+                hideSuggestions();
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            if (!searchInput.value.trim()) {
+                showRecentSearches();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchSuggestions.contains(e.target) && e.target !== searchInput) {
+                hideSuggestions();
+            }
+        });
+
+        // Clear search
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.style.display = 'none';
+            showInitialState();
+            searchInput.focus();
+        });
+
+        // Voice search (placeholder)
+        voiceSearchBtn.addEventListener('click', () => {
+            window.app?.toast?.info('Voice search coming soon!');
+        });
+
+        // Clear recent searches
+        document.getElementById('clear-recent-btn').addEventListener('click', () => {
+            state.recentSearches = [];
+            localStorage.setItem('garden_recent_searches', '[]');
+            renderRecentSearches();
+        });
+
+        // AI mode toggle
+        aiSearchToggle.addEventListener('change', () => {
+            state.aiMode = aiSearchToggle.checked;
+            if (state.query) {
+                performSearch();
+            }
+        });
+
+        // Filters toggle
+        filtersToggle.addEventListener('click', () => {
+            filtersContent.classList.toggle('open');
+        });
+
+        // Advanced toggle
+        advancedToggle.addEventListener('click', () => {
+            advancedToggle.classList.toggle('active');
+            advancedSection.style.display = advancedSection.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Date range
+        dateRangeSelect.addEventListener('change', () => {
+            state.filters.dateRange = dateRangeSelect.value;
+            customDateRange.style.display = dateRangeSelect.value === 'custom' ? 'flex' : 'none';
+        });
+
+        // Content type checkboxes
+        document.querySelectorAll('input[name="type"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                state.filters.types = Array.from(document.querySelectorAll('input[name="type"]:checked'))
+                    .map(cb => cb.value);
+            });
+        });
+
+        // Source filter
+        document.getElementById('source-filter').addEventListener('change', (e) => {
+            state.filters.source = e.target.value;
+        });
+
+        // Weight sliders
+        ['exact-match', 'similarity', 'recency'].forEach(type => {
+            const slider = document.getElementById(`${type}-weight`);
+            const value = document.getElementById(`${type}-value`);
+            slider.addEventListener('input', () => {
+                value.textContent = slider.value;
+                const key = type.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                state.filters.weights[key] = parseInt(slider.value);
+            });
+        });
+
+        // Reset weights
+        document.getElementById('reset-weights-btn').addEventListener('click', () => {
+            state.filters.weights = { exactMatch: 5, similarity: 2, recency: 1 };
+            document.getElementById('exact-match-weight').value = 5;
+            document.getElementById('exact-match-value').textContent = '5';
+            document.getElementById('similarity-weight').value = 2;
+            document.getElementById('similarity-value').textContent = '2';
+            document.getElementById('recency-weight').value = 1;
+            document.getElementById('recency-value').textContent = '1';
+        });
+
+        // Reset all filters
+        document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
+
+        // Apply filters
+        document.getElementById('apply-filters-btn').addEventListener('click', () => {
+            if (state.query) {
+                performSearch();
+            }
+        });
+
+        // Layout toggle
+        document.querySelectorAll('.layout-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.layout = btn.dataset.layout;
+                renderResults();
+            });
+        });
+
+        // Load more
+        document.getElementById('load-more-btn').addEventListener('click', loadMore);
+
+        // Retry search
+        document.getElementById('retry-search-btn').addEventListener('click', performSearch);
+
+        // Saved searches
+        savedSearchesBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            savedSearchesDropdown.style.display = savedSearchesDropdown.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.getElementById('close-saved-searches').addEventListener('click', () => {
+            savedSearchesDropdown.style.display = 'none';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!savedSearchesDropdown.contains(e.target) && e.target !== savedSearchesBtn) {
+                savedSearchesDropdown.style.display = 'none';
+            }
+        });
+
+        saveSearchBtn.addEventListener('click', showSaveSearchModal);
+
+        document.getElementById('cancel-save-search').addEventListener('click', () => {
+            saveSearchModal.style.display = 'none';
+        });
+
+        document.getElementById('confirm-save-search').addEventListener('click', saveSearch);
+
+        saveSearchModal.addEventListener('click', (e) => {
+            if (e.target === saveSearchModal) {
+                saveSearchModal.style.display = 'none';
+            }
+        });
+    }
+
+    async function loadTags() {
+        try {
+            const tags = await window.app.api.getTags();
+            filterTags.innerHTML = tags.slice(0, 20).map(tag => `
+                <button class="filter-tag" data-tag="${tag.name}">${tag.name}</button>
+            `).join('');
+
+            filterTags.querySelectorAll('.filter-tag').forEach(tagBtn => {
+                tagBtn.addEventListener('click', () => {
+                    tagBtn.classList.toggle('active');
+                    const tagName = tagBtn.dataset.tag;
+                    if (tagBtn.classList.contains('active')) {
+                        state.filters.tags.push(tagName);
+                    } else {
+                        state.filters.tags = state.filters.tags.filter(t => t !== tagName);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Failed to load tags:', error);
+        }
+    }
+
+    function showRecentSearches() {
+        if (state.recentSearches.length === 0) {
+            hideSuggestions();
+            return;
+        }
+
+        renderRecentSearches();
+        document.getElementById('recent-searches-section').style.display = 'block';
+        document.getElementById('suggestions-section').style.display = 'none';
+        searchSuggestions.style.display = 'block';
+    }
+
+    function renderRecentSearches() {
+        recentSearchesList.innerHTML = state.recentSearches.slice(0, 5).map(search => `
+            <div class="suggestion-item" data-query="${Utils.escapeHtml(search)}">
+                <svg class="suggestion-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12,6 12,12 16,14"/>
+                </svg>
+                <span class="suggestion-text">${Utils.escapeHtml(search)}</span>
+            </div>
+        `).join('');
+
+        recentSearchesList.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', () => {
+                searchInput.value = item.dataset.query;
+                performSearch();
+                hideSuggestions();
+            });
+        });
+    }
+
+    async function showSuggestions(query) {
+        try {
+            const results = await window.app.api.search(query);
+            const suggestions = [];
+
+            if (results.bookmarks?.length > 0) {
+                suggestions.push(...results.bookmarks.slice(0, 2).map(b => ({
+                    type: 'bookmark',
+                    title: b.title,
+                    id: b.bookmark_id
+                })));
+            }
+            if (results.notes?.length > 0) {
+                suggestions.push(...results.notes.slice(0, 2).map(n => ({
+                    type: 'note',
+                    title: n.title,
+                    id: n.id
+                })));
+            }
+            if (results.contacts?.length > 0) {
+                suggestions.push(...results.contacts.slice(0, 2).map(c => ({
+                    type: 'contact',
+                    title: c.name,
+                    id: c.contact_id
+                })));
+            }
+
+            if (suggestions.length > 0) {
+                suggestionsList.innerHTML = suggestions.map(s => `
+                    <div class="suggestion-item" data-type="${s.type}" data-id="${s.id}">
+                        <svg class="suggestion-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            ${getTypeIcon(s.type)}
+                        </svg>
+                        <span class="suggestion-text">${Utils.escapeHtml(s.title)}</span>
+                        <span class="suggestion-type">${s.type}</span>
+                    </div>
+                `).join('');
+
+                suggestionsList.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        window.location.hash = `#/${item.dataset.type}s/${item.dataset.id}`;
+                    });
+                });
+
+                document.getElementById('recent-searches-section').style.display = state.recentSearches.length > 0 ? 'block' : 'none';
+                document.getElementById('suggestions-section').style.display = 'block';
+                searchSuggestions.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Failed to get suggestions:', error);
+        }
+    }
+
+    function hideSuggestions() {
+        searchSuggestions.style.display = 'none';
+    }
+
+    function getTypeIcon(type) {
+        const icons = {
+            bookmark: '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+            note: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>',
+            contact: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+            message: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+            entity: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
+        };
+        return icons[type] || icons.note;
+    }
+
+    async function performSearch() {
+        const query = searchInput.value.trim();
+        if (!query) return;
+
+        state.query = query;
+        state.currentPage = 1;
+        state.searchStartTime = performance.now();
+
+        // Add to recent searches
+        addToRecentSearches(query);
+
+        showLoadingState();
+
+        try {
+            const results = await window.app.api.search(query);
+            state.results = filterResults(results);
+
+            const searchTime = Math.round(performance.now() - state.searchStartTime);
+
+            if (state.aiMode) {
+                showAILoadingState();
+                await generateAIAnswer(query, state.results);
+            }
+
+            if (hasResults(state.results)) {
+                showResults(searchTime);
+            } else {
+                showNoResults();
+            }
+        } catch (error) {
+            console.error('Search failed:', error);
+            showError();
+        }
+    }
+
+    function filterResults(results) {
+        const filtered = {};
+
+        // Filter by types
+        if (state.filters.types.includes('bookmarks') && results.bookmarks) {
+            filtered.bookmarks = results.bookmarks;
+            if (state.filters.source) {
+                filtered.bookmarks = filtered.bookmarks.filter(b => b.category_name === state.filters.source);
+            }
+        }
+        if (state.filters.types.includes('notes') && results.notes) {
+            filtered.notes = results.notes;
+            if (state.filters.tags.length > 0) {
+                filtered.notes = filtered.notes.filter(n =>
+                    n.tags && state.filters.tags.some(t => n.tags.includes(t))
+                );
+            }
+        }
+        if (state.filters.types.includes('contacts') && results.contacts) {
+            filtered.contacts = results.contacts;
+        }
+        if (state.filters.types.includes('messages') && results.messages) {
+            filtered.messages = results.messages;
+        }
+        if (state.filters.types.includes('entities') && results.entities) {
+            filtered.entities = results.entities;
+        }
+
+        // Filter by date range
+        if (state.filters.dateRange !== 'all') {
+            const now = new Date();
+            let startDate;
+
+            switch (state.filters.dateRange) {
+                case 'today':
+                    startDate = new Date(now.setHours(0, 0, 0, 0));
+                    break;
+                case 'week':
+                    startDate = new Date(now.setDate(now.getDate() - 7));
+                    break;
+                case 'month':
+                    startDate = new Date(now.setMonth(now.getMonth() - 1));
+                    break;
+                case 'quarter':
+                    startDate = new Date(now.setMonth(now.getMonth() - 3));
+                    break;
+                case 'year':
+                    startDate = new Date(now.setFullYear(now.getFullYear() - 1));
+                    break;
+                case 'custom':
+                    startDate = state.filters.dateFrom ? new Date(state.filters.dateFrom) : null;
+                    break;
+            }
+
+            if (startDate) {
+                Object.keys(filtered).forEach(key => {
+                    filtered[key] = filtered[key].filter(item => {
+                        const date = new Date(item.creation_date || item.created || item.event_datetime || item.created_at);
+                        return date >= startDate;
+                    });
+                });
+            }
+        }
+
+        return filtered;
+    }
+
+    function hasResults(results) {
+        return Object.values(results).some(arr => arr && arr.length > 0);
+    }
+
+    function getTotalCount(results) {
+        return Object.values(results).reduce((sum, arr) => sum + (arr?.length || 0), 0);
+    }
+
+    function showLoadingState() {
+        initialState.style.display = 'none';
+        resultsList.style.display = 'none';
+        noResultsState.style.display = 'none';
+        errorState.style.display = 'none';
+        aiAnswerPanel.style.display = 'none';
+        resultsHeader.style.display = 'none';
+        loadMoreContainer.style.display = 'none';
+        loadingState.style.display = 'flex';
+    }
+
+    function showAILoadingState() {
+        loadingState.style.display = 'none';
+        aiLoadingState.style.display = 'flex';
+    }
+
+    function showResults(searchTime) {
+        loadingState.style.display = 'none';
+        aiLoadingState.style.display = 'none';
+
+        const total = getTotalCount(state.results);
+        resultsCount.textContent = `${total} result${total !== 1 ? 's' : ''}`;
+        resultsTime.textContent = `in ${searchTime}ms`;
+
+        // Results breakdown
+        const breakdown = [];
+        if (state.results.bookmarks?.length) breakdown.push(`<span class="results-breakdown-item">${state.results.bookmarks.length} bookmarks</span>`);
+        if (state.results.notes?.length) breakdown.push(`<span class="results-breakdown-item">${state.results.notes.length} notes</span>`);
+        if (state.results.contacts?.length) breakdown.push(`<span class="results-breakdown-item">${state.results.contacts.length} contacts</span>`);
+        if (state.results.messages?.length) breakdown.push(`<span class="results-breakdown-item">${state.results.messages.length} messages</span>`);
+        if (state.results.entities?.length) breakdown.push(`<span class="results-breakdown-item">${state.results.entities.length} entities</span>`);
+        resultsBreakdown.innerHTML = breakdown.join('');
+
+        resultsHeader.style.display = 'flex';
+        resultsList.style.display = 'flex';
+
+        renderResults();
+    }
+
+    function renderResults() {
+        resultsList.className = `results-list ${state.layout}`;
+        let html = '';
+
+        // Render by type groups
+        if (state.results.bookmarks?.length > 0) {
+            html += renderResultGroup('Bookmarks', 'bookmark', state.results.bookmarks);
+        }
+        if (state.results.notes?.length > 0) {
+            html += renderResultGroup('Notes', 'note', state.results.notes);
+        }
+        if (state.results.contacts?.length > 0) {
+            html += renderResultGroup('Contacts', 'contact', state.results.contacts);
+        }
+        if (state.results.messages?.length > 0) {
+            html += renderResultGroup('Messages', 'message', state.results.messages);
+        }
+        if (state.results.entities?.length > 0) {
+            html += renderResultGroup('Entities', 'entity', state.results.entities);
+        }
+
+        resultsList.innerHTML = html;
+        attachResultListeners();
+    }
+
+    function renderResultGroup(title, type, items) {
+        const icon = getTypeIcon(type);
+        return `
+            <div class="result-group">
+                <div class="result-group-header">
+                    <svg class="result-group-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${icon}
+                    </svg>
+                    <span class="result-group-title">${title}</span>
+                    <span class="result-group-count">(${items.length})</span>
+                </div>
+                <div class="result-group-items">
+                    ${items.map(item => renderResultCard(type, item)).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderResultCard(type, item) {
+        const score = Math.random() * 30 + 70; // Mock relevance score
+        const highlighted = highlightQuery(getItemTitle(type, item), state.query);
+        const snippet = highlightQuery(getItemSnippet(type, item), state.query);
+        const date = getItemDate(type, item);
+        const id = getItemId(type, item);
+
+        return `
+            <div class="result-card ${state.layout}" data-type="${type}" data-id="${id}">
+                <div class="result-icon ${type}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${getTypeIcon(type)}
+                    </svg>
+                </div>
+                <div class="result-content">
+                    <div class="result-header">
+                        <div class="result-title">${highlighted}</div>
+                        <span class="badge badge-${getTypeBadgeClass(type)} result-badge">${type}</span>
+                    </div>
+                    <div class="result-snippet">${snippet}</div>
+                    <div class="result-meta">
+                        <span class="result-meta-item">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            ${Utils.formatRelativeTime(date)}
+                        </span>
+                        <div class="result-score">
+                            <span>${Math.round(score)}%</span>
+                            <div class="result-score-bar">
+                                <div class="result-score-fill" style="width: ${score}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-actions">
+                    <button class="result-action-btn" data-action="open" title="Open">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </button>
+                    <button class="result-action-btn" data-action="copy" title="Copy">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function getItemTitle(type, item) {
+        switch (type) {
+            case 'bookmark': return item.title || item.url;
+            case 'note': return item.title || 'Untitled Note';
+            case 'contact': return item.name;
+            case 'message': return item.body || '';
+            case 'entity': return item.name;
+            default: return 'Unknown';
+        }
+    }
+
+    function getItemSnippet(type, item) {
+        switch (type) {
+            case 'bookmark': return item.summary || item.url;
+            case 'note': return item.contents?.substring(0, 150) || '';
+            case 'contact': return item.notes || item.email || '';
+            case 'message': return item.body || '';
+            case 'entity': return item.description || '';
+            default: return '';
+        }
+    }
+
+    function getItemDate(type, item) {
+        switch (type) {
+            case 'bookmark': return item.creation_date;
+            case 'note': return new Date(item.modified || item.created);
+            case 'contact': return item.last_update || item.creation_date;
+            case 'message': return item.event_datetime;
+            case 'entity': return item.updated_at || item.created_at;
+            default: return new Date();
+        }
+    }
+
+    function getItemId(type, item) {
+        switch (type) {
+            case 'bookmark': return item.bookmark_id;
+            case 'note': return item.id;
+            case 'contact': return item.contact_id;
+            case 'message': return item.message_id;
+            case 'entity': return item.entity_id;
+            default: return '';
+        }
+    }
+
+    function getTypeBadgeClass(type) {
+        const classes = {
+            bookmark: 'info',
+            note: 'success',
+            contact: 'warning',
+            message: 'pending',
+            entity: 'error'
+        };
+        return classes[type] || 'pending';
+    }
+
+    function highlightQuery(text, query) {
+        if (!text || !query) return Utils.escapeHtml(text || '');
+        const escaped = Utils.escapeHtml(text);
+        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return escaped.replace(regex, '<mark>$1</mark>');
+    }
+
+    function attachResultListeners() {
+        document.querySelectorAll('.result-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.result-action-btn')) return;
+                const type = card.dataset.type;
+                const id = card.dataset.id;
+                window.location.hash = `#/${type}s/${id}`;
+            });
+        });
+
+        document.querySelectorAll('.result-action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.result-card');
+                const type = card.dataset.type;
+                const id = card.dataset.id;
+                const action = btn.dataset.action;
+
+                if (action === 'open') {
+                    window.location.hash = `#/${type}s/${id}`;
+                } else if (action === 'copy') {
+                    const title = card.querySelector('.result-title').textContent;
+                    navigator.clipboard.writeText(title);
+                    window.app?.toast?.success('Copied to clipboard');
+                }
+            });
+        });
+    }
+
+    async function generateAIAnswer(query, results) {
+        // Simulate AI processing delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        aiLoadingState.style.display = 'none';
+
+        if (!hasResults(results)) return;
+
+        // Generate mock AI answer
+        const totalResults = getTotalCount(results);
+        const sources = [];
+
+        if (results.bookmarks?.length > 0) sources.push(...results.bookmarks.slice(0, 2));
+        if (results.notes?.length > 0) sources.push(...results.notes.slice(0, 2));
+
+        document.getElementById('ai-answer-content').innerHTML = `
+            <p>Based on your search for "<strong>${Utils.escapeHtml(query)}</strong>", I found ${totalResults} relevant items in your knowledge base.</p>
+            <p style="margin-top: var(--space-2);">The most relevant results include ${results.bookmarks?.length || 0} bookmarks related to ${query}, ${results.notes?.length || 0} notes that mention this topic, and ${results.contacts?.length || 0} contacts associated with this subject.</p>
+        `;
+
+        document.getElementById('ai-answer-sources').innerHTML = sources.map(s => `
+            <a href="#" class="ai-source-link">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                </svg>
+                ${Utils.escapeHtml(Utils.truncate(s.title || s.name || 'Source', 30))}
+            </a>
+        `).join('');
+
+        document.getElementById('ai-followup-questions').innerHTML = [
+            `More about ${query}`,
+            `${query} best practices`,
+            `Related to ${query}`
+        ].map(q => `
+            <button class="ai-followup-btn" data-query="${Utils.escapeHtml(q)}">${Utils.escapeHtml(q)}</button>
+        `).join('');
+
+        document.querySelectorAll('.ai-followup-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                searchInput.value = btn.dataset.query;
+                performSearch();
+            });
+        });
+
+        aiAnswerPanel.style.display = 'block';
+    }
+
+    function showInitialState() {
+        resultsHeader.style.display = 'none';
+        resultsList.style.display = 'none';
+        loadingState.style.display = 'none';
+        aiLoadingState.style.display = 'none';
+        noResultsState.style.display = 'none';
+        errorState.style.display = 'none';
+        aiAnswerPanel.style.display = 'none';
+        loadMoreContainer.style.display = 'none';
+        initialState.style.display = 'flex';
+    }
+
+    function showNoResults() {
+        loadingState.style.display = 'none';
+        aiLoadingState.style.display = 'none';
+        resultsList.style.display = 'none';
+        resultsHeader.style.display = 'none';
+        aiAnswerPanel.style.display = 'none';
+        noResultsState.style.display = 'flex';
+    }
+
+    function showError() {
+        loadingState.style.display = 'none';
+        aiLoadingState.style.display = 'none';
+        resultsList.style.display = 'none';
+        resultsHeader.style.display = 'none';
+        aiAnswerPanel.style.display = 'none';
+        noResultsState.style.display = 'none';
+        errorState.style.display = 'flex';
+    }
+
+    function addToRecentSearches(query) {
+        state.recentSearches = state.recentSearches.filter(s => s !== query);
+        state.recentSearches.unshift(query);
+        state.recentSearches = state.recentSearches.slice(0, 10);
+        localStorage.setItem('garden_recent_searches', JSON.stringify(state.recentSearches));
+    }
+
+    function resetFilters() {
+        state.filters = {
+            types: ['bookmarks', 'notes', 'contacts', 'messages', 'entities'],
+            dateRange: 'all',
+            dateFrom: null,
+            dateTo: null,
+            tags: [],
+            source: '',
+            weights: { exactMatch: 5, similarity: 2, recency: 1 }
+        };
+
+        document.querySelectorAll('input[name="type"]').forEach(cb => cb.checked = true);
+        dateRangeSelect.value = 'all';
+        customDateRange.style.display = 'none';
+        document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+        document.getElementById('source-filter').value = '';
+        document.getElementById('exact-match-weight').value = 5;
+        document.getElementById('exact-match-value').textContent = '5';
+        document.getElementById('similarity-weight').value = 2;
+        document.getElementById('similarity-value').textContent = '2';
+        document.getElementById('recency-weight').value = 1;
+        document.getElementById('recency-value').textContent = '1';
+    }
+
+    function loadMore() {
+        state.currentPage++;
+        performSearch();
+    }
+
+    function showSaveSearchModal() {
+        if (!state.query) {
+            window.app?.toast?.warning('No search to save');
+            return;
+        }
+        document.getElementById('save-search-name').value = state.query;
+        saveSearchModal.style.display = 'flex';
+        document.getElementById('save-search-name').focus();
+    }
+
+    function saveSearch() {
+        const name = document.getElementById('save-search-name').value.trim();
+        if (!name) {
+            window.app?.toast?.warning('Please enter a name');
+            return;
+        }
+
+        const search = {
+            id: Date.now(),
+            name: name,
+            query: state.query,
+            filters: { ...state.filters }
+        };
+
+        state.savedSearches.unshift(search);
+        localStorage.setItem('garden_saved_searches', JSON.stringify(state.savedSearches));
+
+        saveSearchModal.style.display = 'none';
+        renderSavedSearches();
+        window.app?.toast?.success('Search saved');
+    }
+
+    function renderSavedSearches() {
+        if (state.savedSearches.length === 0) {
+            savedSearchesList.innerHTML = '<p class="text-muted text-sm" style="padding: var(--space-3);">No saved searches yet</p>';
+            return;
+        }
+
+        savedSearchesList.innerHTML = state.savedSearches.map(search => `
+            <div class="saved-search-item" data-id="${search.id}">
+                <div class="saved-search-info">
+                    <div class="saved-search-name">${Utils.escapeHtml(search.name)}</div>
+                    <div class="saved-search-query">${Utils.escapeHtml(search.query)}</div>
+                </div>
+                <button class="saved-search-delete" data-id="${search.id}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        `).join('');
+
+        savedSearchesList.querySelectorAll('.saved-search-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (e.target.closest('.saved-search-delete')) return;
+                const search = state.savedSearches.find(s => s.id === parseInt(item.dataset.id));
+                if (search) {
+                    searchInput.value = search.query;
+                    state.filters = { ...search.filters };
+                    performSearch();
+                    savedSearchesDropdown.style.display = 'none';
+                }
+            });
+        });
+
+        savedSearchesList.querySelectorAll('.saved-search-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.dataset.id);
+                state.savedSearches = state.savedSearches.filter(s => s.id !== id);
+                localStorage.setItem('garden_saved_searches', JSON.stringify(state.savedSearches));
+                renderSavedSearches();
+                window.app?.toast?.info('Search deleted');
+            });
+        });
+    }
+
+    // Initialize
+    init();
+
+    // Expose search function for command palette integration
+    window.gardenSearch = {
+        performSearch: (query) => {
+            searchInput.value = query;
+            performSearch();
+        },
+        getResults: () => state.results
+    };
+})();
+</script>

@@ -1,0 +1,2235 @@
+<!-- Notes Management - Three Column Layout (Notion/Bear Style) -->
+<style>
+/* Notes App Container - Full Height Three Column Layout */
+.notes-app {
+    display: flex;
+    height: calc(100vh - var(--top-bar-height) - var(--space-12));
+    margin: calc(-1 * var(--space-6));
+    margin-top: 0;
+    background-color: var(--color-background);
+    overflow: hidden;
+}
+
+/* Tags Sidebar (Left Column) */
+.notes-tags-sidebar {
+    width: 200px;
+    min-width: 200px;
+    background-color: var(--color-background-secondary);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.notes-tags-header {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.notes-tags-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-2);
+}
+
+.notes-tags-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-2);
+}
+
+.notes-tag-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.notes-tag-item:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.notes-tag-item.active {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+}
+
+.notes-tag-item.all-notes {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
+    padding-bottom: var(--space-3);
+}
+
+.notes-tag-count {
+    font-size: var(--font-size-xs);
+    background-color: var(--color-background-active);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+    min-width: 24px;
+    text-align: center;
+}
+
+.notes-tag-item.active .notes-tag-count {
+    background-color: var(--color-accent);
+    color: white;
+}
+
+/* Notes List (Center Column) */
+.notes-list-panel {
+    width: 320px;
+    min-width: 280px;
+    background-color: var(--color-background-elevated);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.notes-list-header {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.notes-list-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+}
+
+.notes-list-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.notes-search-box {
+    position: relative;
+    margin-bottom: var(--space-3);
+}
+
+.notes-search-input {
+    width: 100%;
+    padding: var(--space-2) var(--space-3) var(--space-2) var(--space-8);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.notes-search-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.notes-search-icon {
+    position: absolute;
+    left: var(--space-2);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-tertiary);
+    pointer-events: none;
+}
+
+.notes-sort-select {
+    width: 100%;
+    padding: var(--space-2);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    cursor: pointer;
+}
+
+.notes-list-container {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.note-list-item {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.note-list-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.note-list-item.active {
+    background-color: var(--color-accent-light);
+    border-left: 3px solid var(--color-accent);
+}
+
+.note-list-title {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-text-primary);
+}
+
+.note-list-preview {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.note-list-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.note-list-tags {
+    display: flex;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+}
+
+.note-list-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+}
+
+/* Note Editor (Right Column) */
+.notes-editor-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--color-background);
+}
+
+.notes-editor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background-elevated);
+}
+
+.notes-editor-tabs {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.notes-editor-tab {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.notes-editor-tab:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.notes-editor-tab.active {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+}
+
+.notes-editor-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.auto-save-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.auto-save-indicator.saving {
+    color: var(--color-warning);
+}
+
+.auto-save-indicator.saved {
+    color: var(--color-success);
+}
+
+.auto-save-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+/* Editor Toolbar */
+.notes-editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+    flex-wrap: wrap;
+}
+
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.toolbar-btn:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.toolbar-btn.active {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+}
+
+.toolbar-separator {
+    width: 1px;
+    height: 24px;
+    background-color: var(--color-border);
+    margin: 0 var(--space-2);
+}
+
+/* Editor Content Area */
+.notes-editor-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.note-title-input {
+    width: 100%;
+    padding: var(--space-4) var(--space-6);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    outline: none;
+}
+
+.note-title-input::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+.note-content-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.note-textarea {
+    flex: 1;
+    padding: 0 var(--space-6) var(--space-6);
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    font-size: var(--font-size-sm);
+    line-height: 1.7;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    resize: none;
+    outline: none;
+}
+
+.note-textarea::placeholder {
+    color: var(--color-text-tertiary);
+}
+
+/* Preview Mode */
+.note-preview {
+    flex: 1;
+    padding: var(--space-4) var(--space-6);
+    overflow-y: auto;
+    display: none;
+}
+
+.note-preview.active {
+    display: block;
+}
+
+.note-preview h1, .note-preview h2, .note-preview h3, .note-preview h4 {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.note-preview h1 { font-size: var(--font-size-2xl); }
+.note-preview h2 { font-size: var(--font-size-xl); }
+.note-preview h3 { font-size: var(--font-size-lg); }
+.note-preview h4 { font-size: var(--font-size-base); }
+
+.note-preview p {
+    margin-bottom: var(--space-4);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+}
+
+.note-preview ul, .note-preview ol {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+}
+
+.note-preview li {
+    margin-bottom: var(--space-2);
+    color: var(--color-text-secondary);
+}
+
+.note-preview ul li { list-style-type: disc; }
+.note-preview ol li { list-style-type: decimal; }
+
+.note-preview code {
+    font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    font-size: var(--font-size-sm);
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border-radius: var(--radius-sm);
+    color: var(--color-accent);
+}
+
+.note-preview pre {
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+}
+
+.note-preview pre code {
+    padding: 0;
+    background: transparent;
+    color: var(--color-text-primary);
+}
+
+.note-preview blockquote {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--color-accent);
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+.note-preview a {
+    color: var(--color-accent);
+    text-decoration: underline;
+}
+
+.note-preview hr {
+    margin: var(--space-6) 0;
+    border: none;
+    border-top: 1px solid var(--color-border);
+}
+
+.note-preview table {
+    width: 100%;
+    margin-bottom: var(--space-4);
+    border-collapse: collapse;
+}
+
+.note-preview th, .note-preview td {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    text-align: left;
+}
+
+.note-preview th {
+    background-color: var(--color-background-secondary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.note-preview .task-list-item {
+    list-style: none;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+}
+
+.note-preview .task-checkbox {
+    margin-top: 4px;
+}
+
+.entity-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 2px 8px;
+    background-color: var(--color-info-bg);
+    color: var(--color-info);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.entity-link:hover {
+    background-color: var(--color-accent-light);
+}
+
+/* Tags Input Section */
+.note-tags-section {
+    padding: var(--space-3) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+}
+
+.note-tags-label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+}
+
+.note-tags-input-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+.note-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-background-active);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.note-tag-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    color: var(--color-text-tertiary);
+    transition: all var(--transition-fast);
+}
+
+.note-tag-remove:hover {
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
+}
+
+.note-tags-input {
+    flex: 1;
+    min-width: 100px;
+    padding: var(--space-1) 0;
+    border: none;
+    background: transparent;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    outline: none;
+}
+
+/* Tags Autocomplete Dropdown */
+.tags-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+}
+
+.tags-autocomplete.active {
+    display: block;
+}
+
+.tags-autocomplete-item {
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.tags-autocomplete-item:hover,
+.tags-autocomplete-item.highlighted {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+/* Entity Autocomplete */
+.entity-autocomplete {
+    position: fixed;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+    max-height: 200px;
+    overflow-y: auto;
+    min-width: 200px;
+    display: none;
+}
+
+.entity-autocomplete.active {
+    display: block;
+}
+
+.entity-autocomplete-item {
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.entity-autocomplete-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.entity-autocomplete-name {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+}
+
+.entity-autocomplete-type {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Note Footer Stats */
+.note-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.note-stats {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.note-stat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+/* Entity References Section */
+.note-references-section {
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-background-secondary);
+}
+
+.references-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-3);
+}
+
+.references-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.reference-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.reference-item:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.backlinks-section {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Empty States */
+.notes-empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8);
+    text-align: center;
+}
+
+.notes-empty-icon {
+    width: 64px;
+    height: 64px;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-4);
+}
+
+.notes-empty-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-2);
+}
+
+.notes-empty-description {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+    max-width: 300px;
+}
+
+/* Dropdown Menu */
+.note-actions-dropdown {
+    position: relative;
+}
+
+.note-actions-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 180px;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--transition-fast);
+    margin-top: var(--space-2);
+    padding: var(--space-2);
+}
+
+.note-actions-dropdown.active .note-actions-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.note-action-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    width: 100%;
+    text-align: left;
+}
+
+.note-action-item:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.note-action-item.danger {
+    color: var(--color-error);
+}
+
+.note-action-item.danger:hover {
+    background-color: var(--color-error-bg);
+}
+
+.note-action-divider {
+    height: 1px;
+    background-color: var(--color-border);
+    margin: var(--space-2) 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .notes-tags-sidebar {
+        width: 160px;
+        min-width: 160px;
+    }
+
+    .notes-list-panel {
+        width: 280px;
+        min-width: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .notes-app {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .notes-tags-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .notes-list-panel {
+        width: 100%;
+        height: 300px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .notes-editor-panel {
+        min-height: 400px;
+    }
+}
+</style>
+
+<div class="notes-app" id="notes-app">
+    <!-- Tags Sidebar (Left Column) -->
+    <div class="notes-tags-sidebar" id="notes-tags-sidebar">
+        <div class="notes-tags-header">
+            <div class="notes-tags-title">Tags</div>
+        </div>
+        <div class="notes-tags-list" id="notes-tags-list">
+            <!-- Tags will be populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Notes List (Center Column) -->
+    <div class="notes-list-panel" id="notes-list-panel">
+        <div class="notes-list-header">
+            <div class="notes-list-actions">
+                <span class="notes-list-title">Notes</span>
+                <button class="btn btn-primary btn-sm" id="create-note-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    New
+                </button>
+            </div>
+            <div class="notes-search-box">
+                <svg class="notes-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" class="notes-search-input" placeholder="Search notes..." id="notes-search-input">
+            </div>
+            <select class="notes-sort-select" id="notes-sort-select">
+                <option value="modified-desc">Last modified</option>
+                <option value="modified-asc">Oldest modified</option>
+                <option value="created-desc">Recently created</option>
+                <option value="created-asc">Oldest created</option>
+                <option value="title-asc">Title A-Z</option>
+                <option value="title-desc">Title Z-A</option>
+            </select>
+        </div>
+        <div class="notes-list-container" id="notes-list-container">
+            <!-- Notes list will be populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Note Editor (Right Column) -->
+    <div class="notes-editor-panel" id="notes-editor-panel">
+        <!-- Empty state shown when no note is selected -->
+        <div class="notes-empty-state" id="notes-empty-state">
+            <svg class="notes-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10,9 9,9 8,9"/>
+            </svg>
+            <h3 class="notes-empty-title">Select a note</h3>
+            <p class="notes-empty-description">Choose a note from the list to view and edit, or create a new one to get started.</p>
+            <button class="btn btn-primary" id="create-note-btn-empty">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Create New Note
+            </button>
+        </div>
+
+        <!-- Editor content (hidden until note is selected) -->
+        <div class="notes-editor-content-wrapper" id="notes-editor-wrapper" style="display: none; flex-direction: column; flex: 1; overflow: hidden;">
+            <!-- Editor Header -->
+            <div class="notes-editor-header">
+                <div class="notes-editor-tabs">
+                    <button class="notes-editor-tab active" id="tab-edit" data-tab="edit">Edit</button>
+                    <button class="notes-editor-tab" id="tab-preview" data-tab="preview">Preview</button>
+                    <button class="notes-editor-tab" id="tab-split" data-tab="split">Split</button>
+                </div>
+                <div class="notes-editor-actions">
+                    <div class="auto-save-indicator" id="auto-save-indicator">
+                        <span class="auto-save-dot"></span>
+                        <span id="auto-save-text">Saved</span>
+                    </div>
+                    <div class="note-actions-dropdown" id="note-actions-dropdown">
+                        <button class="btn btn-ghost btn-sm" id="note-actions-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="1"/>
+                                <circle cx="12" cy="5" r="1"/>
+                                <circle cx="12" cy="19" r="1"/>
+                            </svg>
+                        </button>
+                        <div class="note-actions-menu">
+                            <button class="note-action-item" id="action-duplicate">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                Duplicate
+                            </button>
+                            <button class="note-action-item" id="action-export">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export as Markdown
+                            </button>
+                            <button class="note-action-item" id="action-share">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="18" cy="5" r="3"/>
+                                    <circle cx="6" cy="12" r="3"/>
+                                    <circle cx="18" cy="19" r="3"/>
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                                </svg>
+                                Copy Link
+                            </button>
+                            <button class="note-action-item" id="action-history">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                                View History
+                            </button>
+                            <div class="note-action-divider"></div>
+                            <button class="note-action-item danger" id="action-delete">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                                Delete Note
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editor Toolbar -->
+            <div class="notes-editor-toolbar" id="notes-editor-toolbar">
+                <button class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                        <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="4" x2="10" y2="4"/>
+                        <line x1="14" y1="20" x2="5" y2="20"/>
+                        <line x1="15" y1="4" x2="9" y2="20"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="strikethrough" title="Strikethrough">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.3 4.9c-2.3-.6-4.4-1-6.2-.9-2.7 0-5.3.7-5.3 3.6 0 1.5 1.8 3.3 7.2 3.3"/>
+                        <path d="M8.2 19.1c2.3.6 4.4 1 6.2.9 2.7 0 5.3-.7 5.3-3.6 0-1.5-1.8-3.3-7.2-3.3"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                    </svg>
+                </button>
+                <div class="toolbar-separator"></div>
+                <button class="toolbar-btn" data-action="h1" title="Heading 1">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h8"/>
+                        <path d="M4 18V6"/>
+                        <path d="M12 18V6"/>
+                        <path d="M17 10v8"/>
+                        <path d="M21 10h-3l2 2"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="h2" title="Heading 2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h8"/>
+                        <path d="M4 18V6"/>
+                        <path d="M12 18V6"/>
+                        <path d="M21 18h-3c-.5 0-1-.5-1-1v-1.5a2 2 0 0 1 2-2 2 2 0 0 0 2-2V11c0-.5-.5-1-1-1h-3"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="h3" title="Heading 3">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h8"/>
+                        <path d="M4 18V6"/>
+                        <path d="M12 18V6"/>
+                        <path d="M17.5 10.5c1.5-1 3.5-1 3.5 1.5a2 2 0 0 1-2 2"/>
+                        <path d="M17 17.5c0 1.5 1.5 2.5 3 2.5s3-1 3-2.5-2-2-3-2"/>
+                    </svg>
+                </button>
+                <div class="toolbar-separator"></div>
+                <button class="toolbar-btn" data-action="ul" title="Bullet List">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"/>
+                        <line x1="8" y1="12" x2="21" y2="12"/>
+                        <line x1="8" y1="18" x2="21" y2="18"/>
+                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="ol" title="Numbered List">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="10" y1="6" x2="21" y2="6"/>
+                        <line x1="10" y1="12" x2="21" y2="12"/>
+                        <line x1="10" y1="18" x2="21" y2="18"/>
+                        <path d="M4 6h1v4"/>
+                        <path d="M4 10h2"/>
+                        <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="task" title="Task List">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="5" width="6" height="6" rx="1"/>
+                        <path d="M3 17h6"/>
+                        <path d="M13 6h8"/>
+                        <path d="M13 12h8"/>
+                        <path d="M13 18h8"/>
+                    </svg>
+                </button>
+                <div class="toolbar-separator"></div>
+                <button class="toolbar-btn" data-action="quote" title="Quote">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/>
+                        <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="code" title="Inline Code">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="codeblock" title="Code Block">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M7 7h.01"/>
+                        <path d="M11 7h.01"/>
+                        <path d="M7 11h10"/>
+                        <path d="M7 15h6"/>
+                    </svg>
+                </button>
+                <div class="toolbar-separator"></div>
+                <button class="toolbar-btn" data-action="link" title="Link (Ctrl+K)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="image" title="Image">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="table" title="Table">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M3 15h18"/>
+                        <path d="M9 3v18"/>
+                        <path d="M15 3v18"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn" data-action="hr" title="Horizontal Rule">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                    </svg>
+                </button>
+                <div class="toolbar-separator"></div>
+                <button class="toolbar-btn" data-action="entity" title="Insert Entity Reference">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <circle cx="19" cy="5" r="2"/>
+                        <circle cx="5" cy="5" r="2"/>
+                        <line x1="12" y1="9" x2="12" y2="5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Editor Content -->
+            <div class="notes-editor-content" id="notes-editor-content">
+                <input type="text" class="note-title-input" id="note-title-input" placeholder="Untitled Note">
+                <div class="note-content-wrapper" id="note-content-wrapper">
+                    <textarea class="note-textarea" id="note-textarea" placeholder="Start writing... Use [[entity name]] to reference entities."></textarea>
+                    <div class="note-preview" id="note-preview"></div>
+                </div>
+            </div>
+
+            <!-- Tags Section -->
+            <div class="note-tags-section">
+                <div class="note-tags-label">Tags</div>
+                <div class="note-tags-input-container" id="note-tags-container">
+                    <!-- Tags will be populated dynamically -->
+                    <input type="text" class="note-tags-input" id="note-tags-input" placeholder="Add tag...">
+                </div>
+                <div class="tags-autocomplete" id="tags-autocomplete"></div>
+            </div>
+
+            <!-- Entity References Section -->
+            <div class="note-references-section" id="note-references-section" style="display: none;">
+                <div class="references-title">Entity References</div>
+                <div class="references-grid" id="references-grid">
+                    <!-- Entity references will be populated dynamically -->
+                </div>
+                <div class="backlinks-section" id="backlinks-section" style="display: none;">
+                    <div class="references-title">Backlinks</div>
+                    <div class="references-grid" id="backlinks-grid">
+                        <!-- Backlinks will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Stats -->
+            <div class="note-footer">
+                <div class="note-stats">
+                    <span class="note-stat" id="word-count">0 words</span>
+                    <span class="note-stat" id="char-count">0 characters</span>
+                    <span class="note-stat" id="reading-time">0 min read</span>
+                </div>
+                <div class="note-dates" id="note-dates">
+                    <!-- Dates will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Entity Autocomplete Dropdown -->
+<div class="entity-autocomplete" id="entity-autocomplete"></div>
+
+<script>
+(function() {
+    // State
+    let notes = [];
+    let tags = [];
+    let entities = [];
+    let selectedNoteId = null;
+    let selectedTag = null;
+    let searchQuery = '';
+    let sortBy = 'modified-desc';
+    let autoSaveTimeout = null;
+    let currentViewMode = 'edit';
+    let entityAutocompleteActive = false;
+    let entityAutocompleteStart = -1;
+
+    // DOM Elements
+    const notesApp = document.getElementById('notes-app');
+    const tagsList = document.getElementById('notes-tags-list');
+    const notesListContainer = document.getElementById('notes-list-container');
+    const searchInput = document.getElementById('notes-search-input');
+    const sortSelect = document.getElementById('notes-sort-select');
+    const createNoteBtn = document.getElementById('create-note-btn');
+    const createNoteBtnEmpty = document.getElementById('create-note-btn-empty');
+    const emptyState = document.getElementById('notes-empty-state');
+    const editorWrapper = document.getElementById('notes-editor-wrapper');
+    const titleInput = document.getElementById('note-title-input');
+    const textarea = document.getElementById('note-textarea');
+    const preview = document.getElementById('note-preview');
+    const autoSaveIndicator = document.getElementById('auto-save-indicator');
+    const autoSaveText = document.getElementById('auto-save-text');
+    const noteTagsContainer = document.getElementById('note-tags-container');
+    const noteTagsInput = document.getElementById('note-tags-input');
+    const tagsAutocomplete = document.getElementById('tags-autocomplete');
+    const entityAutocomplete = document.getElementById('entity-autocomplete');
+    const referencesSection = document.getElementById('note-references-section');
+    const referencesGrid = document.getElementById('references-grid');
+    const backlinksSection = document.getElementById('backlinks-section');
+    const backlinksGrid = document.getElementById('backlinks-grid');
+    const noteDates = document.getElementById('note-dates');
+    const wordCountEl = document.getElementById('word-count');
+    const charCountEl = document.getElementById('char-count');
+    const readingTimeEl = document.getElementById('reading-time');
+    const actionsDropdown = document.getElementById('note-actions-dropdown');
+
+    // Initialize
+    async function init() {
+        await loadData();
+        renderTags();
+        renderNotesList();
+        setupEventListeners();
+    }
+
+    // Load data from API
+    async function loadData() {
+        try {
+            const [notesData, tagsData, entitiesData] = await Promise.all([
+                window.GardenApp ? app.api.getNotes({ page: 1, pageSize: 100 }) : Promise.resolve({ notes: [] }),
+                window.GardenApp ? app.api.getTags() : Promise.resolve([]),
+                window.GardenApp ? app.api.getEntities({ page: 1, pageSize: 100 }) : Promise.resolve({ data: [] })
+            ]);
+            notes = notesData.notes || [];
+            tags = tagsData || [];
+            entities = entitiesData.data || [];
+        } catch (error) {
+            console.error('Failed to load data:', error);
+            notes = [];
+            tags = [];
+            entities = [];
+        }
+    }
+
+    // Render tags sidebar
+    function renderTags() {
+        // Calculate tag counts
+        const tagCounts = {};
+        notes.forEach(note => {
+            (note.tags || []).forEach(tag => {
+                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+            });
+        });
+
+        let html = `
+            <div class="notes-tag-item all-notes ${!selectedTag ? 'active' : ''}" data-tag="">
+                <span>All Notes</span>
+                <span class="notes-tag-count">${notes.length}</span>
+            </div>
+        `;
+
+        const sortedTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+
+        sortedTags.forEach(tag => {
+            html += `
+                <div class="notes-tag-item ${selectedTag === tag ? 'active' : ''}" data-tag="${Utils.escapeHtml(tag)}">
+                    <span>#${Utils.escapeHtml(tag)}</span>
+                    <span class="notes-tag-count">${tagCounts[tag]}</span>
+                </div>
+            `;
+        });
+
+        tagsList.innerHTML = html;
+
+        // Add click handlers
+        tagsList.querySelectorAll('.notes-tag-item').forEach(item => {
+            item.addEventListener('click', () => {
+                selectedTag = item.dataset.tag || null;
+                renderTags();
+                renderNotesList();
+            });
+        });
+    }
+
+    // Get filtered and sorted notes
+    function getFilteredNotes() {
+        let filtered = [...notes];
+
+        // Filter by tag
+        if (selectedTag) {
+            filtered = filtered.filter(note => (note.tags || []).includes(selectedTag));
+        }
+
+        // Filter by search
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            filtered = filtered.filter(note =>
+                (note.title || '').toLowerCase().includes(query) ||
+                (note.contents || '').toLowerCase().includes(query) ||
+                (note.tags || []).some(tag => tag.toLowerCase().includes(query))
+            );
+        }
+
+        // Sort
+        filtered.sort((a, b) => {
+            switch (sortBy) {
+                case 'modified-desc':
+                    return (b.modified || 0) - (a.modified || 0);
+                case 'modified-asc':
+                    return (a.modified || 0) - (b.modified || 0);
+                case 'created-desc':
+                    return (b.created || 0) - (a.created || 0);
+                case 'created-asc':
+                    return (a.created || 0) - (b.created || 0);
+                case 'title-asc':
+                    return (a.title || '').localeCompare(b.title || '');
+                case 'title-desc':
+                    return (b.title || '').localeCompare(a.title || '');
+                default:
+                    return 0;
+            }
+        });
+
+        return filtered;
+    }
+
+    // Render notes list
+    function renderNotesList() {
+        const filtered = getFilteredNotes();
+
+        if (filtered.length === 0) {
+            notesListContainer.innerHTML = `
+                <div class="notes-empty-state" style="padding: var(--space-6);">
+                    <svg class="notes-empty-icon" style="width: 48px; height: 48px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <h3 class="notes-empty-title" style="font-size: var(--font-size-base);">
+                        ${searchQuery ? 'No notes found' : 'No notes yet'}
+                    </h3>
+                    <p class="notes-empty-description" style="font-size: var(--font-size-sm);">
+                        ${searchQuery ? 'Try a different search term' : 'Create your first note to get started'}
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach(note => {
+            const preview = getPreviewText(note.contents || '');
+            const date = note.modified ? Utils.formatRelativeTime(new Date(note.modified)) : '';
+            const tagsHtml = (note.tags || []).slice(0, 3).map(tag =>
+                `<span class="note-list-tag">#${Utils.escapeHtml(tag)}</span>`
+            ).join('');
+
+            html += `
+                <div class="note-list-item ${note.id === selectedNoteId ? 'active' : ''}" data-id="${note.id}">
+                    <div class="note-list-title">${Utils.escapeHtml(note.title || 'Untitled')}</div>
+                    <div class="note-list-preview">${Utils.escapeHtml(preview)}</div>
+                    <div class="note-list-meta">
+                        <span>${date}</span>
+                        <span>${getWordCount(note.contents || '')} words</span>
+                    </div>
+                    ${tagsHtml ? `<div class="note-list-tags">${tagsHtml}</div>` : ''}
+                </div>
+            `;
+        });
+
+        notesListContainer.innerHTML = html;
+
+        // Add click handlers
+        notesListContainer.querySelectorAll('.note-list-item').forEach(item => {
+            item.addEventListener('click', () => {
+                selectNote(item.dataset.id);
+            });
+        });
+    }
+
+    // Get preview text from markdown content
+    function getPreviewText(content) {
+        // Remove markdown formatting and get first non-empty line
+        const lines = content.split('\n')
+            .map(line => line.replace(/^#+\s*/, '').replace(/[*_`~\[\]]/g, '').trim())
+            .filter(line => line.length > 0);
+        return lines[0] || 'No content';
+    }
+
+    // Get word count
+    function getWordCount(text) {
+        return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+    }
+
+    // Select a note
+    function selectNote(noteId) {
+        selectedNoteId = noteId;
+        const note = notes.find(n => n.id === noteId);
+
+        if (!note) {
+            showEmptyState();
+            return;
+        }
+
+        // Update list selection
+        notesListContainer.querySelectorAll('.note-list-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.id === noteId);
+        });
+
+        // Show editor
+        showEditor(note);
+    }
+
+    // Show empty state
+    function showEmptyState() {
+        emptyState.style.display = 'flex';
+        editorWrapper.style.display = 'none';
+    }
+
+    // Show editor with note
+    function showEditor(note) {
+        emptyState.style.display = 'none';
+        editorWrapper.style.display = 'flex';
+
+        // Populate fields
+        titleInput.value = note.title || '';
+        textarea.value = note.contents || '';
+
+        // Render tags
+        renderNoteTags(note.tags || []);
+
+        // Update stats
+        updateStats(note.contents || '');
+
+        // Update dates
+        noteDates.innerHTML = `
+            Created: ${note.created ? Utils.formatDateTime(new Date(note.created)) : 'Unknown'}
+            | Modified: ${note.modified ? Utils.formatDateTime(new Date(note.modified)) : 'Unknown'}
+        `;
+
+        // Render preview
+        renderPreview(note.contents || '');
+
+        // Find and display entity references
+        updateEntityReferences(note.contents || '');
+
+        // Reset auto-save indicator
+        setAutoSaveStatus('saved');
+    }
+
+    // Render note tags
+    function renderNoteTags(noteTags) {
+        const tagsHtml = noteTags.map(tag => `
+            <span class="note-tag-pill" data-tag="${Utils.escapeHtml(tag)}">
+                #${Utils.escapeHtml(tag)}
+                <button class="note-tag-remove" data-tag="${Utils.escapeHtml(tag)}">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </span>
+        `).join('');
+
+        noteTagsContainer.innerHTML = tagsHtml + `<input type="text" class="note-tags-input" id="note-tags-input" placeholder="Add tag...">`;
+
+        // Re-get reference to input
+        const newTagsInput = document.getElementById('note-tags-input');
+        setupTagsInput(newTagsInput, noteTags);
+
+        // Add remove handlers
+        noteTagsContainer.querySelectorAll('.note-tag-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tagToRemove = btn.dataset.tag;
+                removeTag(tagToRemove);
+            });
+        });
+    }
+
+    // Setup tags input
+    function setupTagsInput(input, noteTags) {
+        input.addEventListener('input', () => {
+            const query = input.value.trim().toLowerCase();
+            if (query.length > 0) {
+                showTagsAutocomplete(query, noteTags);
+            } else {
+                hideTagsAutocomplete();
+            }
+        });
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && input.value.trim()) {
+                e.preventDefault();
+                addTag(input.value.trim());
+                input.value = '';
+                hideTagsAutocomplete();
+            } else if (e.key === 'Escape') {
+                hideTagsAutocomplete();
+            }
+        });
+    }
+
+    // Show tags autocomplete
+    function showTagsAutocomplete(query, currentTags) {
+        const availableTags = tags
+            .map(t => t.name)
+            .filter(t => t.toLowerCase().includes(query) && !currentTags.includes(t));
+
+        if (availableTags.length === 0) {
+            hideTagsAutocomplete();
+            return;
+        }
+
+        tagsAutocomplete.innerHTML = availableTags.slice(0, 10).map(tag => `
+            <div class="tags-autocomplete-item" data-tag="${Utils.escapeHtml(tag)}">
+                #${Utils.escapeHtml(tag)}
+            </div>
+        `).join('');
+
+        tagsAutocomplete.classList.add('active');
+
+        // Add click handlers
+        tagsAutocomplete.querySelectorAll('.tags-autocomplete-item').forEach(item => {
+            item.addEventListener('click', () => {
+                addTag(item.dataset.tag);
+                document.getElementById('note-tags-input').value = '';
+                hideTagsAutocomplete();
+            });
+        });
+    }
+
+    // Hide tags autocomplete
+    function hideTagsAutocomplete() {
+        tagsAutocomplete.classList.remove('active');
+    }
+
+    // Add tag to current note
+    function addTag(tag) {
+        const note = notes.find(n => n.id === selectedNoteId);
+        if (!note) return;
+
+        if (!note.tags) note.tags = [];
+        if (!note.tags.includes(tag)) {
+            note.tags.push(tag);
+            renderNoteTags(note.tags);
+            scheduleAutoSave();
+        }
+    }
+
+    // Remove tag from current note
+    function removeTag(tag) {
+        const note = notes.find(n => n.id === selectedNoteId);
+        if (!note || !note.tags) return;
+
+        note.tags = note.tags.filter(t => t !== tag);
+        renderNoteTags(note.tags);
+        scheduleAutoSave();
+    }
+
+    // Update stats
+    function updateStats(content) {
+        const words = getWordCount(content);
+        const chars = content.length;
+        const readingTime = Math.max(1, Math.ceil(words / 200));
+
+        wordCountEl.textContent = `${words} word${words !== 1 ? 's' : ''}`;
+        charCountEl.textContent = `${chars} character${chars !== 1 ? 's' : ''}`;
+        readingTimeEl.textContent = `${readingTime} min read`;
+    }
+
+    // Simple Markdown parser
+    function parseMarkdown(text) {
+        if (!text) return '';
+
+        let html = text;
+
+        // Escape HTML
+        html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        // Code blocks (before other processing)
+        html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+            return `<pre><code class="language-${lang}">${code.trim()}</code></pre>`;
+        });
+
+        // Inline code
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // Headers
+        html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+        html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+        // Bold and italic
+        html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+
+        // Links
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+        // Images
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%;">');
+
+        // Entity references [[name]]
+        html = html.replace(/\[\[([^\]]+)\]\]/g, (match, name) => {
+            const entity = entities.find(e => e.name.toLowerCase() === name.toLowerCase());
+            if (entity) {
+                return `<span class="entity-link" data-entity-id="${entity.entity_id}">${Utils.escapeHtml(name)}</span>`;
+            }
+            return `<span class="entity-link" style="opacity: 0.5;">${Utils.escapeHtml(name)}</span>`;
+        });
+
+        // Task lists
+        html = html.replace(/^- \[x\] (.+)$/gm, '<div class="task-list-item"><input type="checkbox" class="task-checkbox" checked disabled> $1</div>');
+        html = html.replace(/^- \[ \] (.+)$/gm, '<div class="task-list-item"><input type="checkbox" class="task-checkbox" disabled> $1</div>');
+
+        // Unordered lists
+        html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+        html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+        // Ordered lists
+        html = html.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+
+        // Blockquotes
+        html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+
+        // Horizontal rules
+        html = html.replace(/^---$/gm, '<hr>');
+
+        // Tables
+        html = parseTable(html);
+
+        // Paragraphs (simple approach)
+        html = html.split('\n\n').map(block => {
+            if (block.startsWith('<h') || block.startsWith('<ul') || block.startsWith('<ol') ||
+                block.startsWith('<pre') || block.startsWith('<blockquote') ||
+                block.startsWith('<hr') || block.startsWith('<div') || block.startsWith('<table')) {
+                return block;
+            }
+            if (block.trim()) {
+                return `<p>${block.replace(/\n/g, '<br>')}</p>`;
+            }
+            return '';
+        }).join('\n');
+
+        return html;
+    }
+
+    // Parse markdown tables
+    function parseTable(html) {
+        const tableRegex = /^\|(.+)\|\n\|[-:\| ]+\|\n((?:\|.+\|\n?)+)/gm;
+        return html.replace(tableRegex, (match, header, rows) => {
+            const headers = header.split('|').map(h => h.trim()).filter(h => h);
+            const dataRows = rows.trim().split('\n').map(row =>
+                row.split('|').map(cell => cell.trim()).filter(cell => cell)
+            );
+
+            let table = '<table><thead><tr>';
+            headers.forEach(h => table += `<th>${h}</th>`);
+            table += '</tr></thead><tbody>';
+            dataRows.forEach(row => {
+                table += '<tr>';
+                row.forEach(cell => table += `<td>${cell}</td>`);
+                table += '</tr>';
+            });
+            table += '</tbody></table>';
+            return table;
+        });
+    }
+
+    // Render preview
+    function renderPreview(content) {
+        preview.innerHTML = parseMarkdown(content);
+
+        // Add click handlers for entity links
+        preview.querySelectorAll('.entity-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const entityId = link.dataset.entityId;
+                if (entityId) {
+                    window.location.hash = `#/entities/${entityId}`;
+                }
+            });
+        });
+    }
+
+    // Update entity references section
+    function updateEntityReferences(content) {
+        const refs = [];
+        const regex = /\[\[([^\]]+)\]\]/g;
+        let match;
+        while ((match = regex.exec(content)) !== null) {
+            const name = match[1];
+            const entity = entities.find(e => e.name.toLowerCase() === name.toLowerCase());
+            if (entity && !refs.find(r => r.entity_id === entity.entity_id)) {
+                refs.push(entity);
+            }
+        }
+
+        if (refs.length > 0) {
+            referencesSection.style.display = 'block';
+            referencesGrid.innerHTML = refs.map(entity => `
+                <div class="reference-item" data-entity-id="${entity.entity_id}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <circle cx="19" cy="5" r="2"/>
+                    </svg>
+                    ${Utils.escapeHtml(entity.name)}
+                </div>
+            `).join('');
+
+            // Add click handlers
+            referencesGrid.querySelectorAll('.reference-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    window.location.hash = `#/entities/${item.dataset.entityId}`;
+                });
+            });
+        } else {
+            referencesSection.style.display = 'none';
+        }
+
+        // Find backlinks
+        const currentNote = notes.find(n => n.id === selectedNoteId);
+        if (currentNote) {
+            const backlinks = notes.filter(n =>
+                n.id !== selectedNoteId &&
+                n.contents &&
+                n.contents.toLowerCase().includes(currentNote.title.toLowerCase())
+            );
+
+            if (backlinks.length > 0) {
+                backlinksSection.style.display = 'block';
+                referencesSection.style.display = 'block';
+                backlinksGrid.innerHTML = backlinks.map(note => `
+                    <div class="reference-item" data-note-id="${note.id}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                        </svg>
+                        ${Utils.escapeHtml(note.title || 'Untitled')}
+                    </div>
+                `).join('');
+
+                // Add click handlers
+                backlinksGrid.querySelectorAll('.reference-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        selectNote(item.dataset.noteId);
+                    });
+                });
+            } else {
+                backlinksSection.style.display = 'none';
+            }
+        }
+    }
+
+    // Auto-save functionality
+    function scheduleAutoSave() {
+        setAutoSaveStatus('saving');
+        clearTimeout(autoSaveTimeout);
+        autoSaveTimeout = setTimeout(saveNote, 1000);
+    }
+
+    // Set auto-save status
+    function setAutoSaveStatus(status) {
+        autoSaveIndicator.className = 'auto-save-indicator ' + status;
+        autoSaveText.textContent = status === 'saving' ? 'Saving...' : 'Saved';
+    }
+
+    // Save note
+    async function saveNote() {
+        if (!selectedNoteId) return;
+
+        const note = notes.find(n => n.id === selectedNoteId);
+        if (!note) return;
+
+        note.title = titleInput.value;
+        note.contents = textarea.value;
+        note.modified = Date.now();
+
+        try {
+            if (window.GardenApp) {
+                await app.api.updateNote(note.id, {
+                    title: note.title,
+                    contents: note.contents,
+                    tags: note.tags
+                });
+            }
+            setAutoSaveStatus('saved');
+            renderNotesList();
+            renderTags();
+        } catch (error) {
+            console.error('Failed to save note:', error);
+            app.toast.error('Failed to save note');
+        }
+    }
+
+    // Create new note
+    async function createNote() {
+        const newNote = {
+            id: 'note-' + Date.now(),
+            title: 'Untitled Note',
+            contents: '',
+            tags: selectedTag ? [selectedTag] : [],
+            created: Date.now(),
+            modified: Date.now()
+        };
+
+        try {
+            if (window.GardenApp) {
+                const result = await app.api.createNote({
+                    title: newNote.title,
+                    contents: newNote.contents,
+                    tags: newNote.tags
+                });
+                newNote.id = result.id || newNote.id;
+            }
+            notes.unshift(newNote);
+            renderNotesList();
+            renderTags();
+            selectNote(newNote.id);
+            titleInput.focus();
+            titleInput.select();
+        } catch (error) {
+            console.error('Failed to create note:', error);
+            app.toast.error('Failed to create note');
+        }
+    }
+
+    // Delete note
+    async function deleteNote() {
+        if (!selectedNoteId) return;
+
+        const confirmed = await app.modal.confirm(
+            'Are you sure you want to delete this note? This action cannot be undone.',
+            { title: 'Delete Note', confirmText: 'Delete', type: 'danger' }
+        );
+
+        if (!confirmed) return;
+
+        try {
+            if (window.GardenApp) {
+                await app.api.deleteNote(selectedNoteId);
+            }
+            notes = notes.filter(n => n.id !== selectedNoteId);
+            selectedNoteId = null;
+            renderNotesList();
+            renderTags();
+            showEmptyState();
+            app.toast.success('Note deleted');
+        } catch (error) {
+            console.error('Failed to delete note:', error);
+            app.toast.error('Failed to delete note');
+        }
+    }
+
+    // Duplicate note
+    async function duplicateNote() {
+        if (!selectedNoteId) return;
+
+        const note = notes.find(n => n.id === selectedNoteId);
+        if (!note) return;
+
+        const newNote = {
+            id: 'note-' + Date.now(),
+            title: note.title + ' (copy)',
+            contents: note.contents,
+            tags: [...(note.tags || [])],
+            created: Date.now(),
+            modified: Date.now()
+        };
+
+        try {
+            if (window.GardenApp) {
+                const result = await app.api.createNote({
+                    title: newNote.title,
+                    contents: newNote.contents,
+                    tags: newNote.tags
+                });
+                newNote.id = result.id || newNote.id;
+            }
+            notes.unshift(newNote);
+            renderNotesList();
+            renderTags();
+            selectNote(newNote.id);
+            app.toast.success('Note duplicated');
+        } catch (error) {
+            console.error('Failed to duplicate note:', error);
+            app.toast.error('Failed to duplicate note');
+        }
+    }
+
+    // Export note as markdown
+    function exportNote() {
+        if (!selectedNoteId) return;
+
+        const note = notes.find(n => n.id === selectedNoteId);
+        if (!note) return;
+
+        const content = `# ${note.title}\n\n${note.contents}`;
+        const blob = new Blob([content], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${note.title || 'note'}.md`;
+        a.click();
+        URL.revokeObjectURL(url);
+        app.toast.success('Note exported');
+    }
+
+    // Copy note link
+    function copyNoteLink() {
+        if (!selectedNoteId) return;
+
+        const url = `${window.location.origin}${window.location.pathname}#/notes/${selectedNoteId}`;
+        navigator.clipboard.writeText(url).then(() => {
+            app.toast.success('Link copied to clipboard');
+        }).catch(() => {
+            app.toast.error('Failed to copy link');
+        });
+    }
+
+    // Insert toolbar formatting
+    function insertFormatting(action) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const text = textarea.value;
+        const selected = text.substring(start, end);
+        let replacement = '';
+        let cursorOffset = 0;
+
+        switch (action) {
+            case 'bold':
+                replacement = `**${selected || 'bold text'}**`;
+                cursorOffset = selected ? replacement.length : 2;
+                break;
+            case 'italic':
+                replacement = `*${selected || 'italic text'}*`;
+                cursorOffset = selected ? replacement.length : 1;
+                break;
+            case 'strikethrough':
+                replacement = `~~${selected || 'strikethrough'}~~`;
+                cursorOffset = selected ? replacement.length : 2;
+                break;
+            case 'h1':
+                replacement = `# ${selected || 'Heading 1'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'h2':
+                replacement = `## ${selected || 'Heading 2'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'h3':
+                replacement = `### ${selected || 'Heading 3'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'ul':
+                replacement = `- ${selected || 'List item'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'ol':
+                replacement = `1. ${selected || 'List item'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'task':
+                replacement = `- [ ] ${selected || 'Task item'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'quote':
+                replacement = `> ${selected || 'Quote'}`;
+                cursorOffset = replacement.length;
+                break;
+            case 'code':
+                replacement = `\`${selected || 'code'}\``;
+                cursorOffset = selected ? replacement.length : 1;
+                break;
+            case 'codeblock':
+                replacement = `\`\`\`\n${selected || 'code'}\n\`\`\``;
+                cursorOffset = 4;
+                break;
+            case 'link':
+                replacement = `[${selected || 'link text'}](url)`;
+                cursorOffset = selected ? replacement.length - 4 : 1;
+                break;
+            case 'image':
+                replacement = `![${selected || 'alt text'}](image-url)`;
+                cursorOffset = selected ? replacement.length - 11 : 2;
+                break;
+            case 'table':
+                replacement = `| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |`;
+                cursorOffset = replacement.length;
+                break;
+            case 'hr':
+                replacement = `\n---\n`;
+                cursorOffset = replacement.length;
+                break;
+            case 'entity':
+                replacement = `[[${selected || 'entity name'}]]`;
+                cursorOffset = selected ? replacement.length : 2;
+                break;
+        }
+
+        textarea.value = text.substring(0, start) + replacement + text.substring(end);
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = start + cursorOffset;
+
+        handleContentChange();
+    }
+
+    // Handle content change
+    function handleContentChange() {
+        const content = textarea.value;
+        updateStats(content);
+        renderPreview(content);
+        updateEntityReferences(content);
+        scheduleAutoSave();
+    }
+
+    // Show entity autocomplete
+    function showEntityAutocomplete(query, position) {
+        const matches = entities.filter(e =>
+            e.name.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 10);
+
+        if (matches.length === 0) {
+            hideEntityAutocomplete();
+            return;
+        }
+
+        entityAutocomplete.innerHTML = matches.map(entity => `
+            <div class="entity-autocomplete-item" data-name="${Utils.escapeHtml(entity.name)}">
+                <span class="entity-autocomplete-name">${Utils.escapeHtml(entity.name)}</span>
+                <span class="entity-autocomplete-type">${entity.type}</span>
+            </div>
+        `).join('');
+
+        entityAutocomplete.style.left = position.left + 'px';
+        entityAutocomplete.style.top = position.top + 'px';
+        entityAutocomplete.classList.add('active');
+        entityAutocompleteActive = true;
+
+        // Add click handlers
+        entityAutocomplete.querySelectorAll('.entity-autocomplete-item').forEach(item => {
+            item.addEventListener('click', () => {
+                insertEntityReference(item.dataset.name);
+            });
+        });
+    }
+
+    // Hide entity autocomplete
+    function hideEntityAutocomplete() {
+        entityAutocomplete.classList.remove('active');
+        entityAutocompleteActive = false;
+        entityAutocompleteStart = -1;
+    }
+
+    // Insert entity reference
+    function insertEntityReference(name) {
+        const text = textarea.value;
+        const beforeRef = text.substring(0, entityAutocompleteStart);
+        const afterCursor = text.substring(textarea.selectionEnd);
+
+        textarea.value = beforeRef + `[[${name}]]` + afterCursor;
+        const newPos = beforeRef.length + name.length + 4;
+        textarea.selectionStart = textarea.selectionEnd = newPos;
+        textarea.focus();
+
+        hideEntityAutocomplete();
+        handleContentChange();
+    }
+
+    // Get cursor position for autocomplete
+    function getCursorPosition() {
+        const rect = textarea.getBoundingClientRect();
+        // Approximate cursor position (simplified)
+        return {
+            left: rect.left + 20,
+            top: rect.top + 50
+        };
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Search
+        searchInput.addEventListener('input', Utils.debounce(() => {
+            searchQuery = searchInput.value;
+            renderNotesList();
+        }, 200));
+
+        // Sort
+        sortSelect.addEventListener('change', () => {
+            sortBy = sortSelect.value;
+            renderNotesList();
+        });
+
+        // Create note buttons
+        createNoteBtn.addEventListener('click', createNote);
+        createNoteBtnEmpty.addEventListener('click', createNote);
+
+        // Title input
+        titleInput.addEventListener('input', () => {
+            scheduleAutoSave();
+            renderNotesList();
+        });
+
+        // Textarea input
+        textarea.addEventListener('input', (e) => {
+            handleContentChange();
+
+            // Check for [[ entity autocomplete
+            const text = textarea.value;
+            const cursorPos = textarea.selectionStart;
+            const textBeforeCursor = text.substring(0, cursorPos);
+            const match = textBeforeCursor.match(/\[\[([^\]]*?)$/);
+
+            if (match) {
+                entityAutocompleteStart = cursorPos - match[1].length - 2;
+                showEntityAutocomplete(match[1], getCursorPosition());
+            } else {
+                hideEntityAutocomplete();
+            }
+        });
+
+        // Textarea key handling
+        textarea.addEventListener('keydown', (e) => {
+            if (entityAutocompleteActive) {
+                if (e.key === 'Escape') {
+                    hideEntityAutocomplete();
+                    e.preventDefault();
+                } else if (e.key === 'Enter') {
+                    const highlighted = entityAutocomplete.querySelector('.entity-autocomplete-item:first-child');
+                    if (highlighted) {
+                        insertEntityReference(highlighted.dataset.name);
+                        e.preventDefault();
+                    }
+                }
+            }
+
+            // Keyboard shortcuts
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'b':
+                        e.preventDefault();
+                        insertFormatting('bold');
+                        break;
+                    case 'i':
+                        e.preventDefault();
+                        insertFormatting('italic');
+                        break;
+                    case 'k':
+                        e.preventDefault();
+                        insertFormatting('link');
+                        break;
+                }
+            }
+        });
+
+        // Editor tabs
+        document.querySelectorAll('.notes-editor-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const mode = tab.dataset.tab;
+                currentViewMode = mode;
+
+                document.querySelectorAll('.notes-editor-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const wrapper = document.getElementById('note-content-wrapper');
+
+                if (mode === 'edit') {
+                    textarea.style.display = 'block';
+                    preview.classList.remove('active');
+                    wrapper.style.flexDirection = 'column';
+                } else if (mode === 'preview') {
+                    textarea.style.display = 'none';
+                    preview.classList.add('active');
+                    renderPreview(textarea.value);
+                } else if (mode === 'split') {
+                    textarea.style.display = 'block';
+                    textarea.style.flex = '1';
+                    preview.classList.add('active');
+                    preview.style.flex = '1';
+                    preview.style.borderLeft = '1px solid var(--color-border)';
+                    wrapper.style.flexDirection = 'row';
+                    renderPreview(textarea.value);
+                }
+            });
+        });
+
+        // Toolbar buttons
+        document.querySelectorAll('.toolbar-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                if (action) {
+                    insertFormatting(action);
+                }
+            });
+        });
+
+        // Actions dropdown
+        document.getElementById('note-actions-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            actionsDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            actionsDropdown.classList.remove('active');
+        });
+
+        // Action buttons
+        document.getElementById('action-duplicate').addEventListener('click', duplicateNote);
+        document.getElementById('action-export').addEventListener('click', exportNote);
+        document.getElementById('action-share').addEventListener('click', copyNoteLink);
+        document.getElementById('action-history').addEventListener('click', () => {
+            app.toast.info('Version history coming soon');
+        });
+        document.getElementById('action-delete').addEventListener('click', deleteNote);
+
+        // Close autocomplete on click outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.entity-autocomplete') && !e.target.closest('.note-textarea')) {
+                hideEntityAutocomplete();
+            }
+            if (!e.target.closest('.note-tags-section')) {
+                hideTagsAutocomplete();
+            }
+        });
+
+        // Handle URL params for direct note access
+        const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
+        const noteIdFromUrl = window.location.hash.match(/\/notes\/([^?]+)/);
+        if (noteIdFromUrl && noteIdFromUrl[1]) {
+            setTimeout(() => selectNote(noteIdFromUrl[1]), 100);
+        }
+    }
+
+    // Initialize the app
+    init();
+})();
+</script>

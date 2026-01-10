@@ -1,0 +1,1564 @@
+<div class="page-header">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="page-title">Bookmarks</h1>
+            <p class="page-description">Your saved links and articles</p>
+        </div>
+        <div class="flex gap-4">
+            <button class="btn btn-secondary" onclick="BookmarksView.getRandomBookmark()" title="Get a random bookmark">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+                    <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+                    <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+                Random
+            </button>
+            <button class="btn btn-primary" onclick="BookmarksView.openAddModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Bookmark
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Actions Bar (hidden by default) -->
+<div id="bulk-actions-bar" class="bulk-actions-bar" style="display: none;">
+    <div class="flex items-center gap-4">
+        <span class="selection-count">
+            <strong id="selection-count">0</strong> selected
+        </span>
+        <button class="btn btn-secondary btn-sm" onclick="BookmarksView.bulkCategorize()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            Categorize
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="BookmarksView.bulkExport()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="BookmarksView.bulkDelete()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            Delete
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="BookmarksView.clearSelection()">
+            Cancel
+        </button>
+    </div>
+</div>
+
+<div class="bookmarks-layout">
+    <!-- Categories Sidebar -->
+    <aside class="categories-sidebar" id="categories-sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-section-header">
+                <h3>Categories</h3>
+                <button class="btn btn-ghost btn-sm" onclick="BookmarksView.toggleSidebar()" title="Collapse">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="categories-list" class="categories-list">
+                <!-- Categories loaded dynamically -->
+            </div>
+            <div class="add-category-form" id="add-category-form" style="display: none;">
+                <input type="text" class="form-input" id="new-category-input" placeholder="Category name">
+                <div class="flex gap-2 mt-2">
+                    <button class="btn btn-primary btn-sm" onclick="BookmarksView.addCategory()">Add</button>
+                    <button class="btn btn-ghost btn-sm" onclick="BookmarksView.hideAddCategoryForm()">Cancel</button>
+                </div>
+            </div>
+            <button class="btn btn-ghost btn-sm add-category-btn" onclick="BookmarksView.showAddCategoryForm()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Category
+            </button>
+        </div>
+    </aside>
+
+    <!-- Collapsed Sidebar Toggle -->
+    <button class="sidebar-expand-btn" id="sidebar-expand-btn" style="display: none;" onclick="BookmarksView.toggleSidebar()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 5l7 7-7 7"/>
+        </svg>
+    </button>
+
+    <!-- Main Content -->
+    <div class="bookmarks-main">
+        <!-- Filter Bar -->
+        <div class="filter-bar mb-6">
+            <div class="flex gap-4 flex-wrap">
+                <div class="search-box" style="flex: 1; min-width: 200px; max-width: 300px;">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search bookmarks..." id="bookmark-search" oninput="BookmarksView.debounceSearch()">
+                </div>
+                <select class="form-select" id="category-filter" style="width: auto;" onchange="BookmarksView.applyFilters()">
+                    <option value="">All Categories</option>
+                </select>
+                <select class="form-select" id="status-filter" style="width: auto;" onchange="BookmarksView.applyFilters()">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="fetched">Fetched</option>
+                    <option value="processed">Processed</option>
+                </select>
+                <select class="form-select" id="sort-filter" style="width: auto;" onchange="BookmarksView.applyFilters()">
+                    <option value="date_desc">Newest First</option>
+                    <option value="date_asc">Oldest First</option>
+                    <option value="title_asc">Title A-Z</option>
+                    <option value="title_desc">Title Z-A</option>
+                </select>
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" id="grid-view-btn" onclick="BookmarksView.setViewMode('grid')" title="Grid View">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                        </svg>
+                    </button>
+                    <button class="view-toggle-btn" id="list-view-btn" onclick="BookmarksView.setViewMode('list')" title="List View">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"/>
+                            <line x1="8" y1="12" x2="21" y2="12"/>
+                            <line x1="8" y1="18" x2="21" y2="18"/>
+                            <line x1="3" y1="6" x2="3.01" y2="6"/>
+                            <line x1="3" y1="12" x2="3.01" y2="12"/>
+                            <line x1="3" y1="18" x2="3.01" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookmarks Content -->
+        <div id="bookmarks-content">
+            <div class="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Loading bookmarks...</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="bookmarks-pagination"></div>
+    </div>
+</div>
+
+<style>
+/* Bookmarks-specific styles */
+.bookmarks-layout {
+    display: flex;
+    gap: var(--space-6);
+    position: relative;
+}
+
+.categories-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    height: fit-content;
+    position: sticky;
+    top: calc(var(--top-bar-height) + var(--space-6));
+    transition: width var(--transition-base), opacity var(--transition-base);
+}
+
+.categories-sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    border: none;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.sidebar-expand-btn {
+    position: fixed;
+    left: calc(var(--sidebar-width) + var(--space-4));
+    top: calc(var(--top-bar-height) + var(--space-6) + 100px);
+    padding: var(--space-2);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.sidebar-expand-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+.sidebar-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+}
+
+.sidebar-section-header h3 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text-secondary);
+}
+
+.category-item:hover {
+    background-color: var(--color-background-hover);
+    color: var(--color-text-primary);
+}
+
+.category-item.active {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+}
+
+.category-item .category-name {
+    font-size: var(--font-size-sm);
+}
+
+.category-item .category-count {
+    font-size: var(--font-size-xs);
+    background-color: var(--color-background-active);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+}
+
+.add-category-btn {
+    width: 100%;
+    justify-content: flex-start;
+    color: var(--color-text-tertiary);
+}
+
+.bookmarks-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.filter-bar {
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+}
+
+.view-toggle {
+    display: flex;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.view-toggle-btn {
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-tertiary);
+    transition: all var(--transition-fast);
+}
+
+.view-toggle-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+.view-toggle-btn.active {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-active);
+}
+
+/* Bookmark Grid */
+.bookmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-4);
+}
+
+.bookmark-card {
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.bookmark-card:hover {
+    border-color: var(--color-border-focus);
+    box-shadow: var(--shadow-md);
+}
+
+.bookmark-card.selected {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent-light);
+}
+
+.bookmark-card-checkbox {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 1;
+}
+
+.bookmark-card-checkbox input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-accent);
+}
+
+.bookmark-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    padding-left: calc(var(--space-4) + 28px);
+}
+
+.bookmark-favicon {
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-background-active);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 12px;
+}
+
+.bookmark-favicon img {
+    width: 16px;
+    height: 16px;
+}
+
+.bookmark-card-title {
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-1);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bookmark-card-title a {
+    color: var(--color-text-primary);
+}
+
+.bookmark-card-title a:hover {
+    color: var(--color-accent);
+}
+
+.bookmark-card-domain {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.bookmark-card-body {
+    padding: 0 var(--space-4) var(--space-4);
+}
+
+.bookmark-card-summary {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: var(--space-3);
+}
+
+.bookmark-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.bookmark-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+}
+
+.bookmark-card-date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.bookmark-card-actions {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    display: flex;
+    gap: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.bookmark-card:hover .bookmark-card-actions {
+    opacity: 1;
+}
+
+.bookmark-action-btn {
+    padding: var(--space-1);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-tertiary);
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-fast);
+}
+
+.bookmark-action-btn:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-background-hover);
+}
+
+/* Bookmark List View */
+.bookmarks-list {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-background-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.bookmark-list-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color var(--transition-fast);
+    position: relative;
+}
+
+.bookmark-list-item:last-child {
+    border-bottom: none;
+}
+
+.bookmark-list-item:hover {
+    background-color: var(--color-background-hover);
+}
+
+.bookmark-list-item.selected {
+    background-color: var(--color-accent-light);
+}
+
+.bookmark-list-checkbox {
+    flex-shrink: 0;
+}
+
+.bookmark-list-checkbox input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--color-accent);
+}
+
+.bookmark-list-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.bookmark-list-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.bookmark-list-title {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bookmark-list-title a {
+    color: var(--color-text-primary);
+}
+
+.bookmark-list-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.bookmark-list-category {
+    flex-shrink: 0;
+}
+
+.bookmark-list-date {
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    width: 100px;
+}
+
+.bookmark-list-actions {
+    display: flex;
+    gap: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.bookmark-list-item:hover .bookmark-list-actions {
+    opacity: 1;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+    background-color: var(--color-accent-light);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-4);
+    animation: slideDown var(--transition-fast);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.selection-count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+/* Status Badge Colors */
+.badge-fetched {
+    background-color: var(--color-info-bg);
+    color: var(--color-info);
+}
+
+.badge-processed {
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .categories-sidebar {
+        display: none;
+    }
+
+    .sidebar-expand-btn {
+        display: none !important;
+    }
+
+    .bookmarks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-bar .flex {
+        flex-direction: column;
+    }
+
+    .filter-bar .search-box {
+        max-width: none;
+    }
+
+    .bookmarks-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bookmark-list-date {
+        display: none;
+    }
+}
+</style>
+
+<script>
+// Bookmarks View Controller
+const BookmarksView = {
+    bookmarks: [],
+    categories: [],
+    selectedIds: new Set(),
+    currentPage: 1,
+    totalPages: 1,
+    viewMode: 'grid',
+    filters: {
+        search: '',
+        category: '',
+        status: '',
+        sort: 'date_desc'
+    },
+    searchTimeout: null,
+    sidebarCollapsed: false,
+
+    async init() {
+        await this.loadCategories();
+        await this.loadBookmarks();
+        this.setupEventListeners();
+    },
+
+    setupEventListeners() {
+        // Search on enter
+        document.getElementById('bookmark-search').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.applyFilters();
+            }
+        });
+    },
+
+    async loadCategories() {
+        try {
+            const categories = await window.app.api.getCategories();
+            this.categories = categories;
+            this.renderCategories();
+            this.populateCategoryFilter();
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+        }
+    },
+
+    renderCategories() {
+        const container = document.getElementById('categories-list');
+        const allCount = this.bookmarks.length;
+
+        // Get category counts
+        const categoryCounts = {};
+        this.bookmarks.forEach(b => {
+            const cat = b.category_name || 'Uncategorized';
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+        });
+
+        container.innerHTML = `
+            <div class="category-item ${!this.filters.category ? 'active' : ''}" onclick="BookmarksView.filterByCategory('')">
+                <span class="category-name">All Bookmarks</span>
+                <span class="category-count">${allCount}</span>
+            </div>
+            ${this.categories.map(cat => `
+                <div class="category-item ${this.filters.category === cat.name ? 'active' : ''}"
+                     onclick="BookmarksView.filterByCategory('${Utils.escapeHtml(cat.name)}')">
+                    <span class="category-name">${Utils.escapeHtml(cat.name)}</span>
+                    <span class="category-count">${categoryCounts[cat.name] || 0}</span>
+                </div>
+            `).join('')}
+        `;
+    },
+
+    populateCategoryFilter() {
+        const select = document.getElementById('category-filter');
+        select.innerHTML = `
+            <option value="">All Categories</option>
+            ${this.categories.map(cat => `
+                <option value="${Utils.escapeHtml(cat.name)}">${Utils.escapeHtml(cat.name)}</option>
+            `).join('')}
+        `;
+    },
+
+    async loadBookmarks() {
+        const container = document.getElementById('bookmarks-content');
+        container.innerHTML = `
+            <div class="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Loading bookmarks...</p>
+            </div>
+        `;
+
+        try {
+            const params = {
+                page: this.currentPage,
+                limit: 12
+            };
+
+            if (this.filters.search) params.search = this.filters.search;
+            if (this.filters.category) params.category = this.filters.category;
+            if (this.filters.status) params.status = this.filters.status;
+            if (this.filters.sort) params.sort = this.filters.sort;
+
+            const result = await window.app.api.getBookmarks(params);
+            this.bookmarks = result.data;
+            this.totalPages = result.totalPages;
+            this.currentPage = result.page;
+
+            this.render();
+            this.renderPagination();
+            this.renderCategories();
+        } catch (error) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <svg class="empty-state-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <h3 class="empty-state-title">Error loading bookmarks</h3>
+                    <p class="empty-state-description">${error.message}</p>
+                    <button class="btn btn-primary" onclick="BookmarksView.loadBookmarks()">Try Again</button>
+                </div>
+            `;
+        }
+    },
+
+    render() {
+        const container = document.getElementById('bookmarks-content');
+
+        if (this.bookmarks.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <svg class="empty-state-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <h3 class="empty-state-title">No bookmarks found</h3>
+                    <p class="empty-state-description">
+                        ${this.filters.search || this.filters.category || this.filters.status
+                            ? 'Try adjusting your filters or search query.'
+                            : 'Add your first bookmark to get started.'}
+                    </p>
+                    <button class="btn btn-primary" onclick="BookmarksView.openAddModal()">Add Bookmark</button>
+                </div>
+            `;
+            return;
+        }
+
+        if (this.viewMode === 'grid') {
+            this.renderGridView(container);
+        } else {
+            this.renderListView(container);
+        }
+    },
+
+    renderGridView(container) {
+        container.innerHTML = `
+            <div class="bookmarks-grid">
+                ${this.bookmarks.map(bookmark => this.renderBookmarkCard(bookmark)).join('')}
+            </div>
+        `;
+    },
+
+    renderListView(container) {
+        container.innerHTML = `
+            <div class="bookmarks-list">
+                ${this.bookmarks.map(bookmark => this.renderBookmarkListItem(bookmark)).join('')}
+            </div>
+        `;
+    },
+
+    renderBookmarkCard(bookmark) {
+        const domain = Utils.getDomain(bookmark.url);
+        const isSelected = this.selectedIds.has(bookmark.bookmark_id);
+        const status = bookmark.status || 'pending';
+        const statusClass = status === 'processed' ? 'badge-processed' : status === 'fetched' ? 'badge-fetched' : 'badge-pending';
+
+        return `
+            <div class="bookmark-card ${isSelected ? 'selected' : ''}" data-id="${bookmark.bookmark_id}">
+                <div class="bookmark-card-checkbox">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''}
+                           onchange="BookmarksView.toggleSelection('${bookmark.bookmark_id}')">
+                </div>
+                <div class="bookmark-card-actions">
+                    <button class="bookmark-action-btn" onclick="window.open('${Utils.escapeHtml(bookmark.url)}', '_blank')" title="Open URL">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </button>
+                    <button class="bookmark-action-btn" onclick="BookmarksView.viewDetails('${bookmark.bookmark_id}')" title="View Details">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                    <button class="bookmark-action-btn" onclick="BookmarksView.editBookmark('${bookmark.bookmark_id}')" title="Edit">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </button>
+                    <button class="bookmark-action-btn" onclick="BookmarksView.deleteBookmark('${bookmark.bookmark_id}')" title="Delete">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="bookmark-card-header">
+                    <div class="bookmark-favicon">
+                        <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"
+                             alt="" onerror="this.style.display='none';this.parentElement.textContent='${domain.charAt(0).toUpperCase()}'">
+                    </div>
+                    <div>
+                        <div class="bookmark-card-title">
+                            <a href="${Utils.escapeHtml(bookmark.url)}" target="_blank" onclick="event.stopPropagation()">
+                                ${Utils.escapeHtml(bookmark.title || 'Untitled')}
+                            </a>
+                        </div>
+                        <div class="bookmark-card-domain">${domain}</div>
+                    </div>
+                </div>
+                <div class="bookmark-card-body">
+                    <div class="bookmark-card-summary">
+                        ${Utils.escapeHtml(bookmark.summary || 'No summary available')}
+                    </div>
+                    <div class="bookmark-card-meta">
+                        <div class="bookmark-card-tags">
+                            ${bookmark.category_name ? `<span class="badge badge-info">${Utils.escapeHtml(bookmark.category_name)}</span>` : ''}
+                            <span class="badge ${statusClass}">${status}</span>
+                        </div>
+                        <div class="bookmark-card-date">${Utils.formatDate(bookmark.creation_date)}</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderBookmarkListItem(bookmark) {
+        const domain = Utils.getDomain(bookmark.url);
+        const isSelected = this.selectedIds.has(bookmark.bookmark_id);
+        const status = bookmark.status || 'pending';
+        const statusClass = status === 'processed' ? 'badge-processed' : status === 'fetched' ? 'badge-fetched' : 'badge-pending';
+
+        return `
+            <div class="bookmark-list-item ${isSelected ? 'selected' : ''}" data-id="${bookmark.bookmark_id}">
+                <div class="bookmark-list-checkbox">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''}
+                           onchange="BookmarksView.toggleSelection('${bookmark.bookmark_id}')">
+                </div>
+                <div class="bookmark-favicon">
+                    <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32"
+                         alt="" onerror="this.style.display='none';this.parentElement.textContent='${domain.charAt(0).toUpperCase()}'">
+                </div>
+                <div class="bookmark-list-content">
+                    <div class="bookmark-list-main">
+                        <div class="bookmark-list-title">
+                            <a href="${Utils.escapeHtml(bookmark.url)}" target="_blank">
+                                ${Utils.escapeHtml(bookmark.title || 'Untitled')}
+                            </a>
+                        </div>
+                        <div class="bookmark-list-info">
+                            <span>${domain}</span>
+                            ${bookmark.summary ? `<span class="truncate">${Utils.escapeHtml(Utils.truncate(bookmark.summary, 60))}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="bookmark-list-category">
+                        ${bookmark.category_name ? `<span class="badge badge-info">${Utils.escapeHtml(bookmark.category_name)}</span>` : ''}
+                        <span class="badge ${statusClass}">${status}</span>
+                    </div>
+                    <div class="bookmark-list-date">
+                        ${Utils.formatDate(bookmark.creation_date)}
+                    </div>
+                </div>
+                <div class="bookmark-list-actions">
+                    <button class="bookmark-action-btn" onclick="window.open('${Utils.escapeHtml(bookmark.url)}', '_blank')" title="Open URL">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </button>
+                    <button class="bookmark-action-btn" onclick="BookmarksView.viewDetails('${bookmark.bookmark_id}')" title="View Details">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                    <button class="bookmark-action-btn" onclick="BookmarksView.editBookmark('${bookmark.bookmark_id}')" title="Edit">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </button>
+                    <button class="bookmark-action-btn" onclick="BookmarksView.deleteBookmark('${bookmark.bookmark_id}')" title="Delete">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+    },
+
+    renderPagination() {
+        const pagination = new Pagination({
+            page: this.currentPage,
+            totalPages: this.totalPages,
+            onPageChange: (page) => {
+                this.currentPage = page;
+                this.loadBookmarks();
+            }
+        });
+
+        const container = document.getElementById('bookmarks-pagination');
+        container.innerHTML = pagination.render();
+        pagination.attachEvents(container);
+    },
+
+    // View Mode
+    setViewMode(mode) {
+        this.viewMode = mode;
+        document.getElementById('grid-view-btn').classList.toggle('active', mode === 'grid');
+        document.getElementById('list-view-btn').classList.toggle('active', mode === 'list');
+        this.render();
+    },
+
+    // Filters
+    debounceSearch() {
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+            this.filters.search = document.getElementById('bookmark-search').value;
+            this.currentPage = 1;
+            this.loadBookmarks();
+        }, 300);
+    },
+
+    applyFilters() {
+        this.filters.search = document.getElementById('bookmark-search').value;
+        this.filters.category = document.getElementById('category-filter').value;
+        this.filters.status = document.getElementById('status-filter').value;
+        this.filters.sort = document.getElementById('sort-filter').value;
+        this.currentPage = 1;
+        this.loadBookmarks();
+    },
+
+    filterByCategory(category) {
+        this.filters.category = category;
+        document.getElementById('category-filter').value = category;
+        this.currentPage = 1;
+        this.loadBookmarks();
+    },
+
+    // Selection
+    toggleSelection(id) {
+        if (this.selectedIds.has(id)) {
+            this.selectedIds.delete(id);
+        } else {
+            this.selectedIds.add(id);
+        }
+        this.updateBulkActionsBar();
+        this.render();
+    },
+
+    clearSelection() {
+        this.selectedIds.clear();
+        this.updateBulkActionsBar();
+        this.render();
+    },
+
+    updateBulkActionsBar() {
+        const bar = document.getElementById('bulk-actions-bar');
+        const count = document.getElementById('selection-count');
+
+        if (this.selectedIds.size > 0) {
+            bar.style.display = 'block';
+            count.textContent = this.selectedIds.size;
+        } else {
+            bar.style.display = 'none';
+        }
+    },
+
+    // Sidebar
+    toggleSidebar() {
+        this.sidebarCollapsed = !this.sidebarCollapsed;
+        const sidebar = document.getElementById('categories-sidebar');
+        const expandBtn = document.getElementById('sidebar-expand-btn');
+
+        sidebar.classList.toggle('collapsed', this.sidebarCollapsed);
+        expandBtn.style.display = this.sidebarCollapsed ? 'block' : 'none';
+    },
+
+    // Add Category
+    showAddCategoryForm() {
+        document.getElementById('add-category-form').style.display = 'block';
+        document.getElementById('new-category-input').focus();
+    },
+
+    hideAddCategoryForm() {
+        document.getElementById('add-category-form').style.display = 'none';
+        document.getElementById('new-category-input').value = '';
+    },
+
+    async addCategory() {
+        const input = document.getElementById('new-category-input');
+        const name = input.value.trim();
+
+        if (!name) {
+            window.app.toast.warning('Please enter a category name');
+            return;
+        }
+
+        // Check if already exists
+        if (this.categories.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+            window.app.toast.warning('Category already exists');
+            return;
+        }
+
+        // Add locally (in a real app, this would be an API call)
+        this.categories.push({ category_id: Date.now().toString(), name });
+        this.hideAddCategoryForm();
+        this.renderCategories();
+        this.populateCategoryFilter();
+        window.app.toast.success('Category added');
+    },
+
+    // Add Bookmark Modal
+    openAddModal() {
+        window.app.modal.open({
+            title: 'Add Bookmark',
+            content: `
+                <div class="form-group">
+                    <label class="form-label">URL *</label>
+                    <input type="url" class="form-input" id="add-bookmark-url" placeholder="https://example.com" required>
+                    <p class="form-helper">Enter the URL of the page you want to bookmark</p>
+                </div>
+                <div id="url-preview" style="display: none;" class="mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center gap-4">
+                                <div class="bookmark-favicon" id="preview-favicon"></div>
+                                <div>
+                                    <div class="font-medium" id="preview-title">Loading...</div>
+                                    <div class="text-sm text-muted" id="preview-description"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="add-bookmark-title" placeholder="Page title (auto-filled)">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="add-bookmark-category">
+                        <option value="">Select category</option>
+                        ${this.categories.map(cat => `
+                            <option value="${Utils.escapeHtml(cat.name)}">${Utils.escapeHtml(cat.name)}</option>
+                        `).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tags</label>
+                    <input type="text" class="form-input" id="add-bookmark-tags" placeholder="tag1, tag2, tag3">
+                    <p class="form-helper">Separate tags with commas</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" id="add-bookmark-notes" rows="3" placeholder="Add any notes about this bookmark"></textarea>
+                </div>
+            `,
+            footer: `
+                <button class="btn btn-secondary" onclick="window.app.modal.close()">Cancel</button>
+                <button class="btn btn-primary" id="add-bookmark-submit" onclick="BookmarksView.submitAddBookmark()">
+                    <span id="add-bookmark-btn-text">Add Bookmark</span>
+                    <span id="add-bookmark-spinner" style="display: none;">
+                        <div class="loading-spinner" style="width: 16px; height: 16px; margin: 0;"></div>
+                    </span>
+                </button>
+            `
+        });
+
+        // Auto-fetch preview on URL input
+        document.getElementById('add-bookmark-url').addEventListener('blur', (e) => {
+            const url = e.target.value.trim();
+            if (url && this.isValidUrl(url)) {
+                this.fetchUrlPreview(url);
+            }
+        });
+    },
+
+    isValidUrl(string) {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    },
+
+    async fetchUrlPreview(url) {
+        const preview = document.getElementById('url-preview');
+        const favicon = document.getElementById('preview-favicon');
+        const title = document.getElementById('preview-title');
+        const description = document.getElementById('preview-description');
+
+        preview.style.display = 'block';
+        title.textContent = 'Loading preview...';
+        description.textContent = '';
+
+        const domain = Utils.getDomain(url);
+        favicon.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=32" alt=""
+            onerror="this.style.display='none';this.parentElement.textContent='${domain.charAt(0).toUpperCase()}'">`;
+
+        // Simulate fetching metadata (in a real app, this would be an API call)
+        setTimeout(() => {
+            title.textContent = document.getElementById('add-bookmark-title').value || `Page from ${domain}`;
+            description.textContent = domain;
+
+            // Auto-fill title if empty
+            if (!document.getElementById('add-bookmark-title').value) {
+                document.getElementById('add-bookmark-title').value = `Page from ${domain}`;
+            }
+        }, 500);
+    },
+
+    async submitAddBookmark() {
+        const url = document.getElementById('add-bookmark-url').value.trim();
+        const titleInput = document.getElementById('add-bookmark-title').value.trim();
+        const category = document.getElementById('add-bookmark-category').value;
+        const tags = document.getElementById('add-bookmark-tags').value.trim();
+        const notes = document.getElementById('add-bookmark-notes').value.trim();
+
+        if (!url) {
+            window.app.toast.warning('Please enter a URL');
+            return;
+        }
+
+        if (!this.isValidUrl(url)) {
+            window.app.toast.error('Please enter a valid URL');
+            return;
+        }
+
+        // Show loading
+        document.getElementById('add-bookmark-btn-text').style.display = 'none';
+        document.getElementById('add-bookmark-spinner').style.display = 'inline-block';
+        document.getElementById('add-bookmark-submit').disabled = true;
+
+        try {
+            // In a real app, this would be an API call
+            const newBookmark = {
+                bookmark_id: 'b' + Date.now(),
+                url: url,
+                title: titleInput || `Bookmark from ${Utils.getDomain(url)}`,
+                summary: notes || 'No summary available',
+                category_name: category,
+                creation_date: new Date().toISOString(),
+                status: 'pending',
+                tags: tags ? tags.split(',').map(t => t.trim()) : []
+            };
+
+            // Add to local data (simulate)
+            this.bookmarks.unshift(newBookmark);
+
+            window.app.modal.close();
+            window.app.toast.success('Bookmark added successfully');
+            this.render();
+        } catch (error) {
+            window.app.toast.error('Failed to add bookmark');
+        } finally {
+            document.getElementById('add-bookmark-btn-text').style.display = 'inline';
+            document.getElementById('add-bookmark-spinner').style.display = 'none';
+            document.getElementById('add-bookmark-submit').disabled = false;
+        }
+    },
+
+    // View Details Modal
+    async viewDetails(id) {
+        const bookmark = this.bookmarks.find(b => b.bookmark_id === id);
+        if (!bookmark) return;
+
+        const domain = Utils.getDomain(bookmark.url);
+        const status = bookmark.status || 'pending';
+        const statusClass = status === 'processed' ? 'badge-processed' : status === 'fetched' ? 'badge-fetched' : 'badge-pending';
+
+        // Find related bookmarks (same category)
+        const related = this.bookmarks
+            .filter(b => b.bookmark_id !== id && b.category_name === bookmark.category_name)
+            .slice(0, 3);
+
+        window.app.modal.open({
+            title: bookmark.title || 'Bookmark Details',
+            content: `
+                <div class="bookmark-detail">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bookmark-favicon" style="width: 48px; height: 48px; font-size: 20px;">
+                            <img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" alt=""
+                                 onerror="this.style.display='none';this.parentElement.textContent='${domain.charAt(0).toUpperCase()}'">
+                        </div>
+                        <div>
+                            <a href="${Utils.escapeHtml(bookmark.url)}" target="_blank" class="text-lg font-semibold" style="color: var(--color-accent);">
+                                ${domain}
+                            </a>
+                            <div class="flex gap-2 mt-1">
+                                ${bookmark.category_name ? `<span class="badge badge-info">${Utils.escapeHtml(bookmark.category_name)}</span>` : ''}
+                                <span class="badge ${statusClass}">${status}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-muted mb-2">Summary</h4>
+                        <p class="text-sm" style="line-height: 1.6;">
+                            ${Utils.escapeHtml(bookmark.summary || 'No summary available')}
+                        </p>
+                    </div>
+
+                    ${bookmark.content ? `
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-muted mb-2">Extracted Content</h4>
+                        <div class="code-block" style="max-height: 200px; overflow-y: auto;">
+                            ${Utils.escapeHtml(Utils.truncate(bookmark.content, 500))}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-muted mb-2">Q&A Pairs</h4>
+                        <div id="qa-pairs-container">
+                            ${bookmark.qa_pairs && bookmark.qa_pairs.length > 0 ?
+                                bookmark.qa_pairs.map((qa, i) => `
+                                    <div class="card mb-2">
+                                        <div class="card-body" style="padding: var(--space-3);">
+                                            <div class="font-medium text-sm mb-1">Q: ${Utils.escapeHtml(qa.question)}</div>
+                                            <div class="text-sm text-muted">A: ${Utils.escapeHtml(qa.answer)}</div>
+                                        </div>
+                                    </div>
+                                `).join('') :
+                                '<p class="text-sm text-muted">No Q&A pairs yet</p>'
+                            }
+                        </div>
+                        <button class="btn btn-ghost btn-sm mt-2" onclick="BookmarksView.showAddQAForm('${id}')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Add Question
+                        </button>
+                        <div id="add-qa-form" style="display: none;" class="mt-3">
+                            <div class="form-group">
+                                <input type="text" class="form-input" id="new-question" placeholder="Question">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-textarea" id="new-answer" rows="2" placeholder="Answer"></textarea>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn btn-primary btn-sm" onclick="BookmarksView.addQAPair('${id}')">Save</button>
+                                <button class="btn btn-ghost btn-sm" onclick="BookmarksView.hideAddQAForm()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-muted mb-2">Metadata</h4>
+                        <div class="grid grid-cols-2" style="gap: var(--space-2);">
+                            <div class="text-sm">
+                                <span class="text-muted">Created:</span> ${Utils.formatDateTime(bookmark.creation_date)}
+                            </div>
+                            <div class="text-sm">
+                                <span class="text-muted">Status:</span> ${status}
+                            </div>
+                            ${bookmark.word_count ? `
+                            <div class="text-sm">
+                                <span class="text-muted">Word Count:</span> ${bookmark.word_count}
+                            </div>
+                            ` : ''}
+                            ${bookmark.reading_time ? `
+                            <div class="text-sm">
+                                <span class="text-muted">Reading Time:</span> ${bookmark.reading_time} min
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    ${related.length > 0 ? `
+                    <div>
+                        <h4 class="text-sm font-semibold text-muted mb-2">Related Bookmarks</h4>
+                        <div class="flex flex-col gap-2">
+                            ${related.map(r => `
+                                <div class="list-item" style="padding: var(--space-2); cursor: pointer;"
+                                     onclick="BookmarksView.viewDetails('${r.bookmark_id}')">
+                                    <div class="bookmark-favicon" style="width: 24px; height: 24px; font-size: 10px;">
+                                        <img src="https://www.google.com/s2/favicons?domain=${Utils.getDomain(r.url)}&sz=32" alt=""
+                                             onerror="this.style.display='none';this.parentElement.textContent='${Utils.getDomain(r.url).charAt(0).toUpperCase()}'">
+                                    </div>
+                                    <div class="list-item-content">
+                                        <div class="list-item-title text-sm">${Utils.escapeHtml(r.title || 'Untitled')}</div>
+                                        <div class="list-item-subtitle text-xs">${Utils.getDomain(r.url)}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `,
+            footer: `
+                <button class="btn btn-secondary" onclick="window.open('${Utils.escapeHtml(bookmark.url)}', '_blank')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    Open URL
+                </button>
+                <button class="btn btn-primary" onclick="BookmarksView.editBookmark('${id}'); window.app.modal.close();">
+                    Edit Bookmark
+                </button>
+            `
+        });
+    },
+
+    showAddQAForm(id) {
+        document.getElementById('add-qa-form').style.display = 'block';
+        document.getElementById('new-question').focus();
+    },
+
+    hideAddQAForm() {
+        document.getElementById('add-qa-form').style.display = 'none';
+        document.getElementById('new-question').value = '';
+        document.getElementById('new-answer').value = '';
+    },
+
+    addQAPair(id) {
+        const question = document.getElementById('new-question').value.trim();
+        const answer = document.getElementById('new-answer').value.trim();
+
+        if (!question || !answer) {
+            window.app.toast.warning('Please enter both question and answer');
+            return;
+        }
+
+        const bookmark = this.bookmarks.find(b => b.bookmark_id === id);
+        if (bookmark) {
+            if (!bookmark.qa_pairs) bookmark.qa_pairs = [];
+            bookmark.qa_pairs.push({ question, answer });
+            window.app.toast.success('Q&A pair added');
+            this.viewDetails(id); // Refresh the modal
+        }
+    },
+
+    // Edit Bookmark
+    editBookmark(id) {
+        const bookmark = this.bookmarks.find(b => b.bookmark_id === id);
+        if (!bookmark) return;
+
+        window.app.modal.open({
+            title: 'Edit Bookmark',
+            content: `
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input type="url" class="form-input" id="edit-bookmark-url" value="${Utils.escapeHtml(bookmark.url)}" readonly style="opacity: 0.7;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="edit-bookmark-title" value="${Utils.escapeHtml(bookmark.title || '')}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Summary</label>
+                    <textarea class="form-textarea" id="edit-bookmark-summary" rows="3">${Utils.escapeHtml(bookmark.summary || '')}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="edit-bookmark-category">
+                        <option value="">Select category</option>
+                        ${this.categories.map(cat => `
+                            <option value="${Utils.escapeHtml(cat.name)}" ${bookmark.category_name === cat.name ? 'selected' : ''}>
+                                ${Utils.escapeHtml(cat.name)}
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+            `,
+            footer: `
+                <button class="btn btn-secondary" onclick="window.app.modal.close()">Cancel</button>
+                <button class="btn btn-primary" onclick="BookmarksView.saveBookmark('${id}')">Save Changes</button>
+            `
+        });
+    },
+
+    saveBookmark(id) {
+        const bookmark = this.bookmarks.find(b => b.bookmark_id === id);
+        if (!bookmark) return;
+
+        bookmark.title = document.getElementById('edit-bookmark-title').value.trim();
+        bookmark.summary = document.getElementById('edit-bookmark-summary').value.trim();
+        bookmark.category_name = document.getElementById('edit-bookmark-category').value;
+
+        window.app.modal.close();
+        window.app.toast.success('Bookmark updated');
+        this.render();
+        this.renderCategories();
+    },
+
+    // Delete Bookmark
+    async deleteBookmark(id) {
+        const confirmed = await window.app.modal.confirm(
+            'Are you sure you want to delete this bookmark?',
+            { title: 'Delete Bookmark', confirmText: 'Delete', type: 'danger' }
+        );
+
+        if (confirmed) {
+            this.bookmarks = this.bookmarks.filter(b => b.bookmark_id !== id);
+            this.selectedIds.delete(id);
+            window.app.toast.success('Bookmark deleted');
+            this.render();
+            this.renderCategories();
+            this.updateBulkActionsBar();
+        }
+    },
+
+    // Bulk Actions
+    async bulkCategorize() {
+        window.app.modal.open({
+            title: 'Categorize Bookmarks',
+            content: `
+                <p class="mb-4">Select a category for ${this.selectedIds.size} bookmark(s):</p>
+                <div class="form-group">
+                    <select class="form-select" id="bulk-category">
+                        <option value="">Select category</option>
+                        ${this.categories.map(cat => `
+                            <option value="${Utils.escapeHtml(cat.name)}">${Utils.escapeHtml(cat.name)}</option>
+                        `).join('')}
+                    </select>
+                </div>
+            `,
+            footer: `
+                <button class="btn btn-secondary" onclick="window.app.modal.close()">Cancel</button>
+                <button class="btn btn-primary" onclick="BookmarksView.applyBulkCategory()">Apply</button>
+            `
+        });
+    },
+
+    applyBulkCategory() {
+        const category = document.getElementById('bulk-category').value;
+        if (!category) {
+            window.app.toast.warning('Please select a category');
+            return;
+        }
+
+        this.bookmarks.forEach(b => {
+            if (this.selectedIds.has(b.bookmark_id)) {
+                b.category_name = category;
+            }
+        });
+
+        window.app.modal.close();
+        window.app.toast.success(`${this.selectedIds.size} bookmark(s) categorized`);
+        this.clearSelection();
+        this.render();
+        this.renderCategories();
+    },
+
+    bulkExport() {
+        const selected = this.bookmarks.filter(b => this.selectedIds.has(b.bookmark_id));
+
+        const exportData = selected.map(b => ({
+            title: b.title,
+            url: b.url,
+            category: b.category_name,
+            summary: b.summary,
+            created: b.creation_date
+        }));
+
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `bookmarks-export-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        window.app.toast.success(`${selected.length} bookmark(s) exported`);
+    },
+
+    async bulkDelete() {
+        const confirmed = await window.app.modal.confirm(
+            `Are you sure you want to delete ${this.selectedIds.size} bookmark(s)?`,
+            { title: 'Delete Bookmarks', confirmText: 'Delete All', type: 'danger' }
+        );
+
+        if (confirmed) {
+            this.bookmarks = this.bookmarks.filter(b => !this.selectedIds.has(b.bookmark_id));
+            window.app.toast.success(`${this.selectedIds.size} bookmark(s) deleted`);
+            this.clearSelection();
+            this.render();
+            this.renderCategories();
+        }
+    },
+
+    // Random Bookmark
+    async getRandomBookmark() {
+        if (this.bookmarks.length === 0) {
+            window.app.toast.info('No bookmarks available');
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * this.bookmarks.length);
+        const bookmark = this.bookmarks[randomIndex];
+
+        const result = await window.app.modal.confirm(
+            `<div style="text-align: left;">
+                <div class="font-semibold mb-2">${Utils.escapeHtml(bookmark.title || 'Untitled')}</div>
+                <div class="text-sm text-muted mb-2">${Utils.getDomain(bookmark.url)}</div>
+                <div class="text-sm">${Utils.escapeHtml(Utils.truncate(bookmark.summary || '', 150))}</div>
+            </div>`,
+            {
+                title: 'Random Bookmark',
+                confirmText: 'Open URL',
+                cancelText: 'View Details',
+                type: 'primary'
+            }
+        );
+
+        if (result) {
+            window.open(bookmark.url, '_blank');
+        } else {
+            this.viewDetails(bookmark.bookmark_id);
+        }
+    }
+};
+
+// Initialize on load
+BookmarksView.init();
+</script>

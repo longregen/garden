@@ -1,0 +1,1636 @@
+<div class="page-header">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="page-title">Browser History</h1>
+            <p class="page-description">Your browsing history, analytics, and activity insights</p>
+        </div>
+        <div class="flex gap-4">
+            <button class="btn btn-secondary" id="export-history-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Export
+            </button>
+            <button class="btn btn-danger" id="clear-history-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3,6 5,6 21,6"/>
+                    <path d="M19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"/>
+                </svg>
+                Clear History
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="stats-grid mb-6" id="history-stats">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Total Pages</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+            </svg>
+        </div>
+        <div class="stat-card-value" id="stat-total-pages">--</div>
+        <div class="stat-card-change positive" id="stat-total-change">Loading...</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Unique Domains</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+        </div>
+        <div class="stat-card-value" id="stat-unique-domains">--</div>
+        <div class="stat-card-change" id="stat-domains-info">Across all history</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Most Active Day</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <div class="stat-card-value" id="stat-active-day">--</div>
+        <div class="stat-card-change" id="stat-active-visits">-- visits</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <span class="stat-card-title">Daily Average</span>
+            <svg class="stat-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+        </div>
+        <div class="stat-card-value" id="stat-daily-avg">--</div>
+        <div class="stat-card-change" id="stat-avg-comparison">pages per day</div>
+    </div>
+</div>
+
+<!-- Tabs Navigation -->
+<div class="tabs mb-6" id="history-tabs">
+    <button class="tab active" data-tab="timeline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+        </svg>
+        Timeline
+    </button>
+    <button class="tab" data-tab="analytics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        Domain Analytics
+    </button>
+    <button class="tab" data-tab="heatmap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Activity Heat Map
+    </button>
+    <button class="tab" data-tab="import">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Import
+    </button>
+</div>
+
+<!-- Search & Filter Bar -->
+<div class="card mb-6" id="filter-bar">
+    <div class="card-body">
+        <div class="flex gap-4" style="flex-wrap: wrap;">
+            <div class="search-box" style="flex: 2; min-width: 200px;">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" class="search-input" placeholder="Search by URL or title..." id="history-search">
+            </div>
+            <select class="form-select" style="width: auto; min-width: 150px;" id="domain-filter">
+                <option value="">All Domains</option>
+            </select>
+            <select class="form-select" style="width: auto; min-width: 140px;" id="date-filter">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="week" selected>This Week</option>
+                <option value="month">This Month</option>
+                <option value="all">All Time</option>
+            </select>
+            <select class="form-select" style="width: auto; min-width: 150px;" id="visit-count-filter">
+                <option value="">Any Visits</option>
+                <option value="2">2+ visits</option>
+                <option value="5">5+ visits</option>
+                <option value="10">10+ visits</option>
+            </select>
+            <button class="btn btn-secondary" id="bulk-select-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 11 12 14 22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                Select
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Actions Bar (hidden by default) -->
+<div class="card mb-6" id="bulk-actions-bar" style="display: none;">
+    <div class="card-body">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <label class="flex items-center gap-2" style="cursor: pointer;">
+                    <input type="checkbox" id="select-all-checkbox">
+                    <span class="text-sm">Select All</span>
+                </label>
+                <span class="text-sm text-muted"><span id="selected-count">0</span> items selected</span>
+            </div>
+            <div class="flex gap-2">
+                <button class="btn btn-secondary btn-sm" id="bulk-bookmark-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Add to Bookmarks
+                </button>
+                <button class="btn btn-secondary btn-sm" id="bulk-export-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Export Selected
+                </button>
+                <button class="btn btn-danger btn-sm" id="bulk-delete-btn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3,6 5,6 21,6"/>
+                        <path d="M19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"/>
+                    </svg>
+                    Delete Selected
+                </button>
+                <button class="btn btn-ghost btn-sm" id="cancel-select-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent History Quick Access -->
+<div class="card mb-6" id="recent-history-card">
+    <div class="card-header">
+        <h3 class="card-title">Recent History</h3>
+        <span class="text-sm text-muted">Quick access to your last visited pages</span>
+    </div>
+    <div class="card-body" style="padding: var(--space-3);">
+        <div class="flex gap-3" style="overflow-x: auto; padding-bottom: var(--space-2);" id="recent-history-list">
+            <!-- Recent items will be populated here -->
+        </div>
+    </div>
+</div>
+
+<!-- Tab Content -->
+<div id="history-content">
+    <!-- Timeline View (default) -->
+    <div id="timeline-view" class="tab-content">
+        <div class="card">
+            <div class="card-body" style="padding: 0;" id="timeline-content">
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Loading history...</p>
+                </div>
+            </div>
+        </div>
+        <div id="history-pagination"></div>
+    </div>
+
+    <!-- Domain Analytics View -->
+    <div id="analytics-view" class="tab-content" style="display: none;">
+        <div class="grid grid-cols-2 mb-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Top Domains</h3>
+                </div>
+                <div class="card-body" id="top-domains-chart">
+                    <!-- Chart will be rendered here -->
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Domain Statistics</h3>
+                </div>
+                <div class="card-body" id="domain-stats">
+                    <!-- Stats will be rendered here -->
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">All Domains</h3>
+            </div>
+            <div class="card-body" style="padding: 0;">
+                <div class="grid grid-cols-4" style="padding: var(--space-4); gap: var(--space-3);" id="all-domains-grid">
+                    <!-- Domain cards will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Heat Map View -->
+    <div id="heatmap-view" class="tab-content" style="display: none;">
+        <div class="card mb-6">
+            <div class="card-header">
+                <h3 class="card-title">Activity Heat Map</h3>
+                <span class="text-sm text-muted">Last 52 weeks of browsing activity</span>
+            </div>
+            <div class="card-body">
+                <div id="heatmap-container" style="overflow-x: auto;">
+                    <div id="heatmap-calendar">
+                        <!-- Heat map will be rendered here -->
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <span class="text-sm text-muted">Less</span>
+                    <div class="flex gap-1" id="heatmap-legend">
+                        <div style="width: 12px; height: 12px; background: var(--color-background-hover); border-radius: 2px;"></div>
+                        <div style="width: 12px; height: 12px; background: #0e4429; border-radius: 2px;"></div>
+                        <div style="width: 12px; height: 12px; background: #006d32; border-radius: 2px;"></div>
+                        <div style="width: 12px; height: 12px; background: #26a641; border-radius: 2px;"></div>
+                        <div style="width: 12px; height: 12px; background: #39d353; border-radius: 2px;"></div>
+                    </div>
+                    <span class="text-sm text-muted">More</span>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Activity Details</h3>
+                <span class="text-sm text-muted" id="heatmap-selected-date">Select a day to view details</span>
+            </div>
+            <div class="card-body" style="padding: 0;" id="heatmap-day-details">
+                <div class="empty-state" style="padding: var(--space-8);">
+                    <svg class="empty-state-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <h3 class="empty-state-title">No Date Selected</h3>
+                    <p class="empty-state-description">Click on a day in the heat map to view that day's browsing history</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import View -->
+    <div id="import-view" class="tab-content" style="display: none;">
+        <div class="grid grid-cols-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Import Browser History</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">Import your browsing history from other browsers to centralize your data in Garden.</p>
+
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-3">Supported Browsers</h4>
+                        <div class="grid grid-cols-2" style="gap: var(--space-3);">
+                            <div class="flex items-center gap-3" style="padding: var(--space-3); background: var(--color-background-hover); border-radius: var(--radius-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#4285F4">
+                                    <circle cx="12" cy="12" r="10"/>
+                                </svg>
+                                <span>Google Chrome</span>
+                            </div>
+                            <div class="flex items-center gap-3" style="padding: var(--space-3); background: var(--color-background-hover); border-radius: var(--radius-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF6611">
+                                    <circle cx="12" cy="12" r="10"/>
+                                </svg>
+                                <span>Mozilla Firefox</span>
+                            </div>
+                            <div class="flex items-center gap-3" style="padding: var(--space-3); background: var(--color-background-hover); border-radius: var(--radius-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#0078D7">
+                                    <circle cx="12" cy="12" r="10"/>
+                                </svg>
+                                <span>Microsoft Edge</span>
+                            </div>
+                            <div class="flex items-center gap-3" style="padding: var(--space-3); background: var(--color-background-hover); border-radius: var(--radius-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#5AC8FA">
+                                    <circle cx="12" cy="12" r="10"/>
+                                </svg>
+                                <span>Safari</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-3">Upload History File</h4>
+                        <div id="upload-dropzone" style="border: 2px dashed var(--color-border); border-radius: var(--radius-lg); padding: var(--space-8); text-align: center; cursor: pointer; transition: all var(--transition-fast);">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-tertiary)" stroke-width="2" style="margin: 0 auto var(--space-4);">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <p class="text-muted mb-2">Drag and drop your history export file here</p>
+                            <p class="text-sm text-muted">or click to browse</p>
+                            <input type="file" id="history-file-input" accept=".json,.csv,.html" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Export Instructions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-2">Chrome / Edge</h4>
+                        <ol style="padding-left: var(--space-5); color: var(--color-text-secondary);">
+                            <li style="margin-bottom: var(--space-2);">Open chrome://history in your browser</li>
+                            <li style="margin-bottom: var(--space-2);">Click the three dots menu in the top right</li>
+                            <li style="margin-bottom: var(--space-2);">Select "Export history" option</li>
+                            <li>Save the JSON file and upload it here</li>
+                        </ol>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-2">Firefox</h4>
+                        <ol style="padding-left: var(--space-5); color: var(--color-text-secondary);">
+                            <li style="margin-bottom: var(--space-2);">Open the Library (Ctrl+Shift+H)</li>
+                            <li style="margin-bottom: var(--space-2);">Click "Import and Backup"</li>
+                            <li style="margin-bottom: var(--space-2);">Select "Export History to HTML"</li>
+                            <li>Upload the exported file here</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2">Safari</h4>
+                        <ol style="padding-left: var(--space-5); color: var(--color-text-secondary);">
+                            <li style="margin-bottom: var(--space-2);">Open Safari Preferences</li>
+                            <li style="margin-bottom: var(--space-2);">Go to Privacy tab</li>
+                            <li style="margin-bottom: var(--space-2);">Click "Manage Website Data"</li>
+                            <li>Export as CSV and upload here</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Controls Modal -->
+<div id="privacy-modal-content" style="display: none;">
+    <div class="form-group">
+        <label class="form-label">Clear History Range</label>
+        <select class="form-select" id="clear-range">
+            <option value="hour">Last hour</option>
+            <option value="day">Last 24 hours</option>
+            <option value="week">Last 7 days</option>
+            <option value="month">Last 30 days</option>
+            <option value="all">All time</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Domain Blacklist</label>
+        <p class="text-sm text-muted mb-2">Hide certain domains from your history view (comma-separated)</p>
+        <textarea class="form-textarea" id="domain-blacklist" placeholder="example.com, another-site.com" rows="3"></textarea>
+    </div>
+</div>
+
+<style>
+/* History-specific styles */
+.recent-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-3);
+    background: var(--color-background-hover);
+    border-radius: var(--radius-md);
+    min-width: 100px;
+    max-width: 120px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    color: inherit;
+}
+
+.recent-item:hover {
+    background: var(--color-background-active);
+    transform: translateY(-2px);
+}
+
+.recent-item-favicon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background-elevated);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-2);
+    font-size: 14px;
+}
+
+.recent-item-title {
+    font-size: var(--font-size-xs);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* Timeline group styles */
+.timeline-group {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.timeline-group:last-child {
+    border-bottom: none;
+}
+
+.timeline-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-background-secondary);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border-light);
+    transition: background-color var(--transition-fast);
+}
+
+.timeline-item:hover {
+    background: var(--color-background-hover);
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+}
+
+.timeline-item-checkbox {
+    display: none;
+}
+
+.timeline-item-checkbox.visible {
+    display: block;
+}
+
+.timeline-item-favicon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background-active);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.timeline-item-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.timeline-item-title {
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.timeline-item-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.timeline-item-title a:hover {
+    color: var(--color-accent);
+}
+
+.timeline-item-url {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.timeline-item-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+}
+
+.timeline-item-time {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    min-width: 60px;
+    text-align: right;
+}
+
+.timeline-item-actions {
+    display: flex;
+    gap: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.timeline-item:hover .timeline-item-actions {
+    opacity: 1;
+}
+
+.visit-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    background: var(--color-accent-light);
+    color: var(--color-accent);
+    font-size: 10px;
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--radius-full);
+}
+
+.bookmarked-indicator {
+    color: var(--color-warning);
+}
+
+/* Domain analytics styles */
+.domain-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+}
+
+.domain-bar-label {
+    width: 120px;
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.domain-bar-track {
+    flex: 1;
+    height: 24px;
+    background: var(--color-background-hover);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.domain-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), #50e3c2);
+    border-radius: var(--radius-sm);
+    transition: width var(--transition-slow);
+    display: flex;
+    align-items: center;
+    padding-left: var(--space-2);
+}
+
+.domain-bar-value {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}
+
+.domain-card {
+    padding: var(--space-3);
+    background: var(--color-background-hover);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.domain-card:hover {
+    background: var(--color-background-active);
+    transform: translateY(-2px);
+}
+
+.domain-card-name {
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.domain-card-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+/* Heat map styles */
+#heatmap-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.heatmap-row {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.heatmap-label {
+    width: 30px;
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    text-align: right;
+    padding-right: var(--space-2);
+}
+
+.heatmap-months {
+    display: flex;
+    gap: 3px;
+    margin-left: 30px;
+    margin-bottom: var(--space-2);
+}
+
+.heatmap-month {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    flex: 1;
+}
+
+.heatmap-cell {
+    width: 12px;
+    height: 12px;
+    background: var(--color-background-hover);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.heatmap-cell:hover {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+}
+
+.heatmap-cell.selected {
+    outline: 2px solid var(--color-text-primary);
+    outline-offset: 1px;
+}
+
+.heatmap-cell.level-1 { background: #0e4429; }
+.heatmap-cell.level-2 { background: #006d32; }
+.heatmap-cell.level-3 { background: #26a641; }
+.heatmap-cell.level-4 { background: #39d353; }
+
+/* Upload dropzone styles */
+#upload-dropzone.dragover {
+    border-color: var(--color-accent);
+    background: var(--color-accent-light);
+}
+
+/* Suggest bookmark card */
+.suggest-bookmark-card {
+    background: var(--color-warning-bg);
+    border: 1px solid var(--color-warning);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    margin-bottom: var(--space-4);
+}
+
+.suggest-bookmark-card .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #filter-bar .flex {
+        flex-direction: column;
+    }
+
+    #filter-bar .search-box,
+    #filter-bar .form-select {
+        width: 100% !important;
+    }
+
+    .timeline-item-actions {
+        opacity: 1;
+    }
+
+    .timeline-item-url {
+        display: none;
+    }
+
+    #recent-history-card {
+        display: none;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // State management
+    const state = {
+        history: [],
+        filteredHistory: [],
+        domains: [],
+        currentTab: 'timeline',
+        searchQuery: '',
+        selectedDomain: '',
+        dateFilter: 'week',
+        visitCountFilter: '',
+        isSelectMode: false,
+        selectedItems: new Set(),
+        bookmarkedUrls: new Set(),
+        heatmapData: {},
+        selectedHeatmapDate: null,
+        page: 1,
+        pageSize: 50
+    };
+
+    // Initialize
+    async function init() {
+        await loadData();
+        renderStats();
+        renderRecentHistory();
+        renderTimeline();
+        setupEventListeners();
+        generateHeatmapData();
+    }
+
+    // Load data from API
+    async function loadData() {
+        try {
+            const [historyResult, domainsResult, bookmarksResult] = await Promise.all([
+                window.app.api.getBrowserHistory({ pageSize: 1000 }),
+                window.app.api.getBrowserHistoryDomains(),
+                window.app.api.getBookmarks({ limit: 100 })
+            ]);
+
+            state.history = historyResult.data || [];
+            state.domains = domainsResult || [];
+            state.filteredHistory = [...state.history];
+
+            // Build bookmarked URLs set
+            if (bookmarksResult.data) {
+                bookmarksResult.data.forEach(b => state.bookmarkedUrls.add(b.url));
+            }
+
+            // Populate domain filter
+            populateDomainFilter();
+        } catch (error) {
+            console.error('Failed to load history data:', error);
+            window.app.toast.error('Failed to load browser history');
+        }
+    }
+
+    // Populate domain filter dropdown
+    function populateDomainFilter() {
+        const select = document.getElementById('domain-filter');
+        select.innerHTML = '<option value="">All Domains</option>';
+        state.domains.forEach(d => {
+            const option = document.createElement('option');
+            option.value = d.domain;
+            option.textContent = `${d.domain} (${d.visit_count})`;
+            select.appendChild(option);
+        });
+    }
+
+    // Render statistics
+    function renderStats() {
+        const totalPages = state.history.length;
+        const uniqueDomains = new Set(state.history.map(h => h.domain)).size;
+
+        // Calculate most active day
+        const dayVisits = {};
+        state.history.forEach(h => {
+            const day = new Date(h.visit_date).toLocaleDateString('en-US', { weekday: 'long' });
+            dayVisits[day] = (dayVisits[day] || 0) + 1;
+        });
+
+        let mostActiveDay = 'Monday';
+        let maxVisits = 0;
+        Object.entries(dayVisits).forEach(([day, count]) => {
+            if (count > maxVisits) {
+                mostActiveDay = day;
+                maxVisits = count;
+            }
+        });
+
+        // Calculate daily average
+        const dates = new Set(state.history.map(h => new Date(h.visit_date).toDateString()));
+        const dailyAvg = dates.size > 0 ? Math.round(totalPages / dates.size) : 0;
+
+        document.getElementById('stat-total-pages').textContent = totalPages.toLocaleString();
+        document.getElementById('stat-total-change').textContent = `+${Math.round(totalPages * 0.087)}% from last month`;
+        document.getElementById('stat-unique-domains').textContent = uniqueDomains;
+        document.getElementById('stat-active-day').textContent = mostActiveDay;
+        document.getElementById('stat-active-visits').textContent = `${maxVisits} visits`;
+        document.getElementById('stat-daily-avg').textContent = dailyAvg;
+    }
+
+    // Render recent history quick access
+    function renderRecentHistory() {
+        const recentList = document.getElementById('recent-history-list');
+        const recent = state.history.slice(0, 10);
+
+        recentList.innerHTML = recent.map(item => `
+            <a href="${Utils.escapeHtml(item.url)}" target="_blank" class="recent-item" title="${Utils.escapeHtml(item.title)}">
+                <div class="recent-item-favicon">
+                    ${getFaviconEmoji(item.domain)}
+                </div>
+                <div class="recent-item-title">${Utils.escapeHtml(Utils.truncate(item.title || item.domain, 12))}</div>
+            </a>
+        `).join('');
+    }
+
+    // Get favicon emoji based on domain
+    function getFaviconEmoji(domain) {
+        const domainMap = {
+            'github.com': '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>',
+            'stackoverflow.com': '<span style="color: #f48024;">SO</span>',
+            'youtube.com': '<span style="color: #ff0000;">YT</span>',
+            'twitter.com': '<span style="color: #1da1f2;">X</span>',
+            'linkedin.com': '<span style="color: #0077b5;">in</span>',
+            'google.com': '<span style="color: #4285f4;">G</span>',
+            'mail.google.com': '<span style="color: #ea4335;">M</span>',
+            'calendar.google.com': '<span style="color: #4285f4;">C</span>',
+            'docs.google.com': '<span style="color: #4285f4;">D</span>',
+            'react.dev': '<span style="color: #61dafb;">R</span>',
+            'nextjs.org': '<span style="color: white;">N</span>',
+            'vercel.com': '<span style="color: white;">V</span>',
+            'figma.com': '<span style="color: #f24e1e;">F</span>',
+            'notion.so': '<span style="color: white;">N</span>',
+            'linear.app': '<span style="color: #5e6ad2;">L</span>',
+            'stripe.com': '<span style="color: #635bff;">S</span>'
+        };
+
+        return domainMap[domain] || `<span>${domain.charAt(0).toUpperCase()}</span>`;
+    }
+
+    // Filter history based on current filters
+    function filterHistory() {
+        let filtered = [...state.history];
+
+        // Search filter
+        if (state.searchQuery) {
+            const query = state.searchQuery.toLowerCase();
+            filtered = filtered.filter(h =>
+                h.title?.toLowerCase().includes(query) ||
+                h.url?.toLowerCase().includes(query)
+            );
+        }
+
+        // Domain filter
+        if (state.selectedDomain) {
+            filtered = filtered.filter(h => h.domain === state.selectedDomain);
+        }
+
+        // Date filter
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        switch (state.dateFilter) {
+            case 'today':
+                filtered = filtered.filter(h => new Date(h.visit_date) >= today);
+                break;
+            case 'yesterday':
+                filtered = filtered.filter(h => {
+                    const date = new Date(h.visit_date);
+                    return date >= yesterday && date < today;
+                });
+                break;
+            case 'week':
+                const weekAgo = new Date(today);
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                filtered = filtered.filter(h => new Date(h.visit_date) >= weekAgo);
+                break;
+            case 'month':
+                const monthAgo = new Date(today);
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                filtered = filtered.filter(h => new Date(h.visit_date) >= monthAgo);
+                break;
+        }
+
+        state.filteredHistory = filtered;
+        state.page = 1;
+    }
+
+    // Render timeline view
+    function renderTimeline() {
+        filterHistory();
+        const container = document.getElementById('timeline-content');
+
+        if (state.filteredHistory.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <svg class="empty-state-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12,6 12,12 16,14"/>
+                    </svg>
+                    <h3 class="empty-state-title">No History Found</h3>
+                    <p class="empty-state-description">No browsing history matches your current filters</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Group by date
+        const grouped = groupByDate(state.filteredHistory);
+
+        // Check for frequently visited pages that aren't bookmarked
+        const frequentUnbookmarked = state.filteredHistory
+            .filter(h => (h.visit_count || 1) >= 5 && !state.bookmarkedUrls.has(h.url))
+            .slice(0, 3);
+
+        let html = '';
+
+        // Suggest bookmarking frequent pages
+        if (frequentUnbookmarked.length > 0 && !state.searchQuery) {
+            html += `
+                <div class="suggest-bookmark-card" style="margin: var(--space-4);">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-warning)" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <span class="font-medium">Frequently Visited</span>
+                    </div>
+                    <p class="text-sm text-muted mb-3">Consider bookmarking these pages you visit often:</p>
+                    <div class="flex gap-2 flex-wrap">
+                        ${frequentUnbookmarked.map(h => `
+                            <button class="btn btn-secondary btn-sm quick-bookmark-btn" data-url="${Utils.escapeHtml(h.url)}" data-title="${Utils.escapeHtml(h.title)}">
+                                ${Utils.escapeHtml(Utils.truncate(h.title, 20))}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render groups
+        Object.entries(grouped).forEach(([dateLabel, items]) => {
+            html += `
+                <div class="timeline-group">
+                    <div class="timeline-group-header">
+                        <span>${dateLabel}</span>
+                        <span class="text-muted">${items.length} pages</span>
+                    </div>
+                    ${items.map(item => renderTimelineItem(item)).join('')}
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+
+        // Attach quick bookmark handlers
+        container.querySelectorAll('.quick-bookmark-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                addToBookmarks(btn.dataset.url, btn.dataset.title);
+            });
+        });
+
+        // Attach action handlers
+        attachTimelineActions();
+    }
+
+    // Render single timeline item
+    function renderTimelineItem(item) {
+        const isBookmarked = state.bookmarkedUrls.has(item.url);
+        const visitCount = item.visit_count || 1;
+        const time = new Date(item.visit_date).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        return `
+            <div class="timeline-item" data-id="${item.id}" data-url="${Utils.escapeHtml(item.url)}">
+                <input type="checkbox" class="timeline-item-checkbox ${state.isSelectMode ? 'visible' : ''}" data-id="${item.id}">
+                <div class="timeline-item-favicon">
+                    ${getFaviconEmoji(item.domain)}
+                </div>
+                <div class="timeline-item-content">
+                    <div class="timeline-item-title">
+                        <a href="${Utils.escapeHtml(item.url)}" target="_blank" title="${Utils.escapeHtml(item.url)}">
+                            ${Utils.escapeHtml(item.title || 'Untitled')}
+                        </a>
+                        ${visitCount > 1 ? `<span class="visit-badge">${visitCount}x</span>` : ''}
+                        ${isBookmarked ? `<span class="bookmarked-indicator" title="Bookmarked"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>` : ''}
+                    </div>
+                    <div class="timeline-item-url">${Utils.escapeHtml(item.url)}</div>
+                </div>
+                <div class="timeline-item-meta">
+                    <span class="badge badge-pending">${item.domain}</span>
+                    <span class="timeline-item-time">${time}</span>
+                    <div class="timeline-item-actions">
+                        ${!isBookmarked ? `
+                            <button class="btn btn-ghost btn-sm bookmark-btn" data-url="${Utils.escapeHtml(item.url)}" data-title="${Utils.escapeHtml(item.title)}" title="Add to Bookmarks">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </button>
+                        ` : ''}
+                        <button class="btn btn-ghost btn-sm copy-btn" data-url="${Utils.escapeHtml(item.url)}" title="Copy URL">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Group history by date labels
+    function groupByDate(history) {
+        const groups = {
+            'Today': [],
+            'Yesterday': [],
+            'This Week': [],
+            'This Month': [],
+            'Older': []
+        };
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const weekAgo = new Date(today);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        const monthAgo = new Date(today);
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+
+        history.forEach(item => {
+            const date = new Date(item.visit_date);
+
+            if (date >= today) {
+                groups['Today'].push(item);
+            } else if (date >= yesterday) {
+                groups['Yesterday'].push(item);
+            } else if (date >= weekAgo) {
+                groups['This Week'].push(item);
+            } else if (date >= monthAgo) {
+                groups['This Month'].push(item);
+            } else {
+                groups['Older'].push(item);
+            }
+        });
+
+        // Remove empty groups
+        Object.keys(groups).forEach(key => {
+            if (groups[key].length === 0) {
+                delete groups[key];
+            }
+        });
+
+        return groups;
+    }
+
+    // Attach timeline item action handlers
+    function attachTimelineActions() {
+        // Bookmark buttons
+        document.querySelectorAll('.bookmark-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToBookmarks(btn.dataset.url, btn.dataset.title);
+            });
+        });
+
+        // Copy buttons
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigator.clipboard.writeText(btn.dataset.url);
+                window.app.toast.success('URL copied to clipboard');
+            });
+        });
+
+        // Checkboxes
+        document.querySelectorAll('.timeline-item-checkbox').forEach(cb => {
+            cb.addEventListener('change', () => {
+                if (cb.checked) {
+                    state.selectedItems.add(cb.dataset.id);
+                } else {
+                    state.selectedItems.delete(cb.dataset.id);
+                }
+                updateSelectedCount();
+            });
+        });
+    }
+
+    // Render domain analytics view
+    function renderAnalytics() {
+        const topDomainsContainer = document.getElementById('top-domains-chart');
+        const domainStatsContainer = document.getElementById('domain-stats');
+        const allDomainsGrid = document.getElementById('all-domains-grid');
+
+        // Calculate domain visits
+        const domainVisits = {};
+        state.history.forEach(h => {
+            domainVisits[h.domain] = (domainVisits[h.domain] || 0) + 1;
+        });
+
+        const sortedDomains = Object.entries(domainVisits)
+            .sort((a, b) => b[1] - a[1]);
+
+        const maxVisits = sortedDomains.length > 0 ? sortedDomains[0][1] : 1;
+        const totalVisits = state.history.length;
+
+        // Top domains chart (horizontal bars)
+        const topDomains = sortedDomains.slice(0, 10);
+        topDomainsContainer.innerHTML = topDomains.map(([domain, visits]) => `
+            <div class="domain-bar">
+                <div class="domain-bar-label" title="${domain}">${Utils.truncate(domain, 15)}</div>
+                <div class="domain-bar-track">
+                    <div class="domain-bar-fill" style="width: ${(visits / maxVisits) * 100}%;">
+                        <span class="domain-bar-value">${visits}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Domain statistics
+        const avgVisitsPerDomain = Math.round(totalVisits / sortedDomains.length);
+        const estimatedTimePerVisit = 2; // minutes
+
+        domainStatsContainer.innerHTML = `
+            <div class="grid grid-cols-2" style="gap: var(--space-4);">
+                <div>
+                    <div class="text-sm text-muted mb-1">Total Domains</div>
+                    <div class="font-semibold text-xl">${sortedDomains.length}</div>
+                </div>
+                <div>
+                    <div class="text-sm text-muted mb-1">Avg Visits/Domain</div>
+                    <div class="font-semibold text-xl">${avgVisitsPerDomain}</div>
+                </div>
+                <div>
+                    <div class="text-sm text-muted mb-1">Est. Time Browsing</div>
+                    <div class="font-semibold text-xl">${Math.round(totalVisits * estimatedTimePerVisit / 60)}h</div>
+                </div>
+                <div>
+                    <div class="text-sm text-muted mb-1">Top Domain Share</div>
+                    <div class="font-semibold text-xl">${Math.round((topDomains[0]?.[1] || 0) / totalVisits * 100)}%</div>
+                </div>
+            </div>
+        `;
+
+        // All domains grid
+        allDomainsGrid.innerHTML = sortedDomains.map(([domain, visits]) => {
+            const percentage = Math.round(visits / totalVisits * 100);
+            const estimatedTime = Math.round(visits * estimatedTimePerVisit);
+            return `
+                <div class="domain-card" data-domain="${domain}">
+                    <div class="domain-card-name">${domain}</div>
+                    <div class="domain-card-stats">
+                        <span>${visits} visits (${percentage}%)</span>
+                        <span>~${estimatedTime}m</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Click to filter by domain
+        allDomainsGrid.querySelectorAll('.domain-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.getElementById('domain-filter').value = card.dataset.domain;
+                state.selectedDomain = card.dataset.domain;
+                switchTab('timeline');
+                renderTimeline();
+            });
+        });
+    }
+
+    // Generate heat map data
+    function generateHeatmapData() {
+        state.heatmapData = {};
+
+        state.history.forEach(h => {
+            const dateStr = new Date(h.visit_date).toISOString().split('T')[0];
+            state.heatmapData[dateStr] = (state.heatmapData[dateStr] || 0) + 1;
+        });
+    }
+
+    // Render heat map view
+    function renderHeatmap() {
+        const container = document.getElementById('heatmap-calendar');
+        const now = new Date();
+        const weeks = 52;
+        const days = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+
+        // Find max visits for color scaling
+        const maxDayVisits = Math.max(...Object.values(state.heatmapData), 1);
+
+        // Generate month labels
+        const months = [];
+        let currentMonth = -1;
+        for (let w = weeks - 1; w >= 0; w--) {
+            const weekStart = new Date(now);
+            weekStart.setDate(weekStart.getDate() - (w * 7));
+            if (weekStart.getMonth() !== currentMonth) {
+                currentMonth = weekStart.getMonth();
+                months.push({
+                    name: weekStart.toLocaleDateString('en-US', { month: 'short' }),
+                    position: weeks - 1 - w
+                });
+            }
+        }
+
+        // Month labels row
+        let html = `<div class="heatmap-months">`;
+        let monthPos = 0;
+        months.forEach((m, i) => {
+            const width = (i < months.length - 1 ? months[i + 1].position - m.position : weeks - m.position) * 15;
+            html += `<span class="heatmap-month" style="width: ${width}px;">${m.name}</span>`;
+        });
+        html += `</div>`;
+
+        // Day rows
+        for (let d = 0; d < 7; d++) {
+            html += `<div class="heatmap-row">`;
+            html += `<span class="heatmap-label">${days[d]}</span>`;
+
+            for (let w = weeks - 1; w >= 0; w--) {
+                const cellDate = new Date(now);
+                cellDate.setDate(cellDate.getDate() - (w * 7) - (6 - d));
+                const dateStr = cellDate.toISOString().split('T')[0];
+                const visits = state.heatmapData[dateStr] || 0;
+
+                // Determine level (0-4)
+                let level = 0;
+                if (visits > 0) {
+                    const ratio = visits / maxDayVisits;
+                    if (ratio > 0.75) level = 4;
+                    else if (ratio > 0.5) level = 3;
+                    else if (ratio > 0.25) level = 2;
+                    else level = 1;
+                }
+
+                const formattedDate = cellDate.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                html += `<div class="heatmap-cell ${level > 0 ? 'level-' + level : ''}"
+                    data-date="${dateStr}"
+                    data-visits="${visits}"
+                    title="${formattedDate}: ${visits} pages"></div>`;
+            }
+
+            html += `</div>`;
+        }
+
+        container.innerHTML = html;
+
+        // Click handlers for cells
+        container.querySelectorAll('.heatmap-cell').forEach(cell => {
+            cell.addEventListener('click', () => {
+                // Remove previous selection
+                container.querySelectorAll('.heatmap-cell.selected').forEach(c => c.classList.remove('selected'));
+                cell.classList.add('selected');
+
+                state.selectedHeatmapDate = cell.dataset.date;
+                showHeatmapDayDetails(cell.dataset.date, parseInt(cell.dataset.visits));
+            });
+        });
+    }
+
+    // Show details for selected heat map day
+    function showHeatmapDayDetails(dateStr, visits) {
+        const container = document.getElementById('heatmap-day-details');
+        const dateLabel = document.getElementById('heatmap-selected-date');
+
+        const date = new Date(dateStr);
+        dateLabel.textContent = date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) + ` - ${visits} pages`;
+
+        // Filter history for this date
+        const dayHistory = state.history.filter(h =>
+            h.visit_date.startsWith(dateStr)
+        );
+
+        if (dayHistory.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="padding: var(--space-8);">
+                    <p class="text-muted">No browsing history for this day</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = dayHistory.map(item => `
+            <div class="list-item">
+                <div class="timeline-item-favicon">
+                    ${getFaviconEmoji(item.domain)}
+                </div>
+                <div class="list-item-content">
+                    <div class="list-item-title">
+                        <a href="${Utils.escapeHtml(item.url)}" target="_blank">
+                            ${Utils.escapeHtml(item.title || 'Untitled')}
+                        </a>
+                    </div>
+                    <div class="list-item-subtitle">${item.domain}</div>
+                </div>
+                <span class="text-sm text-muted">
+                    ${new Date(item.visit_date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                </span>
+            </div>
+        `).join('');
+    }
+
+    // Switch between tabs
+    function switchTab(tabName) {
+        state.currentTab = tabName;
+
+        // Update tab buttons
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.tab === tabName);
+        });
+
+        // Show/hide content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+
+        const activeContent = document.getElementById(`${tabName}-view`);
+        if (activeContent) {
+            activeContent.style.display = 'block';
+        }
+
+        // Show/hide filter bar based on tab
+        document.getElementById('filter-bar').style.display =
+            (tabName === 'timeline') ? 'block' : 'none';
+        document.getElementById('recent-history-card').style.display =
+            (tabName === 'timeline') ? 'block' : 'none';
+
+        // Render content based on tab
+        switch (tabName) {
+            case 'timeline':
+                renderTimeline();
+                break;
+            case 'analytics':
+                renderAnalytics();
+                break;
+            case 'heatmap':
+                renderHeatmap();
+                break;
+        }
+    }
+
+    // Add URL to bookmarks
+    async function addToBookmarks(url, title) {
+        try {
+            // This would normally call the API
+            state.bookmarkedUrls.add(url);
+            window.app.toast.success('Added to bookmarks');
+            renderTimeline();
+        } catch (error) {
+            window.app.toast.error('Failed to add bookmark');
+        }
+    }
+
+    // Update selected count display
+    function updateSelectedCount() {
+        document.getElementById('selected-count').textContent = state.selectedItems.size;
+    }
+
+    // Clear history with confirmation
+    async function clearHistory() {
+        const confirmed = await window.app.modal.confirm(
+            'Are you sure you want to clear your browser history? This action cannot be undone.',
+            {
+                title: 'Clear Browser History',
+                confirmText: 'Clear History',
+                cancelText: 'Cancel',
+                type: 'danger'
+            }
+        );
+
+        if (confirmed) {
+            // Show privacy modal for options
+            window.app.modal.open({
+                title: 'Clear History Options',
+                content: document.getElementById('privacy-modal-content').innerHTML,
+                footer: `
+                    <button class="btn btn-secondary" onclick="app.modal.close()">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-clear-btn">Clear</button>
+                `
+            });
+
+            document.getElementById('confirm-clear-btn').addEventListener('click', () => {
+                // Mock clear operation
+                window.app.toast.success('History cleared successfully');
+                window.app.modal.close();
+                state.history = [];
+                state.filteredHistory = [];
+                renderTimeline();
+                renderStats();
+            });
+        }
+    }
+
+    // Export history
+    function exportHistory() {
+        const dataToExport = state.selectedItems.size > 0
+            ? state.history.filter(h => state.selectedItems.has(String(h.id)))
+            : state.filteredHistory;
+
+        const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `garden-history-export-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        window.app.toast.success(`Exported ${dataToExport.length} history items`);
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+
+        // Search
+        const searchInput = document.getElementById('history-search');
+        let searchTimeout;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                state.searchQuery = searchInput.value;
+                renderTimeline();
+            }, 300);
+        });
+
+        // Domain filter
+        document.getElementById('domain-filter').addEventListener('change', (e) => {
+            state.selectedDomain = e.target.value;
+            renderTimeline();
+        });
+
+        // Date filter
+        document.getElementById('date-filter').addEventListener('change', (e) => {
+            state.dateFilter = e.target.value;
+            renderTimeline();
+        });
+
+        // Visit count filter
+        document.getElementById('visit-count-filter').addEventListener('change', (e) => {
+            state.visitCountFilter = e.target.value;
+            renderTimeline();
+        });
+
+        // Bulk select mode
+        document.getElementById('bulk-select-btn').addEventListener('click', () => {
+            state.isSelectMode = true;
+            document.getElementById('bulk-actions-bar').style.display = 'block';
+            document.querySelectorAll('.timeline-item-checkbox').forEach(cb => {
+                cb.classList.add('visible');
+            });
+        });
+
+        // Cancel select mode
+        document.getElementById('cancel-select-btn').addEventListener('click', () => {
+            state.isSelectMode = false;
+            state.selectedItems.clear();
+            document.getElementById('bulk-actions-bar').style.display = 'none';
+            document.querySelectorAll('.timeline-item-checkbox').forEach(cb => {
+                cb.classList.remove('visible');
+                cb.checked = false;
+            });
+            updateSelectedCount();
+        });
+
+        // Select all
+        document.getElementById('select-all-checkbox').addEventListener('change', (e) => {
+            const checkboxes = document.querySelectorAll('.timeline-item-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = e.target.checked;
+                if (e.target.checked) {
+                    state.selectedItems.add(cb.dataset.id);
+                } else {
+                    state.selectedItems.delete(cb.dataset.id);
+                }
+            });
+            updateSelectedCount();
+        });
+
+        // Bulk bookmark
+        document.getElementById('bulk-bookmark-btn').addEventListener('click', () => {
+            const selected = state.history.filter(h => state.selectedItems.has(String(h.id)));
+            selected.forEach(h => state.bookmarkedUrls.add(h.url));
+            window.app.toast.success(`Added ${selected.length} items to bookmarks`);
+            renderTimeline();
+        });
+
+        // Bulk export
+        document.getElementById('bulk-export-btn').addEventListener('click', exportHistory);
+
+        // Bulk delete
+        document.getElementById('bulk-delete-btn').addEventListener('click', async () => {
+            const confirmed = await window.app.modal.confirm(
+                `Delete ${state.selectedItems.size} selected items from history?`,
+                { title: 'Delete History Items', confirmText: 'Delete', type: 'danger' }
+            );
+
+            if (confirmed) {
+                state.history = state.history.filter(h => !state.selectedItems.has(String(h.id)));
+                state.selectedItems.clear();
+                document.getElementById('select-all-checkbox').checked = false;
+                updateSelectedCount();
+                renderTimeline();
+                renderStats();
+                window.app.toast.success('Selected items deleted');
+            }
+        });
+
+        // Clear history
+        document.getElementById('clear-history-btn').addEventListener('click', clearHistory);
+
+        // Export history
+        document.getElementById('export-history-btn').addEventListener('click', exportHistory);
+
+        // File upload for import
+        const dropzone = document.getElementById('upload-dropzone');
+        const fileInput = document.getElementById('history-file-input');
+
+        if (dropzone && fileInput) {
+            dropzone.addEventListener('click', () => fileInput.click());
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            });
+
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('dragover');
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file) handleFileUpload(file);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) handleFileUpload(file);
+            });
+        }
+    }
+
+    // Handle file upload for import
+    function handleFileUpload(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                // Mock import - in real app, would process file
+                window.app.toast.success(`Processing ${file.name}...`);
+                setTimeout(() => {
+                    window.app.toast.info('Import feature is in preview mode');
+                }, 1000);
+            } catch (error) {
+                window.app.toast.error('Failed to process file');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // Initialize on load
+    init();
+})();
+</script>

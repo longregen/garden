@@ -1,0 +1,1797 @@
+<div class="page-header">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="page-title">Settings</h1>
+            <p class="page-description">Configure your preferences and integrations</p>
+        </div>
+        <div class="settings-sync-status" id="sync-status">
+            <span class="sync-indicator synced"></span>
+            <span class="text-sm text-muted">All changes saved</span>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Search -->
+<div class="settings-search-container mb-6">
+    <div class="search-box" style="width: 100%; max-width: 400px;">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" class="search-input" id="settings-search" placeholder="Search settings..." style="padding-left: var(--space-10);">
+    </div>
+</div>
+
+<div class="settings-layout">
+    <!-- Settings Navigation Sidebar -->
+    <nav class="settings-nav">
+        <ul class="settings-nav-list">
+            <li>
+                <a href="#general" class="settings-nav-item active" data-section="general">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    General
+                </a>
+            </li>
+            <li>
+                <a href="#appearance" class="settings-nav-item" data-section="appearance">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    Appearance
+                </a>
+            </li>
+            <li>
+                <a href="#integrations" class="settings-nav-item" data-section="integrations">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"/>
+                        <rect x="9" y="9" width="6" height="6"/>
+                        <line x1="9" y1="1" x2="9" y2="4"/>
+                        <line x1="15" y1="1" x2="15" y2="4"/>
+                        <line x1="9" y1="20" x2="9" y2="23"/>
+                        <line x1="15" y1="20" x2="15" y2="23"/>
+                        <line x1="20" y1="9" x2="23" y2="9"/>
+                        <line x1="20" y1="14" x2="23" y2="14"/>
+                        <line x1="1" y1="9" x2="4" y2="9"/>
+                        <line x1="1" y1="14" x2="4" y2="14"/>
+                    </svg>
+                    Integrations
+                </a>
+            </li>
+            <li>
+                <a href="#storage" class="settings-nav-item" data-section="storage">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                    </svg>
+                    Data & Storage
+                </a>
+            </li>
+            <li>
+                <a href="#privacy" class="settings-nav-item" data-section="privacy">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    Privacy
+                </a>
+            </li>
+            <li>
+                <a href="#advanced" class="settings-nav-item" data-section="advanced">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                    Advanced
+                </a>
+            </li>
+            <li>
+                <a href="#about" class="settings-nav-item" data-section="about">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    About
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Settings Content -->
+    <div class="settings-content" id="settings-content">
+        <!-- General Settings -->
+        <section class="settings-section" id="section-general">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">General Settings</h2>
+                <button class="btn btn-ghost btn-sm" onclick="SettingsManager.resetSection('general')">Reset to Defaults</button>
+            </div>
+
+            <div class="card mb-6">
+                <div class="card-body">
+                    <div class="settings-group">
+                        <div class="form-group">
+                            <label class="form-label">Display Name</label>
+                            <input type="text" class="form-input" id="setting-displayName" data-path="general.displayName" placeholder="Your display name">
+                            <p class="form-helper">This is how you'll appear in the application</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" id="setting-email" data-path="general.email" readonly disabled>
+                            <p class="form-helper">Your email address (read-only)</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Language</label>
+                            <select class="form-select" id="setting-language" data-path="general.language">
+                                <option value="en">English</option>
+                                <option value="es">Spanish (Espanol)</option>
+                                <option value="fr">French (Francais)</option>
+                                <option value="de">German (Deutsch)</option>
+                                <option value="ja">Japanese (Nihongo)</option>
+                                <option value="zh">Chinese (Zhongwen)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Timezone</label>
+                            <select class="form-select" id="setting-timezone" data-path="general.timezone">
+                                <option value="America/New_York">Eastern Time (US & Canada)</option>
+                                <option value="America/Chicago">Central Time (US & Canada)</option>
+                                <option value="America/Denver">Mountain Time (US & Canada)</option>
+                                <option value="America/Los_Angeles">Pacific Time (US & Canada)</option>
+                                <option value="America/Anchorage">Alaska</option>
+                                <option value="Pacific/Honolulu">Hawaii</option>
+                                <option value="UTC">UTC</option>
+                                <option value="Europe/London">London</option>
+                                <option value="Europe/Paris">Paris</option>
+                                <option value="Europe/Berlin">Berlin</option>
+                                <option value="Asia/Tokyo">Tokyo</option>
+                                <option value="Asia/Shanghai">Shanghai</option>
+                                <option value="Australia/Sydney">Sydney</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Default Views</h3>
+                </div>
+                <div class="card-body">
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label class="form-label">Dashboard</label>
+                            <select class="form-select" id="setting-defaultView-dashboard" data-path="general.defaultView.dashboard">
+                                <option value="overview">Overview</option>
+                                <option value="recent">Recent Activity</option>
+                                <option value="stats">Statistics</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bookmarks</label>
+                            <select class="form-select" id="setting-defaultView-bookmarks" data-path="general.defaultView.bookmarks">
+                                <option value="grid">Grid View</option>
+                                <option value="list">List View</option>
+                                <option value="compact">Compact View</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Notes</label>
+                            <select class="form-select" id="setting-defaultView-notes" data-path="general.defaultView.notes">
+                                <option value="grid">Grid View</option>
+                                <option value="list">List View</option>
+                                <option value="timeline">Timeline View</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contacts</label>
+                            <select class="form-select" id="setting-defaultView-contacts" data-path="general.defaultView.contacts">
+                                <option value="list">List View</option>
+                                <option value="grid">Grid View</option>
+                                <option value="table">Table View</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appearance Settings -->
+        <section class="settings-section" id="section-appearance" style="display: none;">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">Appearance</h2>
+                <button class="btn btn-ghost btn-sm" onclick="SettingsManager.resetSection('appearance')">Reset to Defaults</button>
+            </div>
+
+            <div class="grid grid-cols-2">
+                <div>
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="card-title">Theme</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="theme-selector">
+                                <label class="theme-option">
+                                    <input type="radio" name="theme" value="dark" data-path="appearance.theme">
+                                    <div class="theme-preview theme-preview-dark">
+                                        <div class="theme-preview-sidebar"></div>
+                                        <div class="theme-preview-content">
+                                            <div class="theme-preview-header"></div>
+                                            <div class="theme-preview-body"></div>
+                                        </div>
+                                    </div>
+                                    <span class="theme-label">Dark</span>
+                                </label>
+                                <label class="theme-option">
+                                    <input type="radio" name="theme" value="light" data-path="appearance.theme">
+                                    <div class="theme-preview theme-preview-light">
+                                        <div class="theme-preview-sidebar"></div>
+                                        <div class="theme-preview-content">
+                                            <div class="theme-preview-header"></div>
+                                            <div class="theme-preview-body"></div>
+                                        </div>
+                                    </div>
+                                    <span class="theme-label">Light</span>
+                                </label>
+                                <label class="theme-option">
+                                    <input type="radio" name="theme" value="system" data-path="appearance.theme">
+                                    <div class="theme-preview theme-preview-system">
+                                        <div class="theme-preview-sidebar"></div>
+                                        <div class="theme-preview-content">
+                                            <div class="theme-preview-header"></div>
+                                            <div class="theme-preview-body"></div>
+                                        </div>
+                                    </div>
+                                    <span class="theme-label">System</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="card-title">Accent Color</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="color-picker-row">
+                                <div class="color-presets">
+                                    <button class="color-preset" data-color="#0070f3" style="background-color: #0070f3;" title="Blue"></button>
+                                    <button class="color-preset" data-color="#50e3c2" style="background-color: #50e3c2;" title="Teal"></button>
+                                    <button class="color-preset" data-color="#7928ca" style="background-color: #7928ca;" title="Purple"></button>
+                                    <button class="color-preset" data-color="#ff0080" style="background-color: #ff0080;" title="Pink"></button>
+                                    <button class="color-preset" data-color="#f5a623" style="background-color: #f5a623;" title="Orange"></button>
+                                    <button class="color-preset" data-color="#e00000" style="background-color: #e00000;" title="Red"></button>
+                                </div>
+                                <input type="color" class="color-picker-input" id="setting-accentColor" data-path="appearance.accentColor" value="#0070f3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-6">
+                        <div class="card-header">
+                            <h3 class="card-title">Layout</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Sidebar Position</label>
+                                <div class="radio-group">
+                                    <label class="radio-label">
+                                        <input type="radio" name="sidebarPosition" value="left" data-path="appearance.sidebarPosition">
+                                        <span>Left</span>
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="sidebarPosition" value="right" data-path="appearance.sidebarPosition">
+                                        <span>Right</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="toggle-row">
+                                    <span class="toggle-label">Compact Mode</span>
+                                    <label class="toggle">
+                                        <input type="checkbox" id="setting-compactMode" data-path="appearance.compactMode">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </label>
+                                <p class="form-helper">Reduce spacing and padding throughout the interface</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Typography</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Font Size: <span id="fontSize-value">16</span>px</label>
+                                <input type="range" class="form-range" id="setting-fontSize" data-path="appearance.fontSize" min="12" max="20" step="1" value="16">
+                                <div class="range-labels">
+                                    <span>Small</span>
+                                    <span>Large</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Code Font</label>
+                                <select class="form-select" id="setting-codeFont" data-path="appearance.codeFont">
+                                    <option value="SF Mono">SF Mono</option>
+                                    <option value="Monaco">Monaco</option>
+                                    <option value="Fira Code">Fira Code</option>
+                                    <option value="JetBrains Mono">JetBrains Mono</option>
+                                    <option value="Consolas">Consolas</option>
+                                    <option value="Source Code Pro">Source Code Pro</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Panel -->
+                <div>
+                    <div class="card sticky-preview">
+                        <div class="card-header">
+                            <h3 class="card-title">Preview</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="preview-container" id="appearance-preview">
+                                <div class="preview-mock">
+                                    <div class="preview-sidebar"></div>
+                                    <div class="preview-main">
+                                        <div class="preview-header"></div>
+                                        <div class="preview-card">
+                                            <div class="preview-title"></div>
+                                            <div class="preview-text"></div>
+                                            <div class="preview-text short"></div>
+                                        </div>
+                                        <div class="preview-card">
+                                            <div class="preview-title"></div>
+                                            <div class="preview-text"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-muted text-center mt-4">Changes will be applied immediately</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integrations Settings -->
+        <section class="settings-section" id="section-integrations" style="display: none;">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">Integrations</h2>
+            </div>
+
+            <!-- Ollama/AI Settings -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+                            <path d="M12 6a4 4 0 0 0-4 4c0 2.21 4 6 4 6s4-3.79 4-6a4 4 0 0 0-4-4zm0 5a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/>
+                        </svg>
+                        Ollama / AI
+                    </h3>
+                    <span class="badge" id="ollama-status"></span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Enable Ollama Integration</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-ollama-enabled" data-path="integrations.ollama.enabled">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ollama URL</label>
+                        <div class="input-with-button">
+                            <input type="text" class="form-input" id="setting-ollama-url" data-path="integrations.ollama.url" placeholder="http://localhost:11434">
+                            <button class="btn btn-secondary" id="btn-test-ollama">Test Connection</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label class="form-label">Embedding Model</label>
+                            <select class="form-select" id="setting-ollama-embedding" data-path="integrations.ollama.embeddingModel">
+                                <option value="nomic-embed-text">nomic-embed-text</option>
+                                <option value="mxbai-embed-large">mxbai-embed-large</option>
+                                <option value="all-minilm">all-minilm</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LLM Model</label>
+                            <select class="form-select" id="setting-ollama-llm" data-path="integrations.ollama.llmModel">
+                                <option value="llama3.2">llama3.2</option>
+                                <option value="llama3.1">llama3.1</option>
+                                <option value="mistral">mistral</option>
+                                <option value="codellama">codellama</option>
+                                <option value="phi3">phi3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-helper" id="ollama-last-connected">
+                        Last connected: Never
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Social Media</h3>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <!-- Twitter -->
+                    <div class="integration-item">
+                        <div class="integration-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </div>
+                        <div class="integration-info">
+                            <div class="integration-name">Twitter / X</div>
+                            <div class="integration-status" id="twitter-status">Not connected</div>
+                        </div>
+                        <div class="integration-actions">
+                            <button class="btn btn-secondary btn-sm" id="btn-twitter-toggle">Connect</button>
+                        </div>
+                    </div>
+
+                    <!-- Bluesky -->
+                    <div class="integration-item">
+                        <div class="integration-icon" style="color: #0085ff;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm3.5-11.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-7 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm3.5 7c2.21 0 4-1.79 4-4h-8c0 2.21 1.79 4 4 4z"/>
+                            </svg>
+                        </div>
+                        <div class="integration-info">
+                            <div class="integration-name">Bluesky</div>
+                            <div class="integration-status" id="bluesky-status">Not connected</div>
+                        </div>
+                        <div class="integration-actions">
+                            <button class="btn btn-secondary btn-sm" id="btn-bluesky-toggle">Connect</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Browser Extension -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Browser Extension</h3>
+                    <span class="badge" id="extension-status"></span>
+                </div>
+                <div class="card-body">
+                    <div class="flex items-center gap-4 mb-4">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                        <div>
+                            <div class="font-medium">Garden Clipper Extension</div>
+                            <div class="text-sm text-muted" id="extension-version">Version: Not installed</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Auto-capture Bookmarks</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-extension-autoCapture" data-path="integrations.browserExtension.autoCapture">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Capture Browser History</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-extension-captureHistory" data-path="integrations.browserExtension.captureHistory">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div class="form-helper" id="extension-last-sync">
+                        Last sync: Never
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logseq Sync -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Logseq Sync</h3>
+                    <span class="badge" id="logseq-status"></span>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Enable Logseq Sync</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-logseq-enabled" data-path="integrations.logseq.enabled">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Logseq Directory</label>
+                        <input type="text" class="form-input" id="setting-logseq-path" data-path="integrations.logseq.syncPath" placeholder="/path/to/logseq">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Auto Sync</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-logseq-autoSync" data-path="integrations.logseq.autoSync">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Sync Interval (minutes)</label>
+                        <select class="form-select" id="setting-logseq-interval" data-path="integrations.logseq.syncInterval">
+                            <option value="5">5 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">1 hour</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Conflict Resolution</label>
+                        <select class="form-select" id="setting-logseq-conflict" data-path="integrations.logseq.conflictResolution">
+                            <option value="newer">Keep newer version</option>
+                            <option value="garden">Prefer Garden</option>
+                            <option value="logseq">Prefer Logseq</option>
+                            <option value="manual">Manual resolution</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button class="btn btn-primary" id="btn-logseq-sync">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+                            </svg>
+                            Sync Now
+                        </button>
+                    </div>
+
+                    <div class="form-helper mt-4" id="logseq-last-sync">
+                        Last sync: Never
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data & Storage Settings -->
+        <section class="settings-section" id="section-storage" style="display: none;">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">Data & Storage</h2>
+            </div>
+
+            <!-- Storage Usage -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Storage Usage</h3>
+                </div>
+                <div class="card-body">
+                    <div class="storage-overview mb-6">
+                        <div class="storage-total">
+                            <span class="storage-used" id="storage-used">0 MB</span>
+                            <span class="storage-label">used</span>
+                        </div>
+                        <div class="storage-bar">
+                            <div class="storage-bar-segment" id="storage-bar-bookmarks" style="width: 0%;" title="Bookmarks"></div>
+                            <div class="storage-bar-segment" id="storage-bar-notes" style="width: 0%;" title="Notes"></div>
+                            <div class="storage-bar-segment" id="storage-bar-contacts" style="width: 0%;" title="Contacts"></div>
+                            <div class="storage-bar-segment" id="storage-bar-messages" style="width: 0%;" title="Messages"></div>
+                            <div class="storage-bar-segment" id="storage-bar-cache" style="width: 0%;" title="Cache"></div>
+                            <div class="storage-bar-segment" id="storage-bar-other" style="width: 0%;" title="Other"></div>
+                        </div>
+                    </div>
+
+                    <div class="storage-breakdown" id="storage-breakdown">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Database Stats -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Database Statistics</h3>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="stat-mini">
+                            <div class="stat-mini-value" id="stat-bookmarks">0</div>
+                            <div class="stat-mini-label">Bookmarks</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-value" id="stat-notes">0</div>
+                            <div class="stat-mini-label">Notes</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-value" id="stat-contacts">0</div>
+                            <div class="stat-mini-label">Contacts</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-value" id="stat-messages">0</div>
+                            <div class="stat-mini-label">Messages</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-value" id="stat-entities">0</div>
+                            <div class="stat-mini-label">Entities</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-mini-value" id="stat-history">0</div>
+                            <div class="stat-mini-label">History Items</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Operations -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Data Operations</h3>
+                </div>
+                <div class="card-body">
+                    <div class="data-action-list">
+                        <div class="data-action-item">
+                            <div class="data-action-info">
+                                <div class="data-action-name">Clear Cache</div>
+                                <div class="data-action-desc">Remove cached data to free up space. This won't affect your saved data.</div>
+                            </div>
+                            <button class="btn btn-secondary" id="btn-clear-cache">Clear Cache</button>
+                        </div>
+
+                        <div class="data-action-item">
+                            <div class="data-action-info">
+                                <div class="data-action-name">Export All Data</div>
+                                <div class="data-action-desc">Download all your data as a JSON file for backup or migration.</div>
+                            </div>
+                            <button class="btn btn-secondary" id="btn-export-data">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7,10 12,15 17,10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export JSON
+                            </button>
+                        </div>
+
+                        <div class="data-action-item">
+                            <div class="data-action-info">
+                                <div class="data-action-name">Import Data</div>
+                                <div class="data-action-desc">Import data from a previously exported JSON file.</div>
+                            </div>
+                            <label class="btn btn-secondary">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17,8 12,3 7,8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                                Import JSON
+                                <input type="file" accept=".json" id="import-file" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Privacy Settings -->
+        <section class="settings-section" id="section-privacy" style="display: none;">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">Privacy</h2>
+                <button class="btn btn-ghost btn-sm" onclick="SettingsManager.resetSection('privacy')">Reset to Defaults</button>
+            </div>
+
+            <!-- Data Retention -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Data Retention</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Enable Data Retention Policies</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-retention-enabled" data-path="privacy.dataRetention.enabled">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label class="form-label">Keep Browser History For</label>
+                            <select class="form-select" id="setting-retention-history" data-path="privacy.dataRetention.historyDays">
+                                <option value="30">30 days</option>
+                                <option value="60">60 days</option>
+                                <option value="90">90 days</option>
+                                <option value="180">180 days</option>
+                                <option value="365">1 year</option>
+                                <option value="-1">Forever</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Keep Messages For</label>
+                            <select class="form-select" id="setting-retention-messages" data-path="privacy.dataRetention.messageDays">
+                                <option value="90">90 days</option>
+                                <option value="180">180 days</option>
+                                <option value="365">1 year</option>
+                                <option value="730">2 years</option>
+                                <option value="-1">Forever</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Keep Deleted Items For</label>
+                            <select class="form-select" id="setting-retention-deleted" data-path="privacy.dataRetention.deletedItemsDays">
+                                <option value="7">7 days</option>
+                                <option value="14">14 days</option>
+                                <option value="30">30 days</option>
+                                <option value="60">60 days</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto Delete -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Automatic Cleanup</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Enable Auto-Delete for Expired Items</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-autodelete-enabled" data-path="privacy.autoDelete.enabled">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                        <p class="form-helper">Automatically delete items based on retention policies</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Cleanup Interval</label>
+                        <select class="form-select" id="setting-autodelete-interval" data-path="privacy.autoDelete.interval">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy Options -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Privacy Options</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Anonymize Exported Data</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-anonymize" data-path="privacy.anonymizeExports">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                        <p class="form-helper">Remove personal identifiers when exporting data</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Share Anonymous Analytics</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-analytics" data-path="privacy.shareAnalytics">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                        <p class="form-helper">Help improve Garden by sharing anonymous usage data</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clear Data -->
+            <div class="card danger-card">
+                <div class="card-header">
+                    <h3 class="card-title" style="color: var(--color-error);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        Clear Data
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="data-action-item">
+                        <div class="data-action-info">
+                            <div class="data-action-name">Clear Browser History</div>
+                            <div class="data-action-desc">Delete all browsing history stored in Garden.</div>
+                        </div>
+                        <button class="btn btn-danger btn-sm" id="btn-clear-history">Clear History</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Settings -->
+        <section class="settings-section" id="section-advanced" style="display: none;">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">Advanced</h2>
+                <button class="btn btn-ghost btn-sm" onclick="SettingsManager.resetSection('advanced')">Reset to Defaults</button>
+            </div>
+
+            <!-- API Configuration -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">API Configuration</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">API Endpoint</label>
+                        <input type="text" class="form-input" id="setting-apiEndpoint" data-path="advanced.apiEndpoint" placeholder="http://localhost:8000">
+                        <p class="form-helper">The URL of the Garden backend API</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debug Options -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Developer Options</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Debug Mode</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-debugMode" data-path="advanced.debugMode">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                        <p class="form-helper">Enable debug mode for troubleshooting</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Console Logging</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-consoleLogging" data-path="advanced.consoleLogging">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                        <p class="form-helper">Log application events to browser console</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="toggle-row">
+                            <span class="toggle-label">Experimental Features</span>
+                            <label class="toggle">
+                                <input type="checkbox" id="setting-experimental" data-path="advanced.experimentalFeatures">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </label>
+                        <p class="form-helper">Enable experimental features (may be unstable)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Raw Configuration -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Raw Configuration</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-sm text-muted mb-4">Edit the raw configuration JSON. Be careful - invalid JSON will not be saved.</p>
+                    <textarea class="form-textarea code-editor" id="raw-config-editor" rows="12" style="font-family: 'SF Mono', Monaco, monospace; font-size: 13px;"></textarea>
+                    <div class="flex gap-4 mt-4">
+                        <button class="btn btn-primary" id="btn-save-raw-config">Save Configuration</button>
+                        <button class="btn btn-secondary" id="btn-format-config">Format JSON</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reset Settings -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Reset Settings</h3>
+                </div>
+                <div class="card-body">
+                    <div class="data-action-item">
+                        <div class="data-action-info">
+                            <div class="data-action-name">Reset All Settings</div>
+                            <div class="data-action-desc">Reset all settings to their default values. Your data will not be affected.</div>
+                        </div>
+                        <button class="btn btn-danger" id="btn-reset-all-settings">Reset All Settings</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="settings-section" id="section-about" style="display: none;">
+            <div class="settings-section-header">
+                <h2 class="settings-section-title">About Garden</h2>
+            </div>
+
+            <!-- Version Info -->
+            <div class="card mb-6">
+                <div class="card-body">
+                    <div class="about-header">
+                        <div class="about-logo">
+                            <span style="font-size: 48px;">G</span>
+                        </div>
+                        <div class="about-info">
+                            <h2 class="about-title">Garden PKM</h2>
+                            <p class="about-subtitle">Personal Knowledge Management System</p>
+                            <div class="about-version">
+                                <span class="badge badge-info" id="about-version">v1.0.0</span>
+                                <span class="text-sm text-muted" id="about-build">Build 2024.01.14.001</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Resources</h3>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <a href="https://github.com/garden-pkm/garden" target="_blank" class="link-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        <span>GitHub Repository</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-external">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                    <a href="https://garden-pkm.github.io/docs" target="_blank" class="link-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                        <span>Documentation</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-external">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/garden-pkm/garden/issues" target="_blank" class="link-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <span>Report an Issue</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="link-external">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Keyboard Shortcuts -->
+            <div class="card mb-6">
+                <div class="card-header">
+                    <h3 class="card-title">Keyboard Shortcuts</h3>
+                </div>
+                <div class="card-body">
+                    <div class="shortcuts-grid">
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Open Command Palette</span>
+                            <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>K</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Dashboard</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>D</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Bookmarks</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>B</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Notes</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>N</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Contacts</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>C</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Messages</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>M</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Search</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>S</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Go to Settings</span>
+                            <span class="shortcut-keys"><kbd>G</kbd> then <kbd>,</kbd></span>
+                        </div>
+                        <div class="shortcut-item">
+                            <span class="shortcut-desc">Close Modal / Cancel</span>
+                            <span class="shortcut-keys"><kbd>Esc</kbd></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- License -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">License</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-sm text-muted mb-4">
+                        Garden PKM is open source software licensed under the MIT License.
+                    </p>
+                    <div class="code-block" style="font-size: 12px;">
+MIT License
+
+Copyright (c) 2024 Garden PKM
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Danger Zone (Always visible at bottom) -->
+<div class="mt-8">
+    <div class="card danger-card">
+        <div class="card-header">
+            <h3 class="card-title" style="color: var(--color-error);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Danger Zone
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="danger-actions">
+                <div class="data-action-item">
+                    <div class="data-action-info">
+                        <div class="data-action-name">Delete All Data</div>
+                        <div class="data-action-desc">Permanently delete all your data including bookmarks, notes, contacts, and messages. This action cannot be undone.</div>
+                    </div>
+                    <button class="btn btn-danger" id="btn-delete-all-data">Delete All Data</button>
+                </div>
+
+                <div class="data-action-item">
+                    <div class="data-action-info">
+                        <div class="data-action-name">Reset Application</div>
+                        <div class="data-action-desc">Reset the entire application to its default state. All settings and data will be erased.</div>
+                    </div>
+                    <button class="btn btn-danger" id="btn-reset-app">Reset Application</button>
+                </div>
+
+                <div class="data-action-item">
+                    <div class="data-action-info">
+                        <div class="data-action-name">Clear All Credentials</div>
+                        <div class="data-action-desc">Remove all saved API keys, tokens, and login credentials for integrations.</div>
+                    </div>
+                    <button class="btn btn-danger" id="btn-clear-credentials">Clear Credentials</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/**
+ * Settings Manager
+ * Handles all settings-related functionality
+ */
+const SettingsManager = {
+    config: null,
+    saveTimeout: null,
+
+    async init() {
+        try {
+            this.config = await window.app.api.getConfiguration();
+            this.populateSettings();
+            this.setupEventListeners();
+            this.setupNavigation();
+            this.updateIntegrationStatuses();
+        } catch (error) {
+            console.error('Failed to load settings:', error);
+            window.app.toast.error('Failed to load settings');
+        }
+    },
+
+    populateSettings() {
+        // Populate all form fields with current values
+        this.populateFromConfig(this.config);
+
+        // Special handling for specific fields
+        this.updateStorageDisplay();
+        this.updateDatabaseStats();
+        this.updateRawConfigEditor();
+        this.updateAboutInfo();
+    },
+
+    populateFromConfig(config, prefix = '') {
+        const flattenConfig = (obj, path = '') => {
+            for (const [key, value] of Object.entries(obj)) {
+                const fullPath = path ? `${path}.${key}` : key;
+                if (value && typeof value === 'object' && !Array.isArray(value)) {
+                    flattenConfig(value, fullPath);
+                } else {
+                    const element = document.querySelector(`[data-path="${fullPath}"]`);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = value;
+                        } else if (element.type === 'radio') {
+                            const radio = document.querySelector(`[data-path="${fullPath}"][value="${value}"]`);
+                            if (radio) radio.checked = true;
+                        } else {
+                            element.value = value;
+                        }
+                    }
+                }
+            }
+        };
+        flattenConfig(config);
+
+        // Update font size display
+        const fontSizeValue = document.getElementById('fontSize-value');
+        if (fontSizeValue && config.appearance) {
+            fontSizeValue.textContent = config.appearance.fontSize;
+        }
+
+        // Update accent color
+        this.updateAccentColorSelection();
+    },
+
+    setupEventListeners() {
+        // Auto-save on input change
+        document.querySelectorAll('[data-path]').forEach(element => {
+            const event = element.type === 'checkbox' || element.type === 'radio' ? 'change' : 'input';
+            element.addEventListener(event, (e) => this.handleSettingChange(e));
+        });
+
+        // Font size slider
+        document.getElementById('setting-fontSize')?.addEventListener('input', (e) => {
+            document.getElementById('fontSize-value').textContent = e.target.value;
+        });
+
+        // Color presets
+        document.querySelectorAll('.color-preset').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const color = btn.dataset.color;
+                document.getElementById('setting-accentColor').value = color;
+                this.updateSetting('appearance.accentColor', color);
+                this.updateAccentColorSelection();
+            });
+        });
+
+        // Test Ollama connection
+        document.getElementById('btn-test-ollama')?.addEventListener('click', () => this.testOllamaConnection());
+
+        // Social media toggles
+        document.getElementById('btn-twitter-toggle')?.addEventListener('click', () => this.toggleTwitter());
+        document.getElementById('btn-bluesky-toggle')?.addEventListener('click', () => this.toggleBluesky());
+
+        // Logseq sync
+        document.getElementById('btn-logseq-sync')?.addEventListener('click', () => this.syncLogseq());
+
+        // Data operations
+        document.getElementById('btn-clear-cache')?.addEventListener('click', () => this.clearCache());
+        document.getElementById('btn-export-data')?.addEventListener('click', () => this.exportData());
+        document.getElementById('import-file')?.addEventListener('change', (e) => this.importData(e));
+        document.getElementById('btn-clear-history')?.addEventListener('click', () => this.clearHistory());
+
+        // Raw config
+        document.getElementById('btn-save-raw-config')?.addEventListener('click', () => this.saveRawConfig());
+        document.getElementById('btn-format-config')?.addEventListener('click', () => this.formatConfig());
+
+        // Reset/Danger actions
+        document.getElementById('btn-reset-all-settings')?.addEventListener('click', () => this.resetAllSettings());
+        document.getElementById('btn-delete-all-data')?.addEventListener('click', () => this.deleteAllData());
+        document.getElementById('btn-reset-app')?.addEventListener('click', () => this.resetApp());
+        document.getElementById('btn-clear-credentials')?.addEventListener('click', () => this.clearCredentials());
+
+        // Search settings
+        document.getElementById('settings-search')?.addEventListener('input', (e) => this.searchSettings(e.target.value));
+    },
+
+    setupNavigation() {
+        const navItems = document.querySelectorAll('.settings-nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = item.dataset.section;
+                this.showSection(section);
+
+                // Update active state
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    },
+
+    showSection(sectionId) {
+        document.querySelectorAll('.settings-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(`section-${sectionId}`).style.display = 'block';
+    },
+
+    handleSettingChange(e) {
+        const element = e.target;
+        const path = element.dataset.path;
+        let value;
+
+        if (element.type === 'checkbox') {
+            value = element.checked;
+        } else if (element.type === 'number' || element.type === 'range') {
+            value = parseInt(element.value);
+        } else {
+            value = element.value;
+        }
+
+        this.updateSetting(path, value);
+    },
+
+    updateSetting(path, value) {
+        // Update local config
+        const keys = path.split('.');
+        let obj = this.config;
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (!obj[keys[i]]) obj[keys[i]] = {};
+            obj = obj[keys[i]];
+        }
+        obj[keys[keys.length - 1]] = value;
+
+        // Debounce save
+        this.showSavingStatus();
+        clearTimeout(this.saveTimeout);
+        this.saveTimeout = setTimeout(() => this.saveSettings(), 500);
+    },
+
+    async saveSettings() {
+        try {
+            await window.app.api.updateConfiguration(this.config);
+            this.showSavedStatus();
+            window.app.toast.success('Settings saved');
+        } catch (error) {
+            console.error('Failed to save settings:', error);
+            window.app.toast.error('Failed to save settings');
+            this.showErrorStatus();
+        }
+    },
+
+    showSavingStatus() {
+        const status = document.getElementById('sync-status');
+        if (status) {
+            status.innerHTML = `
+                <span class="sync-indicator saving"></span>
+                <span class="text-sm text-muted">Saving...</span>
+            `;
+        }
+    },
+
+    showSavedStatus() {
+        const status = document.getElementById('sync-status');
+        if (status) {
+            status.innerHTML = `
+                <span class="sync-indicator synced"></span>
+                <span class="text-sm text-muted">All changes saved</span>
+            `;
+        }
+    },
+
+    showErrorStatus() {
+        const status = document.getElementById('sync-status');
+        if (status) {
+            status.innerHTML = `
+                <span class="sync-indicator error"></span>
+                <span class="text-sm text-muted">Error saving</span>
+            `;
+        }
+    },
+
+    updateIntegrationStatuses() {
+        const { integrations } = this.config;
+
+        // Ollama
+        const ollamaStatus = document.getElementById('ollama-status');
+        if (ollamaStatus && integrations.ollama) {
+            ollamaStatus.className = `badge badge-${integrations.ollama.status === 'connected' ? 'success' : 'pending'}`;
+            ollamaStatus.textContent = integrations.ollama.status === 'connected' ? 'Connected' : 'Disconnected';
+
+            const lastConnected = document.getElementById('ollama-last-connected');
+            if (lastConnected && integrations.ollama.lastConnected) {
+                lastConnected.textContent = `Last connected: ${Utils.formatRelativeTime(integrations.ollama.lastConnected)}`;
+            }
+        }
+
+        // Twitter
+        const twitterStatus = document.getElementById('twitter-status');
+        const twitterBtn = document.getElementById('btn-twitter-toggle');
+        if (twitterStatus && integrations.twitter) {
+            if (integrations.twitter.connected) {
+                twitterStatus.textContent = `Connected as ${integrations.twitter.username}`;
+                twitterStatus.className = 'integration-status connected';
+                if (twitterBtn) twitterBtn.textContent = 'Disconnect';
+            } else {
+                twitterStatus.textContent = 'Not connected';
+                twitterStatus.className = 'integration-status';
+                if (twitterBtn) twitterBtn.textContent = 'Connect';
+            }
+        }
+
+        // Bluesky
+        const blueskyStatus = document.getElementById('bluesky-status');
+        const blueskyBtn = document.getElementById('btn-bluesky-toggle');
+        if (blueskyStatus && integrations.bluesky) {
+            if (integrations.bluesky.connected) {
+                blueskyStatus.textContent = `Connected as @${integrations.bluesky.handle}`;
+                blueskyStatus.className = 'integration-status connected';
+                if (blueskyBtn) blueskyBtn.textContent = 'Disconnect';
+            } else {
+                blueskyStatus.textContent = 'Not connected';
+                blueskyStatus.className = 'integration-status';
+                if (blueskyBtn) blueskyBtn.textContent = 'Connect';
+            }
+        }
+
+        // Browser Extension
+        const extStatus = document.getElementById('extension-status');
+        const extVersion = document.getElementById('extension-version');
+        const extLastSync = document.getElementById('extension-last-sync');
+        if (integrations.browserExtension) {
+            if (extStatus) {
+                extStatus.className = `badge badge-${integrations.browserExtension.installed ? 'success' : 'pending'}`;
+                extStatus.textContent = integrations.browserExtension.installed ? 'Installed' : 'Not Installed';
+            }
+            if (extVersion) {
+                extVersion.textContent = `Version: ${integrations.browserExtension.version || 'Not installed'}`;
+            }
+            if (extLastSync && integrations.browserExtension.lastSync) {
+                extLastSync.textContent = `Last sync: ${Utils.formatRelativeTime(integrations.browserExtension.lastSync)}`;
+            }
+        }
+
+        // Logseq
+        const logseqStatus = document.getElementById('logseq-status');
+        const logseqLastSync = document.getElementById('logseq-last-sync');
+        if (integrations.logseq) {
+            if (logseqStatus) {
+                logseqStatus.className = `badge badge-${integrations.logseq.status === 'synced' ? 'success' : 'warning'}`;
+                logseqStatus.textContent = integrations.logseq.status === 'synced' ? 'Synced' : 'Pending';
+            }
+            if (logseqLastSync && integrations.logseq.lastSync) {
+                logseqLastSync.textContent = `Last sync: ${Utils.formatRelativeTime(integrations.logseq.lastSync)}`;
+            }
+        }
+    },
+
+    updateAccentColorSelection() {
+        const currentColor = this.config.appearance?.accentColor;
+        document.querySelectorAll('.color-preset').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.color === currentColor);
+        });
+    },
+
+    updateStorageDisplay() {
+        const { storage } = this.config;
+        if (!storage) return;
+
+        const formatSize = (bytes) => {
+            if (bytes >= 1073741824) return (bytes / 1073741824).toFixed(2) + ' GB';
+            if (bytes >= 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+            if (bytes >= 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return bytes + ' B';
+        };
+
+        document.getElementById('storage-used').textContent = formatSize(storage.totalUsed);
+
+        const total = storage.totalUsed;
+        const breakdown = storage.breakdown;
+        const colors = {
+            bookmarks: '#0070f3',
+            notes: '#50e3c2',
+            contacts: '#7928ca',
+            messages: '#f5a623',
+            cache: '#888888',
+            other: '#444444'
+        };
+
+        // Update bar segments
+        Object.entries(breakdown).forEach(([key, value]) => {
+            const segment = document.getElementById(`storage-bar-${key}`);
+            if (segment) {
+                const percent = (value / total * 100).toFixed(1);
+                segment.style.width = `${percent}%`;
+                segment.style.backgroundColor = colors[key];
+            }
+        });
+
+        // Update breakdown list
+        const breakdownEl = document.getElementById('storage-breakdown');
+        if (breakdownEl) {
+            breakdownEl.innerHTML = Object.entries(breakdown).map(([key, value]) => `
+                <div class="storage-item">
+                    <span class="storage-item-color" style="background-color: ${colors[key]}"></span>
+                    <span class="storage-item-name">${key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                    <span class="storage-item-size">${formatSize(value)}</span>
+                </div>
+            `).join('');
+        }
+    },
+
+    updateDatabaseStats() {
+        const stats = this.config.storage?.stats;
+        if (!stats) return;
+
+        document.getElementById('stat-bookmarks').textContent = stats.bookmarks || 0;
+        document.getElementById('stat-notes').textContent = stats.notes || 0;
+        document.getElementById('stat-contacts').textContent = stats.contacts || 0;
+        document.getElementById('stat-messages').textContent = stats.messages || 0;
+        document.getElementById('stat-entities').textContent = stats.entities || 0;
+        document.getElementById('stat-history').textContent = stats.historyItems || 0;
+    },
+
+    updateRawConfigEditor() {
+        const editor = document.getElementById('raw-config-editor');
+        if (editor) {
+            editor.value = JSON.stringify(this.config, null, 2);
+        }
+    },
+
+    updateAboutInfo() {
+        const { system } = this.config;
+        if (!system) return;
+
+        document.getElementById('about-version').textContent = `v${system.version}`;
+        document.getElementById('about-build').textContent = `Build ${system.buildNumber}`;
+    },
+
+    async testOllamaConnection() {
+        const btn = document.getElementById('btn-test-ollama');
+        const url = document.getElementById('setting-ollama-url').value;
+
+        btn.disabled = true;
+        btn.textContent = 'Testing...';
+
+        try {
+            const response = await window.app.api.post('/api/integrations/ollama/test', { url });
+            if (response.success) {
+                window.app.toast.success('Connected to Ollama successfully');
+                this.config.integrations.ollama.status = 'connected';
+                this.config.integrations.ollama.lastConnected = new Date().toISOString();
+                this.updateIntegrationStatuses();
+            } else {
+                window.app.toast.error(response.error || 'Failed to connect');
+            }
+        } catch (error) {
+            window.app.toast.error('Failed to connect to Ollama');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Test Connection';
+        }
+    },
+
+    async toggleTwitter() {
+        const isConnected = this.config.integrations.twitter.connected;
+        const endpoint = isConnected ? '/api/integrations/twitter/disconnect' : '/api/integrations/twitter/connect';
+
+        try {
+            await window.app.api.post(endpoint);
+            this.config.integrations.twitter.connected = !isConnected;
+            if (!isConnected) {
+                this.config.integrations.twitter.username = '@gardenuser';
+            }
+            this.updateIntegrationStatuses();
+            window.app.toast.success(isConnected ? 'Twitter disconnected' : 'Twitter connected');
+        } catch (error) {
+            window.app.toast.error('Failed to update Twitter connection');
+        }
+    },
+
+    async toggleBluesky() {
+        const isConnected = this.config.integrations.bluesky.connected;
+        const endpoint = isConnected ? '/api/integrations/bluesky/disconnect' : '/api/integrations/bluesky/connect';
+
+        try {
+            await window.app.api.post(endpoint);
+            this.config.integrations.bluesky.connected = !isConnected;
+            if (!isConnected) {
+                this.config.integrations.bluesky.handle = 'garden.bsky.social';
+            }
+            this.updateIntegrationStatuses();
+            window.app.toast.success(isConnected ? 'Bluesky disconnected' : 'Bluesky connected');
+        } catch (error) {
+            window.app.toast.error('Failed to update Bluesky connection');
+        }
+    },
+
+    async syncLogseq() {
+        const btn = document.getElementById('btn-logseq-sync');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner" style="width:16px;height:16px;"></span> Syncing...';
+
+        try {
+            const response = await window.app.api.post('/api/integrations/logseq/sync');
+            if (response.success) {
+                window.app.toast.success(`Synced ${response.itemsSynced} items from Logseq`);
+                this.config.integrations.logseq.lastSync = new Date().toISOString();
+                this.config.integrations.logseq.status = 'synced';
+                this.updateIntegrationStatuses();
+            }
+        } catch (error) {
+            window.app.toast.error('Failed to sync with Logseq');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/>
+                </svg>
+                Sync Now
+            `;
+        }
+    },
+
+    async clearCache() {
+        if (!await this.confirmAction('Clear all cached data?')) return;
+
+        try {
+            const response = await window.app.api.delete('/api/data/cache');
+            window.app.toast.success(`Cache cleared. Freed ${(response.freedSpace / 1048576).toFixed(1)} MB`);
+            this.config.storage.breakdown.cache = 0;
+            this.updateStorageDisplay();
+        } catch (error) {
+            window.app.toast.error('Failed to clear cache');
+        }
+    },
+
+    async exportData() {
+        const btn = document.getElementById('btn-export-data');
+        btn.disabled = true;
+
+        try {
+            const response = await window.app.api.post('/api/data/export');
+            const blob = new Blob([JSON.stringify(response.data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `garden-export-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            window.app.toast.success('Data exported successfully');
+        } catch (error) {
+            window.app.toast.error('Failed to export data');
+        } finally {
+            btn.disabled = false;
+        }
+    },
+
+    async importData(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!await this.confirmAction('Import data? This may overwrite existing data.')) {
+            e.target.value = '';
+            return;
+        }
+
+        try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            await window.app.api.post('/api/data/import', { data });
+            window.app.toast.success('Data imported successfully');
+            // Reload settings
+            this.init();
+        } catch (error) {
+            window.app.toast.error('Failed to import data. Invalid file format.');
+        }
+
+        e.target.value = '';
+    },
+
+    async clearHistory() {
+        if (!await this.confirmAction('Delete all browser history? This cannot be undone.', 'danger')) return;
+
+        try {
+            await window.app.api.delete('/api/data/history');
+            window.app.toast.success('Browser history cleared');
+        } catch (error) {
+            window.app.toast.error('Failed to clear history');
+        }
+    },
+
+    async saveRawConfig() {
+        const editor = document.getElementById('raw-config-editor');
+        try {
+            const config = JSON.parse(editor.value);
+            this.config = config;
+            await this.saveSettings();
+            window.app.toast.success('Configuration saved');
+        } catch (error) {
+            window.app.toast.error('Invalid JSON format');
+        }
+    },
+
+    formatConfig() {
+        const editor = document.getElementById('raw-config-editor');
+        try {
+            const config = JSON.parse(editor.value);
+            editor.value = JSON.stringify(config, null, 2);
+        } catch (error) {
+            window.app.toast.error('Invalid JSON format');
+        }
+    },
+
+    async resetSection(section) {
+        if (!await this.confirmAction(`Reset ${section} settings to defaults?`)) return;
+
+        try {
+            const response = await window.app.api.post('/api/configuration/reset', { section });
+            if (response.data) {
+                this.config[section] = response.data;
+                this.populateSettings();
+                window.app.toast.success(`${section} settings reset to defaults`);
+            }
+        } catch (error) {
+            window.app.toast.error('Failed to reset settings');
+        }
+    },
+
+    async resetAllSettings() {
+        if (!await this.confirmAction('Reset ALL settings to defaults? This cannot be undone.', 'danger')) return;
+        if (!await this.confirmAction('Are you absolutely sure?', 'danger')) return;
+
+        try {
+            await window.app.api.post('/api/configuration/reset', { section: 'all' });
+            this.config = await window.app.api.getConfiguration();
+            this.populateSettings();
+            window.app.toast.success('All settings reset to defaults');
+        } catch (error) {
+            window.app.toast.error('Failed to reset settings');
+        }
+    },
+
+    async deleteAllData() {
+        if (!await this.confirmAction('DELETE ALL DATA? This action is permanent and cannot be undone!', 'danger')) return;
+        if (!await this.confirmAction('This will delete ALL your bookmarks, notes, contacts, messages, and entities. Are you absolutely sure?', 'danger')) return;
+
+        try {
+            await window.app.api.delete('/api/data/all');
+            window.app.toast.success('All data deleted');
+            setTimeout(() => window.location.reload(), 1500);
+        } catch (error) {
+            window.app.toast.error('Failed to delete data');
+        }
+    },
+
+    async resetApp() {
+        if (!await this.confirmAction('RESET THE ENTIRE APPLICATION? All data and settings will be erased!', 'danger')) return;
+        if (!await this.confirmAction('Last chance! This will completely reset Garden to factory settings.', 'danger')) return;
+
+        try {
+            // Use service worker message to reset
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                const messageChannel = new MessageChannel();
+                messageChannel.port1.onmessage = (event) => {
+                    if (event.data.success) {
+                        window.app.toast.success('Application reset');
+                        setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                        window.app.toast.error('Failed to reset application');
+                    }
+                };
+                navigator.serviceWorker.controller.postMessage({ type: 'RESET_DATA' }, [messageChannel.port2]);
+            }
+        } catch (error) {
+            window.app.toast.error('Failed to reset application');
+        }
+    },
+
+    async clearCredentials() {
+        if (!await this.confirmAction('Clear all saved credentials? You will need to reconnect all integrations.', 'danger')) return;
+
+        try {
+            await window.app.api.delete('/api/credentials');
+            this.config.integrations.twitter.connected = false;
+            this.config.integrations.bluesky.connected = false;
+            this.config.integrations.ollama.status = 'disconnected';
+            this.updateIntegrationStatuses();
+            window.app.toast.success('All credentials cleared');
+        } catch (error) {
+            window.app.toast.error('Failed to clear credentials');
+        }
+    },
+
+    async confirmAction(message, type = 'primary') {
+        return window.app.modal.confirm(message, {
+            title: type === 'danger' ? 'Warning' : 'Confirm',
+            confirmText: type === 'danger' ? 'Yes, I understand' : 'Confirm',
+            type
+        });
+    },
+
+    searchSettings(query) {
+        query = query.toLowerCase().trim();
+        if (!query) {
+            // Show all sections
+            document.querySelectorAll('.settings-section').forEach(s => s.style.display = 'none');
+            document.getElementById('section-general').style.display = 'block';
+            document.querySelector('.settings-nav-item.active')?.classList.remove('active');
+            document.querySelector('[data-section="general"]').classList.add('active');
+            return;
+        }
+
+        // Search through all cards
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            const matches = text.includes(query);
+            card.style.opacity = matches ? '1' : '0.3';
+        });
+
+        // Show all sections
+        document.querySelectorAll('.settings-section').forEach(s => s.style.display = 'block');
+    }
+};
+
+// Initialize when page loads
+SettingsManager.init();
+</script>
