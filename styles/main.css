@@ -1520,7 +1520,8 @@ ul, ol {
     overflow: hidden;
 }
 
-.page-layout-full .page-content {
+/* Remove padding from page-content when it contains a full layout view */
+.page-content:has(.page-layout-full) {
     padding: 0;
 }
 

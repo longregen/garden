@@ -1639,10 +1639,11 @@
     // Select room
     async function selectRoom(roomId) {
         try {
-            const room = await window.GardenApp.api.getRoom(roomId);
-            state.currentRoom = room;
-            state.messages = room.messages || [];
-            state.contacts = room.contacts || {};
+            const response = await window.GardenApp.api.getRoom(roomId);
+            // API returns { room, messages, contacts, participants }
+            state.currentRoom = response.room || response;
+            state.messages = response.messages || [];
+            state.contacts = response.contacts || {};
 
             // Update URL
             window.location.hash = `#/messages?room=${roomId}`;
