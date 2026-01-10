@@ -1102,11 +1102,11 @@
 
         renderStats() {
             const totalTags = this.tags.length;
-            const unusedTags = this.tags.filter(t => (t.usage_count || 0) === 0).length;
+            const unusedTags = this.tags.filter(t => (t.usageCount || 0) === 0).length;
             const totalCategories = this.categories.length;
             const emptyCategories = this.categories.filter(c => c.bookmarkCount === 0).length;
 
-            const sortedTags = [...this.tags].sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0));
+            const sortedTags = [...this.tags].sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
             const mostUsedTag = sortedTags[0];
 
             const sortedCategories = [...this.categories].sort((a, b) => b.bookmarkCount - a.bookmarkCount);
@@ -1124,7 +1124,7 @@
 
             document.getElementById('most-used-tag').textContent = mostUsedTag ? mostUsedTag.name : '--';
             document.getElementById('most-used-tag-count').textContent = mostUsedTag
-                ? `${mostUsedTag.usage_count || 0} items` : '--';
+                ? `${mostUsedTag.usageCount || 0} items` : '--';
 
             document.getElementById('largest-category').textContent = largestCategory ? largestCategory.name : '--';
             document.getElementById('largest-category-count').textContent = largestCategory
@@ -1135,17 +1135,17 @@
             // Tag usage bar chart
             const tagChartContainer = document.getElementById('tag-chart');
             const topTags = [...this.tags]
-                .sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0))
+                .sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0))
                 .slice(0, 10);
 
-            const maxTagCount = Math.max(...topTags.map(t => t.usage_count || 0), 1);
+            const maxTagCount = Math.max(...topTags.map(t => t.usageCount || 0), 1);
 
             tagChartContainer.innerHTML = topTags.map(tag => {
-                const height = ((tag.usage_count || 0) / maxTagCount) * 160;
+                const height = ((tag.usageCount || 0) / maxTagCount) * 160;
                 return `
                     <div class="chart-bar" style="height: ${Math.max(height, 4)}px; background-color: ${tag.color};"
                          onclick="TagsManager.showTagPreview('${tag.id}')">
-                        <span class="chart-bar-value">${tag.usage_count || 0}</span>
+                        <span class="chart-bar-value">${tag.usageCount || 0}</span>
                         <span class="chart-bar-label" title="${tag.name}">${tag.name}</span>
                     </div>
                 `;
@@ -1192,16 +1192,16 @@
 
             // Filter by unused
             if (this.currentFilter.showUnused) {
-                filtered = filtered.filter(t => (t.usage_count || 0) === 0);
+                filtered = filtered.filter(t => (t.usageCount || 0) === 0);
             }
 
             // Sort
             switch (this.currentFilter.tagSort) {
                 case 'count-desc':
-                    filtered.sort((a, b) => (b.usage_count || 0) - (a.usage_count || 0));
+                    filtered.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
                     break;
                 case 'count-asc':
-                    filtered.sort((a, b) => (a.usage_count || 0) - (b.usage_count || 0));
+                    filtered.sort((a, b) => (a.usageCount || 0) - (b.usageCount || 0));
                     break;
                 case 'recent':
                     filtered.sort((a, b) => (b.modified || 0) - (a.modified || 0));
@@ -1222,12 +1222,12 @@
                 return;
             }
 
-            const maxCount = Math.max(...filteredTags.map(t => t.usage_count || 0), 1);
+            const maxCount = Math.max(...filteredTags.map(t => t.usageCount || 0), 1);
             const minSize = 12;
             const maxSize = 28;
 
             container.innerHTML = filteredTags.map(tag => {
-                const count = tag.usage_count || 0;
+                const count = tag.usageCount || 0;
                 const size = minSize + ((count / maxCount) * (maxSize - minSize));
                 const opacity = 0.6 + ((count / maxCount) * 0.4);
 
@@ -1278,8 +1278,8 @@
                         </div>
                     </td>
                     <td>
-                        <span class="badge ${(tag.usage_count || 0) > 0 ? 'badge-info' : 'badge-pending'}">
-                            ${tag.usage_count || 0}
+                        <span class="badge ${(tag.usageCount || 0) > 0 ? 'badge-info' : 'badge-pending'}">
+                            ${tag.usageCount || 0}
                         </span>
                     </td>
                     <td>
@@ -1518,7 +1518,7 @@
             if (!tag) return;
 
             const confirmed = await window.app.modal.confirm(
-                `Are you sure you want to delete the tag "${tag.name}"? This will affect ${tag.usage_count || 0} items.`,
+                `Are you sure you want to delete the tag "${tag.name}"? This will affect ${tag.usageCount || 0} items.`,
                 { title: 'Delete Tag', type: 'danger', confirmText: 'Delete' }
             );
 
@@ -1585,7 +1585,7 @@
                 id: 'tag' + Date.now(),
                 name: name,
                 color: color,
-                usage_count: 0,
+                usageCount: 0,
                 created: Date.now(),
                 modified: Date.now()
             };
@@ -1613,7 +1613,7 @@
                             <label class="flex items-center gap-2 mb-2" style="cursor: pointer;">
                                 <input type="radio" name="merge-target" value="${tag.id}" ${i === 0 ? 'checked' : ''}>
                                 <span class="tag" style="background-color: ${tag.color}20; color: ${tag.color}; border-color: ${tag.color};">
-                                    ${Utils.escapeHtml(tag.name)} (${tag.usage_count || 0})
+                                    ${Utils.escapeHtml(tag.name)} (${tag.usageCount || 0})
                                 </span>
                             </label>
                         `).join('')}
@@ -1635,14 +1635,14 @@
             const mergedCount = Array.from(this.selectedTags)
                 .map(id => this.tags.find(t => t.id === id))
                 .filter(Boolean)
-                .reduce((sum, t) => sum + (t.usage_count || 0), 0);
+                .reduce((sum, t) => sum + (t.usageCount || 0), 0);
 
             // Remove other tags
             this.tags = this.tags.filter(t => !this.selectedTags.has(t.id) || t.id === targetId);
 
             // Update target tag count
             if (targetTag) {
-                targetTag.usage_count = mergedCount;
+                targetTag.usageCount = mergedCount;
             }
 
             this.selectedTags.clear();
@@ -1999,7 +1999,7 @@
                 <span class="tag" style="background-color: ${tag.color}20; color: ${tag.color}; border-color: ${tag.color};">
                     ${Utils.escapeHtml(tag.name)}
                 </span>
-                <span class="text-muted text-sm">${tag.usage_count || 0} items</span>
+                <span class="text-muted text-sm">${tag.usageCount || 0} items</span>
             `;
 
             // Mock related items (in real app, would fetch from API)
@@ -2007,7 +2007,7 @@
                 { type: 'note', title: 'System Design Interview Preparation', id: 'n1' },
                 { type: 'note', title: 'React Performance Optimization', id: 'n2' },
                 { type: 'note', title: 'PostgreSQL Optimization Notes', id: 'n3' }
-            ].slice(0, tag.usage_count || 3);
+            ].slice(0, tag.usageCount || 3);
 
             content.innerHTML = mockItems.length > 0 ? mockItems.map(item => `
                 <div class="preview-item" onclick="window.location.hash='#/${item.type}s/${item.id}'">
