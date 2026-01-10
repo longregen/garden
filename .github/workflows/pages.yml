@@ -1,4 +1,4 @@
-name: Deploy Frontend to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -6,20 +6,18 @@ on:
       - main
   workflow_dispatch:
 
-# Set permissions for GitHub Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    name: Deploy to GitHub Pages
+  build-and-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -29,14 +27,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache mdbook binary
+        id: cache-mdbook
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/mdbook
+          key: ${{ runner.os }}-mdbook-0.4.40
+
+      - name: Install mdBook
+        if: steps.cache-mdbook.outputs.cache-hit != 'true'
+        run: cargo install mdbook --version 0.4.40 --locked
+
+      - name: Build mdBook documentation
+        run: mdbook build
+
+      - name: Prepare deployment directory
+        run: |
+          mkdir -p _site
+          # Copy frontend files to root
+          cp index.html _site/
+          cp -r js _site/
+          cp -r styles _site/
+          cp -r views _site/
+          # Copy built docs to /docs
+          cp -r book _site/docs
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the entire repository root (static frontend files)
-          path: '.'
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
